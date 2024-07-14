@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.mapper.TypeMapper">
+
+    <resultMap id="BaseResultMap" type="com.library.pojo.Type">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="tname" column="tname" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,tname
+    </sql>
+
+    <select id="getAllType" resultType="com.library.pojo.Type">
+        select * from type
+    </select>
+
+    <select id="selectTnameById" resultType="java.lang.String">
+        select tname from type
+        where id = #{tid}
+    </select>
+    
+    <select id="selectIdByTname" resultType="java.lang.Integer">
+        select id from type
+        where tname = #{tname}
+    </select>
+</mapper>

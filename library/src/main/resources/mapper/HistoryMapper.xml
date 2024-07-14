@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.mapper.HistoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.library.pojo.History">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <id property="uid" column="uid" jdbcType="INTEGER"/>
+        <id property="bid" column="bid" jdbcType="INTEGER"/>
+        <id property="wid" column="wid" jdbcType="INTEGER"/>
+        <result property="begin_time" column="begin_time" jdbcType="TIMESTAMP"/>
+        <result property="end_time" column="end_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,uid,bid,wid,
+        begin_time,end_time
+    </sql>
+
+    <update id="updateInventoryBySupplierId">
+        UPDATE inventory
+        SET quantity = quantity - (
+            SELECT quantity
+            FROM supply
+            WHERE supplierId = #{supplierId}
+        )
+        WHERE warehouseId = (
+            SELECT warehouseId
+            FROM supply
+            WHERE supplierId = #{supplierId}
+        ) AND productId = (
+            SELECT productId
+            FROM supply
+            WHERE supplierId = #{supplierId}
+        );
+    </update>
+
+    <delete id="deleteInventoryByProductId">
+        delete
+        from inventory
+        where inventory.productId = #{productId}
+    </delete>
+
+    <delete id="deleteInventoryByWarehouseId">
+        delete
+        from inventory
+        where inventory.warehouseId = #{warehouseId}
+    </delete>
+</mapper>

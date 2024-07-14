@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.mapper.WarehouseMapper">
+
+    <resultMap id="BaseResultMap" type="com.library.pojo.Warehouse">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="location" column="location" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,location
+    </sql>
+
+    <select id="selectWarehouseById" resultType="com.library.pojo.Warehouse">
+        select *
+        from warehouse
+        where warehouse.id = #{wid}
+    </select>
+
+    <select id="getAllWarehouse" resultType="com.library.pojo.Warehouse">
+        select * from warehouse
+    </select>
+
+    <select id="selectLocationById" resultType="java.lang.String">
+        SELECT warehouse.location
+        FROM warehouse
+        WHERE warehouse.id=#{wid}
+    </select>
+</mapper>

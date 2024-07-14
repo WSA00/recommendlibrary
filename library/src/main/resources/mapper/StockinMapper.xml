@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.mapper.StockinMapper">
+
+    <resultMap id="BaseResultMap" type="com.library.pojo.Stockin">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="bid" column="bid" jdbcType="INTEGER"/>
+        <result property="wid" column="wid" jdbcType="INTEGER"/>
+        <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,bid,wid,
+        quantity
+    </sql>
+
+    <insert id="createStockin">
+        INSERT INTO stockin ( bid, wid, quantity,createtime)
+        VALUES (#{stockin.bid}, #{stockin.wid}, #{stockin.quantity}, #{stockin.createtime});
+    </insert>
+
+    <delete id="deleteInventoryByBid">
+        delete
+        from inventory
+        where inventory.bid = #{bid}
+    </delete>
+
+    <delete id="deleteInventoryByWid">
+        delete
+        from inventory
+        where inventory.wid = #{wid}
+    </delete>
+
+    <select id="selectStockinPage" resultMap="BaseResultMap">
+        SELECT * FROM `stockin`
+                          LIMIT #{page}, #{pageSize};
+    </select>
+
+</mapper>

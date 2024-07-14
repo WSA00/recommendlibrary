@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.mapper.BookMapper">
+
+    <resultMap id="BaseResultMap" type="com.library.pojo.Book">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="bname" column="bname" jdbcType="INTEGER"/>
+        <result property="tid" column="tid" jdbcType="INTEGER"/>
+        <result property="author" column="author" jdbcType="VARCHAR"/>
+        <result property="press" column="press" jdbcType="VARCHAR"/>
+        <result property="btimes" column="btimes" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,bname,tid,
+        author,press,btimes,introduce,poster
+    </sql>
+    
+    <select id="getAllBook" resultType="com.library.pojo.Book">
+        select * from book
+    </select>
+
+    <select id="selectBookByTid" resultType="com.library.pojo.Book">
+        select * from book
+        where tid = #{tid}
+    </select>
+
+    <select id="selectBookCountByTid" resultType="java.lang.Integer">
+        select COUNT(*) from book
+        where tid = #{tid}
+    </select>
+
+    <select id="selectBnameById" resultType="java.lang.String">
+        select bname from book
+        where id = #{bid}
+    </select>
+
+    <select id="selectBookAuthorById" resultType="java.lang.String">
+        select author from book
+        where id = #{bid}
+    </select>
+
+    <select id="selectBookPressById" resultType="java.lang.String">
+        select press from book
+        where id = #{bid}
+    </select>
+
+<!--    <select id="saleOfCarById" resultType="java.lang.Integer">-->
+<!--        select count(*)-->
+<!--        from `order`-->
+<!--        where productId = #{id}-->
+<!--    </select>-->
+
+<!--    <select id="selectProductById" resultType="com.library.pojo.Product">-->
+<!--        select *-->
+<!--        from product-->
+<!--        where product.id = #{productId}-->
+<!--    </select>-->
+
+
+
+<!--    <select id="selectProductNameAndValueById" resultType="com.library.response.ProductNameAndValue">-->
+<!--        SELECT warehouse.location as name, inventory.quantity as value-->
+<!--        FROM `inventory`,warehouse-->
+<!--        WHERE inventory.warehouseId=warehouse.id and inventory.productId=#{productId}-->
+<!--    </select>-->
+
+<!--    <select id="selectYearAndSalesById" resultType="com.library.response.ProductYearAndSalesResponse">-->
+<!--        SELECT YEAR(createtime) AS year, COUNT(*) AS salesCount-->
+<!--        FROM `order`-->
+<!--        WHERE productId = #{productId}-->
+<!--        GROUP BY YEAR(createtime)-->
+<!--        ORDER BY YEAR(createtime);-->
+<!--    </select>-->
+</mapper>
