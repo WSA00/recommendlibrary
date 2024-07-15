@@ -49,7 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         //所有用户平均销售额
         Double average_sales = orderMapper.AverageSalesOrderByUserId();
         //指定用户订单信息
-        List<UserOrderResponse> orders = orderMapper.selectOrderByUserId(id);
+        List<UserHistoryResponse> orders = orderMapper.selectOrderByUserId(id);
 
 
         Map data = new LinkedHashMap();

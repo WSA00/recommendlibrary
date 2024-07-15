@@ -2,7 +2,7 @@ package com.library.mapper;
 
 import com.library.pojo.Order;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.library.response.UserOrderResponse;
+import com.library.response.UserHistoryResponse;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public interface OrderMapper extends BaseMapper<Order> {
     Integer selectSalesByYearAndCarId(@Param("year") Integer year, @Param("id") Integer id);
 
 
-    List<UserOrderResponse> selectOrderByUserId(@Param("userId") String userId);
+    List<UserHistoryResponse> selectOrderByUserId(@Param("userId") String userId);
 
     Integer countOrderByUserId(@Param("userId") String userId);
 

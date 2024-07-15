@@ -1,17 +1,15 @@
 package com.library.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.library.mapper.BookMapper;
 import com.library.mapper.HistoryMapper;
-//import com.library.mapper.OrderMapper;
-//import com.library.mapper.ProductMapper;
+import com.library.pojo.Book;
 import com.library.mapper.UserMapper;
 import com.library.mapper.WarehouseMapper;
 import com.library.pojo.History;
-//import com.library.pojo.Order;
 import com.library.response.orderResponse;
 import com.library.response.updateOrderResponse;
 import com.library.service.HistoryService;
-//import com.library.service.OrderService;
 import com.library.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,19 +25,19 @@ import java.util.Map;
 @Service
 public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
     implements HistoryService {
-//
-//    @Autowired
-//    private OrderMapper orderMapper;
-//
-//    @Autowired
-//    private ProductMapper productMapper;
-//
-//    @Autowired
-//    private UserMapper userMapper;
-//
-//    @Autowired
-//    private WarehouseMapper warehouseMapper;
-//
+
+    @Autowired
+    private HistoryMapper historyMapper;
+
+    @Autowired
+    private BookMapper bookMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private WarehouseMapper warehouseMapper;
+
 //    @Override
 //    public Result orderPageSelect(Integer page, Integer pageSize) {
 //        // 获取订单总数

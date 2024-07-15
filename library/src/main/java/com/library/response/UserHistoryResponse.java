@@ -3,7 +3,7 @@ package com.library.response;
 import lombok.Data;
 
 @Data
-public class UserOrderResponse {
+public class UserHistoryResponse {
     private String id;
     private String name;
     private String model;

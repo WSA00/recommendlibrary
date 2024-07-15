@@ -10,6 +10,15 @@ import com.library.utils.Result;
 * @createDate 2024-04-09 14:59:47
 */
 public interface HistoryService extends IService<History> {
+    Result historyPageSelect(Integer page, Integer pageSize);
+
+    Result selectHistoryById(Integer id);
+
+    Result UpdateOrderById(Integer id, Integer bid, Integer uid, Integer wid);
+
+    Result createHistory(History history);
+
+    Result deleteHistoryById(Integer id);
 
 //    Result orderPageSelect(Integer page, Integer pageSize);
 //
