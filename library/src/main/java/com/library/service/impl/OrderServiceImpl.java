@@ -46,9 +46,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         // 分页查询订单列表
         List<Order> records = orderMapper.selectOrderPage((page - 1) * pageSize, pageSize);
 
-        List<orderResponse> list = new ArrayList<>();
+        List<historyResponse> list = new ArrayList<>();
         for (Order record : records) {
-            orderResponse orderResponse = new orderResponse();
+            historyResponse orderResponse = new historyResponse();
             orderResponse.setId(record.getId());
             System.out.println(record.getId());
 //            orderResponse.setBrand(productMapper.selectProductBrandById(record.getProductId()));

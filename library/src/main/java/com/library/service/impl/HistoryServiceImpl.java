@@ -3,12 +3,10 @@ package com.library.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.library.mapper.BookMapper;
 import com.library.mapper.HistoryMapper;
-import com.library.pojo.Book;
 import com.library.mapper.UserMapper;
 import com.library.mapper.WarehouseMapper;
 import com.library.pojo.History;
-import com.library.response.orderResponse;
-import com.library.response.updateOrderResponse;
+import com.library.response.historyResponse;
 import com.library.service.HistoryService;
 import com.library.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,50 +36,51 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
     @Autowired
     private WarehouseMapper warehouseMapper;
 
-//    @Override
-//    public Result orderPageSelect(Integer page, Integer pageSize) {
-//        // 获取订单总数
-//        Long count = orderMapper.selectOrderCount();
-//
-//        // 分页查询订单列表
-//        List<Order> records = orderMapper.selectOrderPage((page - 1) * pageSize, pageSize);
-//
-//        List<orderResponse> list = new ArrayList<>();
-//        for (Order record : records) {
-//            orderResponse orderResponse = new orderResponse();
-//            orderResponse.setId(record.getId());
-//            System.out.println(record.getId());
-//            orderResponse.setBrand(productMapper.selectProductBrandById(record.getProductId()));
-//            orderResponse.setModel(productMapper.selectProductModelById(record.getProductId()));
-//            orderResponse.setUser(userMapper.selectUserNameById(record.getUserId()));
-//            orderResponse.setPhone(userMapper.selectUserPhoneById(record.getUserId()));
-//            orderResponse.setWarehouse(warehouseMapper.selectLocationById(record.getWarehouseId()));
-//            orderResponse.setCreatetime(record.getCreatetime());
-//            list.add(orderResponse);
-//        }
-//
-//        Map data = new LinkedHashMap();
-//        data.put("tip","成功获取第"+page+"页"+pageSize+"共条数据");
-//        data.put("page",page);
-//        data.put("count",pageSize);
-//        data.put("pageTotal",(int)Math.ceil(count/pageSize));
-//        data.put("orderTotal",count);
-//        data.put("orderList",list);
-//
-//        return Result.ok(data);
-//    }
-//
-//
-//    @Override
-//    public Result selectOrderById(Integer id) {
-//        Order order = orderMapper.selectById(id);
-//        Map data = new LinkedHashMap();
-//        data.put("tip","成功获取订单");
-//        data.put("order",order);
-//
-//        return Result.ok(data);
-//
-//    }
+    @Override
+    public Result historyPageSelect(Integer page, Integer pageSize) {
+        // 获取订单总数
+        Long count = historyMapper.selectHistoryCount();
+
+        // 分页查询订单列表
+        List<History> records = historyMapper.selectHistoryPage((page - 1) * pageSize, pageSize);
+
+        List<historyResponse> list = new ArrayList<>();
+        for (History record : records) {
+            historyResponse historyResponse = new historyResponse();
+            historyResponse.setId(record.getId());
+            historyResponse.setBname(bookMapper.selectBnameById(record.getBid()));
+            historyResponse.setAuthor(bookMapper.selectBookAuthorById(record.getBid()));
+            historyResponse.setPress(bookMapper.selectBookPressById(record.getBid()));
+            historyResponse.setUser(userMapper.selectUserNameById(record.getUid()));
+            historyResponse.setPhone(userMapper.selectUserPhoneById(record.getUid()));
+            historyResponse.setWarehouse(warehouseMapper.selectLocationById(record.getWid()));
+            historyResponse.setBegin_time(record.getBegin_time());
+            historyResponse.setEnd_time(record.getEnd_time());
+            list.add(historyResponse);
+        }
+
+        Map data = new LinkedHashMap();
+        data.put("tip","成功获取第"+page+"页,共"+pageSize+"条数据");
+        data.put("page",page);
+        data.put("count",pageSize);
+        data.put("pageTotal",(int)Math.ceil(count/pageSize));
+        data.put("historyTotal",count);
+        data.put("historyList",list);
+
+        return Result.ok(data);
+    }
+
+
+    @Override
+    public Result selectHistoryById(Integer id) {
+        History history = historyMapper.selectById(id);
+        Map data = new LinkedHashMap();
+        data.put("tip","成功获取订单");
+        data.put("history",history);
+
+        return Result.ok(data);
+
+    }
 //
 //    //没用上
 //    @Override
