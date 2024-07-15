@@ -31,9 +31,9 @@ public class User implements Serializable, UserDetails {
 
     private String utimes;
 
-    private String max_num;
+    private String max_num;//最大借阅数
 
-    private String max_times;
+    private String max_times;//一本书最大续借数
 
     private String role;
 

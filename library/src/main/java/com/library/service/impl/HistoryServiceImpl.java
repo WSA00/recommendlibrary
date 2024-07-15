@@ -56,6 +56,8 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
             historyResponse.setWarehouse(warehouseMapper.selectLocationById(record.getWid()));
             historyResponse.setBegin_time(record.getBegin_time());
             historyResponse.setEnd_time(record.getEnd_time());
+            historyResponse.setTimes(record.getTimes());
+            historyResponse.setStatus(record.getStatus());
             list.add(historyResponse);
         }
 
@@ -75,55 +77,55 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
     public Result selectHistoryById(Integer id) {
         History history = historyMapper.selectById(id);
         Map data = new LinkedHashMap();
-        data.put("tip","成功获取订单");
+        data.put("tip","成功获取借阅记录");
         data.put("history",history);
 
         return Result.ok(data);
 
     }
-//
-//    //没用上
-//    @Override
-//    public Result UpdateOrderById(Integer id, Integer productId, Integer userId, Integer warehouseId) {
-//        Order order = new Order();
-//        order.setId(id);
-//        order.setProductId(productId);
-//        order.setUserId(userId);
-//        order.setWarehouseId(warehouseId);
-//
-//        updateOrderResponse updateOrderResponse = new updateOrderResponse(order);
-//
-//        Map data = new LinkedHashMap();
-//        data.put("tip","成功修改订单");
-//        data.put("order",updateOrderResponse);
-//
-//        return Result.ok(data);
-//    }
-//
-//    @Override
-//    public Result createOrder(Order order) {
-//
-//        orderMapper.insertOrder(order);
-//
-//        Map data = new LinkedHashMap();
-//        data.put("tip","成功创建订单");
-//        data.put("order", order);
-//
-//        return Result.ok(data);
-//    }
-//
-//    @Override
-//    public Result deleteOrderById(Integer id) {
-//        Order order = orderMapper.selectOrderById(id);
-//        orderMapper.deleteOrderById(id);
-//
-//        Map data = new LinkedHashMap();
-//        data.put("tip","成功删除订单");
-//        data.put("result",new updateOrderResponse(order));
-//
-//        return Result.ok(data);
-//    }
-//
+
+
+    @Override
+    public Result UpdateHistoryById(Integer id, Integer bid, Integer uid, Integer wid) {
+        History history = new History();
+        history.setId(id);
+        history.setBid(bid);
+        history.setUid(uid);
+        history.setWid(wid);
+
+        //updateOrderResponse updateOrderResponse = new updateOrderResponse(order);
+
+        Map data = new LinkedHashMap();
+        data.put("tip","成功修改订单");
+        //data.put("order",updateOrderResponse);
+
+        return Result.ok(data);
+    }
+
+    @Override
+    public Result createHistory(History history) {
+
+        historyMapper.insertHistory(history);
+
+        Map data = new LinkedHashMap();
+        data.put("tip","成功创建借阅记录");
+        data.put("history", history);
+
+        return Result.ok(data);
+    }
+
+    @Override
+    public Result deleteHistoryById(Integer id) {
+        History history = historyMapper.selectHistoryById(id);
+        historyMapper.deleteHistoryById(id);
+
+        Map data = new LinkedHashMap();
+        data.put("tip","成功删除借阅记录");
+//        data.put("result",new updateHistoryResponse(history));
+
+        return Result.ok(data);
+    }
+
 }
 
 

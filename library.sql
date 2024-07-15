@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 14/07/2024 21:04:27
+ Date: 15/07/2024 22:31:42
 */
 
 SET NAMES utf8mb4;
@@ -46,6 +46,7 @@ CREATE TABLE `history`  (
   `wid` int NULL DEFAULT NULL,
   `begin_time` datetime NULL DEFAULT NULL,
   `end_time` datetime NULL DEFAULT NULL,
+  `times` int NULL DEFAULT NULL COMMENT '记录续借次数',
   `status` int NULL DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_history_warehouse`(`wid` ASC) USING BTREE,
@@ -79,7 +80,7 @@ CREATE TABLE `stockin`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_stockin_book`(`bid` ASC) USING BTREE,
   INDEX `fk_stockin_warehouse`(`wid` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for type

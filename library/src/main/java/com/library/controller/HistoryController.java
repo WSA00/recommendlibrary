@@ -1,7 +1,6 @@
 package com.library.controller;
 
 import com.library.pojo.History;
-import com.library.pojo.Order;
 import com.library.service.HistoryService;
 import com.library.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class HistoryController {
     @PreAuthorize("hasAnyAuthority('ROOT','USER')")
     @PatchMapping("{id}")
     public Result UpdateHistoryById(@PathVariable Integer id,@RequestBody Integer bid, Integer uid, Integer wid){
-        return historyService.UpdateOrderById(id,bid,uid,wid);
+        return historyService.UpdateHistoryById(id,bid,uid,wid);
     }
 
     @PreAuthorize("hasAnyAuthority('ROOT','USER')")

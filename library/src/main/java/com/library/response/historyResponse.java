@@ -16,6 +16,8 @@ public class historyResponse {
 //    private Date createtime;
     private Date begin_time;
     private Date end_time;
+    private Integer times;//续借数
+    private Integer status;//订单状态，0为正在借，1为已归还
 
 }
 

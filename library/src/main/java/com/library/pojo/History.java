@@ -23,6 +23,10 @@ public class History {
 
     private Date end_time;
 
+    private Integer times;
+
+    private Integer status;//订单状态，0为正在借，1为已归还
+
     private static final long serialVersionUID = 1L;
 
 }

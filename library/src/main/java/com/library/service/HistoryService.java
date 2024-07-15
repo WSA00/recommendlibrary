@@ -4,17 +4,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.library.pojo.History;
 import com.library.utils.Result;
 
-/**
-* @author ASUS
-* @description 针对表【order】的数据库操作Service
-* @createDate 2024-04-09 14:59:47
+/*
+*针对表【history】的数据库操作Service
 */
 public interface HistoryService extends IService<History> {
     Result historyPageSelect(Integer page, Integer pageSize);
 
     Result selectHistoryById(Integer id);
 
-    Result UpdateOrderById(Integer id, Integer bid, Integer uid, Integer wid);
+    Result UpdateHistoryById(Integer id, Integer bid, Integer uid, Integer wid);
 
     Result createHistory(History history);
 

@@ -2,7 +2,6 @@ package com.library.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.library.pojo.History;
-import com.library.pojo.Order;
 import com.library.response.UserHistoryResponse;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,7 +16,7 @@ public interface HistoryMapper extends BaseMapper<History> {
 
     List<History> selectHistoryPage(@Param("page") Integer page, @Param("pageSize") Integer pageSize);
 
-    Order selectHistoryById(@Param("hid") Integer hid);
+    History selectHistoryById(@Param("hid") Integer hid);
 
     void updateHistoryById(@Param("TableHistory") History TableHistory);
 
