@@ -18,33 +18,33 @@
         begin_time,end_time
     </sql>
 
-    <update id="updateInventoryBySupplierId">
-        UPDATE inventory
-        SET quantity = quantity - (
-            SELECT quantity
-            FROM supply
-            WHERE supplierId = #{supplierId}
-        )
-        WHERE warehouseId = (
-            SELECT warehouseId
-            FROM supply
-            WHERE supplierId = #{supplierId}
-        ) AND productId = (
-            SELECT productId
-            FROM supply
-            WHERE supplierId = #{supplierId}
-        );
-    </update>
+<!--    <update id="updateInventoryBySupplierId">-->
+<!--        UPDATE inventory-->
+<!--        SET quantity = quantity - (-->
+<!--            SELECT quantity-->
+<!--            FROM supply-->
+<!--            WHERE supplierId = #{supplierId}-->
+<!--        )-->
+<!--        WHERE warehouseId = (-->
+<!--            SELECT warehouseId-->
+<!--            FROM supply-->
+<!--            WHERE supplierId = #{supplierId}-->
+<!--        ) AND productId = (-->
+<!--            SELECT productId-->
+<!--            FROM supply-->
+<!--            WHERE supplierId = #{supplierId}-->
+<!--        );-->
+<!--    </update>-->
 
-    <delete id="deleteInventoryByProductId">
-        delete
-        from inventory
-        where inventory.productId = #{productId}
-    </delete>
+<!--    <delete id="deleteInventoryByProductId">-->
+<!--        delete-->
+<!--        from inventory-->
+<!--        where inventory.productId = #{productId}-->
+<!--    </delete>-->
 
-    <delete id="deleteInventoryByWarehouseId">
-        delete
-        from inventory
-        where inventory.warehouseId = #{warehouseId}
-    </delete>
+<!--    <delete id="deleteInventoryByWarehouseId">-->
+<!--        delete-->
+<!--        from inventory-->
+<!--        where inventory.warehouseId = #{warehouseId}-->
+<!--    </delete>-->
 </mapper>

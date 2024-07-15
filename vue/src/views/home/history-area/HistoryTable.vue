@@ -15,33 +15,42 @@
                 <el-table-column width="10"></el-table-column>
                 <el-table-column
                     prop="id"
-                    label="订单号"
+                    label="借阅号"
                     width="70"
                 ></el-table-column>
                 <el-table-column
-                    prop="brand"
-                    label="品牌"
+                    prop="bname"
+                    label="图书名称"
                     width="80"
                 ></el-table-column>
                 <el-table-column
-                    prop="model"
-                    label="型号"
+                    prop="author"
+                    label="作者"
+                ></el-table-column>
+                <el-table-column
+                    prop="press"
+                    label="出版社"
                 ></el-table-column>
                 <el-table-column
                     prop="user"
-                    label="负责人"
+                    label="借阅人"
                     width="80"
                 ></el-table-column>
                 <el-table-column
                     prop="phone"
-                    label="负责人电话"
+                    label="联系电话"
                     width="120"
                 ></el-table-column>
                 <el-table-column
                     prop="warehouse"
                     label="来源仓库"
                 ></el-table-column>
-                <el-table-column label="成交时间">
+                <el-table-column label="创建时间">
+                    <template slot-scope="scope">
+                    <p>{{ new Date(scope.row.createtime).toLocaleDateString() + " " + new Date(scope.row.createtime).toLocaleTimeString().slice(0,5) }}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="归还时间">
                     <template slot-scope="scope">
                     <p>{{ new Date(scope.row.createtime).toLocaleDateString() + " " + new Date(scope.row.createtime).toLocaleTimeString().slice(0,5) }}</p>
                     </template>
@@ -49,7 +58,7 @@
                 <!-- 编辑 -->
                 <el-table-column fixed="right" label="操作" width="120">
                     <template slot-scope="scope">
-                        <el-button @click="handleOrderDelete(scope.row)" type="text">删除</el-button>
+                        <el-button @click="handleHistoryDelete(scope.row)" type="text">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -61,7 +70,7 @@
                 :current-page="getPage" 
                 @current-change="handleCurrentChange"
                 :page-size="getPageSize"
-                :total="getOrderTotal"
+                :total="getHistoryTotal"
             ></el-pagination>
         </article>
     </main>
@@ -70,19 +79,19 @@
 <script>
 import { sleep } from "@/util/sleep"
 import { createNamespacedHelpers } from "vuex"
-const { mapGetters, mapMutations, mapActions } = createNamespacedHelpers("orderArea")
+const { mapGetters, mapMutations, mapActions } = createNamespacedHelpers("historyArea")
 export default {
-    name: "OrderTable",
+    name: "HistoryTable",
     async created() {
         this.setDataReady(false)
-        const { orderList } = await this.fetchSource()
-        this.setSource(orderList)
+        const { historyList } = await this.fetchSource()
+        this.setSource(historyList)
         await sleep()
         this.setDataReady(true)
     },
     computed: {
         ...mapGetters([
-            "getSource", "getDataReady", "getPage", "getPageSize", "getOrderTotal"
+            "getSource", "getDataReady", "getPage", "getPageSize", "getHistoryTotal"
         ])
     },
     methods: {
@@ -90,19 +99,19 @@ export default {
             "setSource", "setDialogFormVisible", "setDataReady", "setPage"
         ]),
         ...mapActions([
-            "fetchSource", "deleteOrder"
+            "fetchSource", "deleteHistory"
         ]),
-        // 处理删除订单
-        handleOrderDelete({ id }) {
+        // 处理删除借阅记录
+        handleHistoryDelete({ id }) {
             this.$confirm('此操作将永久删除该订单, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'error'
             }).then(async () => {
-                await this.deleteOrder(id)
+                await this.deleteHistory(id)
                 this.setDataReady(false)
-                const { orderList } = await this.fetchSource()
-                this.setSource(orderList)
+                const { historyList } = await this.fetchSource()
+                this.setSource(historyList)
                 await sleep()
                 this.setDataReady(true)
             }).catch(() => {})
@@ -111,8 +120,8 @@ export default {
         async handleCurrentChange(newPage) {
             this.setDataReady(false)
             this.setPage(newPage)
-            const { orderList } = await this.fetchSource()
-            this.setSource(orderList)
+            const { historyList } = await this.fetchSource()
+            this.setSource(historyList)
             await sleep()
             this.setDataReady(true)
         }

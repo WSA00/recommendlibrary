@@ -12,9 +12,14 @@ public interface BookService extends IService<Book> {
 
     Result createBook(BookResponse bookResponse);
 
+    //全部图书
     Result bookPageSelect(Integer page, Integer pageSize);
 
-    Result bookPageSelect1(Integer page, Integer pageSize , String tid);
+    //特定图书类型
+    Result bookPageSelect1(Integer page, Integer pageSize , Integer tid);
+
+    //特定图书名称、作者
+    Result bookPageSelect2(Integer page, Integer pageSize , String BnameOrPress);
 
     Result selectBookById(Integer id);
 

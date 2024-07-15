@@ -1,6 +1,5 @@
 package com.library.controller;
 
-import com.library.pojo.Book;
 import com.library.response.BookResponse;
 import com.library.service.BookService;
 import com.library.utils.Result;
@@ -35,7 +34,7 @@ public class BookController {
 
     @PreAuthorize("hasAnyAuthority('USER','ROOT')")
     @GetMapping("/type")
-    public Result bookPageSelect1(@RequestParam Integer page, @RequestParam Integer pageSize, @RequestParam String tid){
+    public Result bookPageSelect1(@RequestParam Integer page, @RequestParam Integer pageSize, @RequestParam Integer tid){
                 return bookService.bookPageSelect1(page,pageSize,tid);
     }
 

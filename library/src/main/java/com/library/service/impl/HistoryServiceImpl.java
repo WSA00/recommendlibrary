@@ -1,31 +1,32 @@
-//package com.library.service.impl;
-//
-//import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+package com.library.service.impl;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.library.mapper.HistoryMapper;
 //import com.library.mapper.OrderMapper;
 //import com.library.mapper.ProductMapper;
-//import com.library.mapper.UserMapper;
-//import com.library.mapper.WarehouseMapper;
+import com.library.mapper.UserMapper;
+import com.library.mapper.WarehouseMapper;
+import com.library.pojo.History;
 //import com.library.pojo.Order;
-//import com.library.response.orderResponse;
-//import com.library.response.updateOrderResponse;
+import com.library.response.orderResponse;
+import com.library.response.updateOrderResponse;
+import com.library.service.HistoryService;
 //import com.library.service.OrderService;
-//import com.library.utils.Result;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.ArrayList;
-//import java.util.LinkedHashMap;
-//import java.util.List;
-//import java.util.Map;
-//
-///**
-//* @author ASUS
-//* @description 针对表【order】的数据库操作Service实现
-//* @createDate 2024-04-09 14:59:47
-//*/
-//@Service
-//public class HistoryServiceImpl extends ServiceImpl<OrderMapper, Order>
-//    implements OrderService{
+import com.library.utils.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+* 针对表【history】的数据库操作Service实现
+*/
+@Service
+public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
+    implements HistoryService {
 //
 //    @Autowired
 //    private OrderMapper orderMapper;
@@ -126,7 +127,7 @@
 //        return Result.ok(data);
 //    }
 //
-//}
+}
 
 
 

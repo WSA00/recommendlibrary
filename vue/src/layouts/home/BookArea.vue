@@ -4,7 +4,7 @@
     <header class="w-full flex justify-between">
       <h1 class="text-2xl font-bold">图书总览</h1>
 
-      <el-select v-model="selectedType" placeholder="请选择图书类型" clearable="false" @clear="handleTypeChange(null)" @change="handleTypeChange(selectedType)">
+      <el-select v-model="selectedType" placeholder="请选择图书类型"  @change="handleTypeChange(selectedType)">
         <el-option
           v-for="type in types"
           :key="type.value"

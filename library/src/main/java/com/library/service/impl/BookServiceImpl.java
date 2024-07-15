@@ -110,7 +110,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
         return Result.ok(data);
     }
     @Override
-    public Result bookPageSelect1(Integer page, Integer pageSize , String tid) {
+    public Result bookPageSelect1(Integer page, Integer pageSize , Integer tid) {
 
 
     if (tid == null) {
@@ -158,6 +158,11 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
     data.put("source", list);
 
     return Result.ok(data);
+    }
+
+    @Override
+    public Result bookPageSelect2(Integer page, Integer pageSize, String BnameOrPress) {
+        return null;
     }
 
     @Override

@@ -140,7 +140,7 @@ export default {
         ...mapActions([
             "fetchSource", "createHistoryall", "fetchUsers", "fetchBooks", "fetchWarehouses", "fetchBookInventory", "fetchWarehouseInventory"
         ]),
-        // 提交表单 - 添加新供应记录
+        // 提交表单 - 添加新借阅记录
         async submitForm(formName) {
             await this.$refs[formName].validate(async valid => {
                 if(valid) {
