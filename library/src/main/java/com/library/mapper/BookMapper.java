@@ -26,12 +26,6 @@ public interface BookMapper extends BaseMapper<Book> {
 
 //    Book selectBookById(@Param("bid") Integer bid);
 
-
-//    String selectProductBrandById(@Param("bid") Integer bid);//author
-//
-//    String selectProductModelById(@Param("bid") Integer bid);//press
-
-//
 //    List<ProductNameAndValue> selectProductNameAndValueById(@Param("bid") Integer bid);
 
 //

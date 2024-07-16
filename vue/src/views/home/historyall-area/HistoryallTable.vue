@@ -47,14 +47,19 @@
                 ></el-table-column>
                 <el-table-column label="创建时间">
                     <template slot-scope="scope">
-                    <p>{{ new Date(scope.row.createtime).toLocaleDateString() + " " + new Date(scope.row.createtime).toLocaleTimeString().slice(0,5) }}</p>
+                    <p>{{ new Date(scope.row.begin_time).toLocaleDateString() + " " + new Date(scope.row.begin_time).toLocaleTimeString().slice(0,5) }}</p>
                     </template>
                 </el-table-column>
                 <el-table-column label="归还时间">
                     <template slot-scope="scope">
-                    <p>{{ new Date(scope.row.createtime).toLocaleDateString() + " " + new Date(scope.row.createtime).toLocaleTimeString().slice(0,5) }}</p>
+                    <p>{{ new Date(scope.row.end_time).toLocaleDateString() + " " + new Date(scope.row.end_time).toLocaleTimeString().slice(0,5) }}</p>
                     </template>
                 </el-table-column>
+                <el-table-column
+                prop="status"
+                label="状态"
+                :formatter="formatStatus"
+                ></el-table-column>
                 <!-- 编辑 -->
                 <el-table-column fixed="right" label="操作" width="120">
                     <template slot-scope="scope">
@@ -124,6 +129,12 @@ export default {
             this.setSource(historyallList)
             await sleep()
             this.setDataReady(true)
+        },
+        formatStatus(row, column) {
+        // row 是当前行的数据对象
+        // column 是当前列的配置对象
+        const status = row[column.property]; // 获取 status 属性的值，即 0 或 1
+        return status === 0 ? '借阅中' : '已归还';
         }
     }
 }

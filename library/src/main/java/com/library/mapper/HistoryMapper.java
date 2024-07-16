@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface HistoryMapper extends BaseMapper<History> {
+
     Integer deleteHistoryByBookId(@Param("bid") Integer bid);
 
     void deleteHistoryByWarehouseId(@Param("wid") Integer wid);
@@ -19,8 +20,6 @@ public interface HistoryMapper extends BaseMapper<History> {
     History selectHistoryById(@Param("hid") Integer hid);
 
     void updateHistoryById(@Param("TableHistory") History TableHistory);
-
-    void insertHistory(@Param("TableHistory") History TableHistory);
 
     void deleteHistoryById(@Param("id") Integer id);
 

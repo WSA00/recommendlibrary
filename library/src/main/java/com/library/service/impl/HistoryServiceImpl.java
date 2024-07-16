@@ -12,10 +12,7 @@ import com.library.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
 * 针对表【history】的数据库操作Service实现
@@ -38,6 +35,14 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
 
     @Override
     public Result historyPageSelect(Integer page, Integer pageSize) {
+
+        if (page == null || page <= 0) {
+            page = 1; // 默认第一页
+        }
+        if (pageSize == null || pageSize <= 0) {
+            pageSize = 15; // 默认每页15条记录
+        }
+
         // 获取订单总数
         Long count = historyMapper.selectHistoryCount();
 
@@ -60,6 +65,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
             historyResponse.setStatus(record.getStatus());
             list.add(historyResponse);
         }
+        System.out.println(list);
 
         Map data = new LinkedHashMap();
         data.put("tip","成功获取第"+page+"页,共"+pageSize+"条数据");
@@ -105,7 +111,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
     @Override
     public Result createHistory(History history) {
 
-        historyMapper.insertHistory(history);
+        historyMapper.insert(history);
 
         Map data = new LinkedHashMap();
         data.put("tip","成功创建借阅记录");

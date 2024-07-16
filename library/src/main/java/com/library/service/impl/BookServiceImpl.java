@@ -235,11 +235,6 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
     }
 
     @Override
-    public Result selectWarehouseByBookId(Integer id) {
-        return null;
-    }
-
-    @Override
     public Result getAllBook() {
         List<Book> bookList = bookMapper.getAllBook();
         List<BookResponse> bookResponseList = new ArrayList<>();
@@ -301,19 +296,11 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
 //        return Result.ok(data);
 //    }
 
-//    @Override
-//    public Result selectWarehouseByProductId(Integer id) {
-//        List<Warehouse> list = warehouseMapper.selectWarehouseByProductId(id);
-//        return Result.ok(list);
-//    }
-//
-//    @Override
-//    public Result getAllProduct() {
-//        List<Product> products = productMapper.getAllProduct();
-//        return Result.ok(products);
-//        return null;
-//    }
-
+    @Override
+    public Result selectWarehouseByBookId(Integer id) {
+        List<Warehouse> list = warehouseMapper.selectWarehouseByBid(id);
+        return Result.ok(list);
+    }
 
 }
 

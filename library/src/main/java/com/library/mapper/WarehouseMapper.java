@@ -1,5 +1,6 @@
 package com.library.mapper;
 
+import com.library.pojo.Book;
 import com.library.pojo.Warehouse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,9 +13,9 @@ import java.util.List;
 */
 public interface WarehouseMapper extends BaseMapper<Warehouse> {
 
-//    List<Warehouse> selectWarehouseByProductId(@Param("productId") Integer productId);
+    List<Warehouse> selectWarehouseByBid(@Param("bid") Integer bid);
 
-//    List<Product> selectWarehouseAndInventoryById(@Param("warehouseId") Integer warehouseId);
+    List<Book> selectWarehouseAndInventoryById(@Param("wid") Integer wid);
 
     Warehouse selectWarehouseById(@Param("wid") Integer wid);
 

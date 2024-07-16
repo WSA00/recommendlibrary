@@ -3,11 +3,10 @@ package com.library.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.library.mapper.InventoryMapper;
-import com.library.mapper.OrderMapper;
+import com.library.mapper.*;
+import com.library.pojo.Book;
 import com.library.pojo.Warehouse;
 import com.library.service.WarehouseService;
-import com.library.mapper.WarehouseMapper;
 import com.library.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,11 +32,11 @@ public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse
     @Autowired
     private InventoryMapper inventoryMapper;
 
-//    @Autowired
-//    private SupplyMapper supplyMapper;
+    @Autowired
+    private HistoryMapper historyMapper;
 
     @Autowired
-    private OrderMapper orderMapper;
+    private StockinMapper stockinMapper;
 
     @Override
     public Result createWarehouse(Warehouse warehouse) {
@@ -123,10 +122,9 @@ public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse
 
     @Override
     public Result selectWarehouseAndInventoryById(Integer id) {
-//        List<Product> list = warehouseMapper.selectWarehouseAndInventoryById(id);book类
+        List<Book> list = warehouseMapper.selectWarehouseAndInventoryById(id);
 
-//        return Result.ok(list);
-        return null;
+        return Result.ok(list);
     }
 
     @Override

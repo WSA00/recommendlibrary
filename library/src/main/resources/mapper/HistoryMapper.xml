@@ -67,7 +67,6 @@
             from `history`
             where `history`.id = #{hid}
         </select>
-
     <!--    <select id="selectIncome" resultType="java.lang.Double">-->
     <!--        SELECT ROUND(SUM(price),2)-->
     <!--        from `order` LEFT JOIN product-->

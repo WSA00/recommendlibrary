@@ -64,11 +64,11 @@ export default {
         async fetchWarehouseInventory(context, payload) {
             return await api.get(`/api/warehouse/${payload}/inventory`, { token: localStorage.getItem("token") })
         },
-        // 请求接口 - 创建订单
+        // 请求接口 - 创建借阅记录
         async createHistoryall(context, payload) {
             await api.post(`/api/historyall`, payload, { token: localStorage.getItem("token") })
         },
-        // 请求接口 - 删除订单
+        // 请求接口 - 删除借阅记录
         async deleteHistoryall(context, payload) {
             await api.delete(`/api/historyall/${payload}`, { token: localStorage.getItem("token") })
         }

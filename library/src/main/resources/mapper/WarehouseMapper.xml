@@ -28,4 +28,24 @@
         FROM warehouse
         WHERE warehouse.id=#{wid}
     </select>
+
+    <select id="selectWarehouseByBid" resultType="com.library.pojo.Warehouse">
+        SELECT warehouse.id,warehouse.location
+        FROM warehouse
+        WHERE warehouse.id IN (SELECT DISTINCT wid
+                               FROM inventory
+                               WHERE bid = #{bid}
+                                 AND quantity > 0
+        )
+    </select>
+
+    <select id="selectWarehouseAndInventoryById" resultType="com.library.pojo.Book">
+        select *
+        from book
+        where book.id IN (select DISTINCT bid
+                             from inventory
+                             where wid = #{wid}
+                               AND quantity > 0
+        )
+    </select>
 </mapper>

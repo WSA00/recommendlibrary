@@ -49,8 +49,8 @@
                     ></el-option>
                 </el-select>
             </el-form-item>
-            <!-- 请选择成交时间 -->
-            <el-form-item label="成交时间" required>
+            <!-- 请选择创建时间 -->
+            <el-form-item label="创建时间" required>
                 <el-row class="flex justify-start max-w-md">
                     <el-form-item prop="date">
                         <el-date-picker 
@@ -85,7 +85,7 @@ export default {
             value: user.id,
             label: user.username
         })))
-        this.products = await this.fetchBooks().then(books => books.map(book => ({
+        this.books = await this.fetchBooks().then(books => books.map(book => ({
             value: book.id,
             label: book.bname + "-" + book.author+ "-" + book.press
         })))
@@ -154,13 +154,25 @@ export default {
                     const hours = time.getHours()
                     const minutes = time.getMinutes()
                     const seconds = time.getSeconds()
-                    const createtime = new Date(year, month, day, hours, minutes, seconds)
+                    const begin_time = new Date(year, month, day, hours, minutes, seconds)
+
+                     // 计算下一个月的年份和月份
+                    const nextMonthYear = month === 11 ? year + 1 : year;
+                    const nextMonth = month === 11 ? 0 : month + 1;
+                    // 创建结束时间
+                    const end_time = new Date(nextMonthYear, nextMonth, day, hours, minutes, seconds);
+
+                    const times = 0
+                    const status = 0
                     // 表单验证通过后...
-                    await this.createHistoryall({
+                    await this.createHistory({
                         uid,
                         bid,
                         wid,
-                        createtime
+                        begin_time,
+                        end_time,
+                        times,
+                        status
                     })
                     this.setDataReady(false)
                     await sleep()
