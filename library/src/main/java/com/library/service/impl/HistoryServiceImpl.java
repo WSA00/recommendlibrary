@@ -12,6 +12,7 @@ import com.library.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -107,7 +108,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
     public Result createHistory(History history) {
 
         Integer num = userMapper.selectNumById(history.getUid());//最大借阅
-        Integer count = historyMapper.selectHistoryCountByUid(history.getUid());
+        Integer count = historyMapper.selectNoHistoryCountByUid(history.getUid());
         Map data = new LinkedHashMap();
 
         if (num >= count+1) {
@@ -119,9 +120,9 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
             return Result.ok(data);
         }
         else {
-            data.put("tip", "请求失败");
+            data.put("tip", "您当前借阅图书太多，借阅已达上限！可以先归还部分书籍哦！");
             data.put("history", history);
-            return Result.build(data, 201 , "您当前借阅图书太多，借阅已达上限！贪多嚼不烂哦！");
+            return Result.build(data, 201 , "请求失败");
         }
     }
 
@@ -144,7 +145,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
         Map data = new LinkedHashMap();
 
         if(times>=history.getTimes()+1){
-            historyMapper.UpdateHistoryTimesById(id);           //续借数+1
+            historyMapper.UpdateHistoryTimesAndEndTimeById(id);           //续借数+1,end_time+1个月
             history = historyMapper.selectHistoryById(id);
 
             data.put("tip","成功续借图书");
@@ -153,17 +154,19 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
             return Result.ok(data);
         }
         else {
-            data.put("tip", "请求失败");
+            data.put("tip", "您当前图书续借次数太多，借阅已达上限，请先归还！");
             data.put("history", history);
-            return Result.build(data, 201 , "您当前图书续借次数太多，借阅已达上限，请先归还！");
+            return Result.build(data, 201 ,"请求失败" );
         }
     }
 
     @Override
     public Result dealHistoryById(Integer id) {
-        historyMapper.UpdateHistoryStatusById(id);           //修改状态0==》1
-        History history = historyMapper.selectHistoryById(id);
 
+        LocalDateTime currentTime = LocalDateTime.now();  // 获取当前时间
+        historyMapper.UpdateHistoryStatusAndEndTimeById(id,currentTime);           //修改状态0==》1,createtime=>currentTime
+
+        History history = historyMapper.selectHistoryById(id);
         Map data = new LinkedHashMap();
         data.put("tip","成功归还借阅图书");
         data.put("result",history);

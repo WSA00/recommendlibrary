@@ -3,9 +3,9 @@ package com.library.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.library.pojo.History;
 import com.library.response.UserHistoryResponse;
-import com.library.utils.Result;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface HistoryMapper extends BaseMapper<History> {
@@ -57,9 +57,11 @@ public interface HistoryMapper extends BaseMapper<History> {
 
     Double AverageSalesOrderByUserId();
 
-    void UpdateHistoryTimesById(Integer hid);//续借
+    void UpdateHistoryTimesAndEndTimeById(Integer hid);//续借
 
-    void UpdateHistoryStatusById(Integer hid);//归还
+    void UpdateHistoryStatusAndEndTimeById(Integer hid, LocalDateTime currentTime);//归还
 
     Integer selectHistoryCountByUid(Integer uid);
+
+    Integer selectNoHistoryCountByUid(Integer uid);
 }
