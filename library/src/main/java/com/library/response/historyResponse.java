@@ -21,7 +21,6 @@ public class historyResponse {
 
     private String warehouse;
 
-//    private Date createtime;
     private Date begin_time;
 
     private Date end_time;

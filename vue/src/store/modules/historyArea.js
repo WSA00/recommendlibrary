@@ -71,6 +71,16 @@ export default {
         // 请求接口 - 删除借阅记录
         async deleteHistory(context, payload) {
             await api.delete(`/api/history/${payload}`, { token: localStorage.getItem("token") })
+        },
+        // 请求接口 - 续借操作
+        async continueHistory(context, payload) {
+            await api.patch(`/api/history/${payload}/continue`,`${payload}`, { token: localStorage.getItem("token") })
+        },
+        // 请求接口 - 归还操作
+        async dealHistory(context, payload) {
+            await api.patch(`/api/history/${payload}/deal`,`${payload}`, { token: localStorage.getItem("token") })
         }
+
+
     }
 }

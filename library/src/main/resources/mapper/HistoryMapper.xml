@@ -18,11 +18,6 @@
         begin_time,end_time
     </sql>
 
-    <!--    <insert id="insertOrder" parameterType="com.library.pojo.Order" useGeneratedKeys="true" keyProperty="id">-->
-    <!--        INSERT INTO `order` (productId, userId, warehouseId, createtime)-->
-    <!--        VALUES (#{TableOrder.productId}, #{TableOrder.userId}, #{TableOrder.warehouseId},#{TableOrder.createtime});-->
-    <!--    </insert>-->
-
     <!--    <update id="updateOrderById" parameterType="com.library.pojo.Order">-->
     <!--        UPDATE `order`-->
     <!--        SET productId = ${TableOrder.productId},-->
@@ -45,28 +40,46 @@
     <!--        where `order`.warehouseId = #{warehouseId}-->
     <!--    </delete>-->
 
-        <delete id="deleteHistoryById">
-            delete
-            from `history`
-            where `history`.id = #{id}
-        </delete>
+    <delete id="deleteHistoryById">
+        delete
+        from `history`
+        where `history`.id = #{id}
+    </delete>
 
-        <!-- 获取借阅记录总数 -->
-        <select id="selectHistoryCount" resultType="java.lang.Long">
-            SELECT COUNT(*) FROM `history`;
-        </select>
+    <!-- 获取借阅记录总数 -->
+    <select id="selectHistoryCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM `history`;
+    </select>
 
-        <!-- 分页查询借阅记录列表 -->
-        <select id="selectHistoryPage" resultMap="BaseResultMap">
-            SELECT * FROM `history`
-            LIMIT #{page}, #{pageSize};
-        </select>
+    <!-- 分页查询借阅记录列表 -->
+    <select id="selectHistoryPage" resultMap="BaseResultMap">
+        SELECT * FROM `history`
+        LIMIT #{page}, #{pageSize};
+    </select>
 
-        <select id="selectHistoryById" resultType="com.library.pojo.History">
-            select *
-            from `history`
-            where `history`.id = #{hid}
-        </select>
+    <select id="selectHistoryById" resultType="com.library.pojo.History">
+        select *
+        from `history`
+        where `history`.id = #{hid}
+    </select>
+
+    <select id="selectHistoryCountByUid" resultType="java.lang.Integer">
+        select count(*)
+        from `history`
+        where `history`.uid = #{uid}
+    </select>
+
+    <update id="UpdateHistoryStatusById" parameterType="java.lang.Integer">
+        update `history`
+        set status = 1
+        where `history`.id = #{hid}
+    </update>
+
+    <update id="UpdateHistoryTimesById" parameterType="java.lang.Integer">
+        update `history`
+        set times = times + 1
+        where `history`.id = #{hid}
+    </update>
     <!--    <select id="selectIncome" resultType="java.lang.Double">-->
     <!--        SELECT ROUND(SUM(price),2)-->
     <!--        from `order` LEFT JOIN product-->

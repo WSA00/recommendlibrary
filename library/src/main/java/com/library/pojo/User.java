@@ -29,7 +29,7 @@ public class User implements Serializable, UserDetails {
 
     private String password;
 
-    private String utimes;
+    private String utimes;//总借阅，阅读量
 
     private String max_num;//最大借阅数
 

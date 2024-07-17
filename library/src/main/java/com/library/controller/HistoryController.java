@@ -29,14 +29,25 @@ public class HistoryController {
 
     @PreAuthorize("hasAnyAuthority('ROOT','USER')")
     @PatchMapping("{id}")
-    public Result UpdateHistoryById(@PathVariable Integer id,@RequestBody Integer bid, Integer uid, Integer wid){
-        return historyService.UpdateHistoryById(id,bid,uid,wid);
+    public Result UpdateHistoryById(@PathVariable Integer id){
+        return historyService.UpdateHistoryById(id);
     }
 
     @PreAuthorize("hasAnyAuthority('ROOT','USER')")
     @PostMapping("")
     public Result createHistory(@RequestBody History history){
         return historyService.createHistory(history);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROOT','USER')")
+    @PatchMapping("/{id}/continue")
+    public Result continueHistoryById(@PathVariable Integer id){
+        return historyService.continueHistoryById(id);
+    }
+    @PreAuthorize("hasAnyAuthority('ROOT','USER')")
+    @PatchMapping("/{id}/deal")
+    public Result dealHistoryById(@PathVariable Integer id){
+        return historyService.dealHistoryById(id);
     }
 
     @PreAuthorize("hasAnyAuthority('ROOT')")

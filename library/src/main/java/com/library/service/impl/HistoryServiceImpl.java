@@ -65,7 +65,6 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
             historyResponse.setStatus(record.getStatus());
             list.add(historyResponse);
         }
-        System.out.println(list);
 
         Map data = new LinkedHashMap();
         data.put("tip","成功获取第"+page+"页,共"+pageSize+"条数据");
@@ -92,17 +91,13 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
 
 
     @Override
-    public Result UpdateHistoryById(Integer id, Integer bid, Integer uid, Integer wid) {
+    public Result UpdateHistoryById(Integer id) {
         History history = new History();
-        history.setId(id);
-        history.setBid(bid);
-        history.setUid(uid);
-        history.setWid(wid);
 
         //updateOrderResponse updateOrderResponse = new updateOrderResponse(order);
 
         Map data = new LinkedHashMap();
-        data.put("tip","成功修改订单");
+        data.put("tip","成功修改借阅记录");
         //data.put("order",updateOrderResponse);
 
         return Result.ok(data);
@@ -111,13 +106,23 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
     @Override
     public Result createHistory(History history) {
 
-        historyMapper.insert(history);
-
+        Integer num = userMapper.selectNumById(history.getUid());//最大借阅
+        Integer count = historyMapper.selectHistoryCountByUid(history.getUid());
         Map data = new LinkedHashMap();
-        data.put("tip","成功创建借阅记录");
-        data.put("history", history);
 
-        return Result.ok(data);
+        if (num >= count+1) {
+            historyMapper.insert(history);
+
+            data.put("tip", "成功创建借阅记录");
+            data.put("history", history);
+
+            return Result.ok(data);
+        }
+        else {
+            data.put("tip", "请求失败");
+            data.put("history", history);
+            return Result.build(data, 201 , "您当前借阅图书太多，借阅已达上限！贪多嚼不烂哦！");
+        }
     }
 
     @Override
@@ -127,7 +132,41 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
 
         Map data = new LinkedHashMap();
         data.put("tip","成功删除借阅记录");
-//        data.put("result",new updateHistoryResponse(history));
+        data.put("result",history);
+
+        return Result.ok(data);
+    }
+
+    @Override
+    public Result continueHistoryById(Integer id) {
+        History history = historyMapper.selectHistoryById(id);
+        Integer times = userMapper.selectTimesById(history.getUid());//最大续借次数
+        Map data = new LinkedHashMap();
+
+        if(times>=history.getTimes()+1){
+            historyMapper.UpdateHistoryTimesById(id);           //续借数+1
+            history = historyMapper.selectHistoryById(id);
+
+            data.put("tip","成功续借图书");
+            data.put("result",history);
+
+            return Result.ok(data);
+        }
+        else {
+            data.put("tip", "请求失败");
+            data.put("history", history);
+            return Result.build(data, 201 , "您当前图书续借次数太多，借阅已达上限，请先归还！");
+        }
+    }
+
+    @Override
+    public Result dealHistoryById(Integer id) {
+        historyMapper.UpdateHistoryStatusById(id);           //修改状态0==》1
+        History history = historyMapper.selectHistoryById(id);
+
+        Map data = new LinkedHashMap();
+        data.put("tip","成功归还借阅图书");
+        data.put("result",history);
 
         return Result.ok(data);
     }

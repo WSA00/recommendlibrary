@@ -12,11 +12,15 @@ public interface HistoryService extends IService<History> {
 
     Result selectHistoryById(Integer id);
 
-    Result UpdateHistoryById(Integer id, Integer bid, Integer uid, Integer wid);
+    Result UpdateHistoryById(Integer id);
 
     Result createHistory(History history);
 
     Result deleteHistoryById(Integer id);
+
+    Result continueHistoryById(Integer id);
+
+    Result dealHistoryById(Integer id);
 
 
 //    Result orderPageSelect(Integer page, Integer pageSize);

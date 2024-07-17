@@ -62,9 +62,19 @@
                 ></el-table-column>
 
                 <!-- 编辑 -->
-                <el-table-column fixed="right" label="操作" width="120">
+                <el-table-column >
                     <template slot-scope="scope">
-                        <el-button @click="handleHistoryDelete(scope.row)" type="text">删除</el-button>
+                        <el-button :disabled="scope.row.status !== 0" @click="handleHistoryContinue(scope.row)" type="text">续借</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column  label="操作" width="120">
+                    <template slot-scope="scope">
+                        <el-button  :disabled="scope.row.status !== 0"  @click="handleHistoryDeal(scope.row)" type="text">归还</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column>
+                    <template slot-scope="scope">
+                        <el-button v-if="['ROOT'].includes($store.getters.getUser?.role)"  @click="handleHistoryDelete(scope.row)" type="text">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -105,16 +115,46 @@ export default {
             "setSource", "setDialogFormVisible", "setDataReady", "setPage"
         ]),
         ...mapActions([
-            "fetchSource", "deleteHistory"
+            "fetchSource", "deleteHistory", "dealHistory", "continueHistory"
         ]),
         // 处理删除借阅记录
         handleHistoryDelete({ id }) {
-            this.$confirm('此操作将永久删除该订单, 是否继续?', '提示', {
+            this.$confirm('此操作将永久删除该借阅记录, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'error'
             }).then(async () => {
                 await this.deleteHistory(id)
+                this.setDataReady(false)
+                const { historyList } = await this.fetchSource()
+                this.setSource(historyList)
+                await sleep()
+                this.setDataReady(true)
+            }).catch(() => {})
+        },
+        // 处理续借操作
+        handleHistoryContinue({ id }) {
+            this.$confirm('确认续借该图书, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'error'
+            }).then(async () => {
+                await this.continueHistory(id)
+                this.setDataReady(false)
+                const { historyList } = await this.fetchSource()
+                this.setSource(historyList)
+                await sleep()
+                this.setDataReady(true)
+            }).catch(() => {})
+        },
+        // 处理归还操作
+        handleHistoryDeal({ id }) {
+            this.$confirm('确认归还该图书, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'error'
+            }).then(async () => {
+                await this.dealHistory(id)
                 this.setDataReady(false)
                 const { historyList } = await this.fetchSource()
                 this.setSource(historyList)

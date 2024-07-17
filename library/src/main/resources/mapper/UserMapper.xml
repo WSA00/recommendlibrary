@@ -67,5 +67,15 @@
         WHERE `user`.id=#{userId}
     </select>
 
+    <select id="selectNumById" resultType="java.lang.Integer">
+        select `user`.`max_num`
+        from `user`
+        where `user`.`id` = #{uid}
+    </select>
 
+    <select id="selectTimesById" resultType="java.lang.Integer">
+        select `user`.`max_times`
+        from `user`
+        where `user`.`id` = #{uid}
+    </select>
 </mapper>
