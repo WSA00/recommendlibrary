@@ -16,20 +16,22 @@
                 <el-table-column
                     prop="id"
                     label="借阅号"
-                    width="70"
+                    width="100"
                 ></el-table-column>
                 <el-table-column
                     prop="bname"
                     label="图书名称"
-                    width="80"
+                    width="150"
                 ></el-table-column>
                 <el-table-column
                     prop="author"
                     label="作者"
+                    width="100"
                 ></el-table-column>
                 <el-table-column
                     prop="press"
                     label="出版社"
+                    width="160"
                 ></el-table-column>
                 <el-table-column
                     prop="user"
@@ -44,26 +46,41 @@
                 <el-table-column
                     prop="warehouse"
                     label="来源仓库"
+                    width="200"
                 ></el-table-column>
-                <el-table-column label="创建时间">
+                <el-table-column label="创建时间"
+                width="160">
                     <template slot-scope="scope">
                     <p>{{ new Date(scope.row.begin_time).toLocaleDateString() + " " + new Date(scope.row.begin_time).toLocaleTimeString().slice(0,5) }}</p>
                     </template>
                 </el-table-column>
-                <el-table-column label="归还时间">
+                <el-table-column label="截止/归还时间"
+                    width="160">
                     <template slot-scope="scope">
                     <p>{{ new Date(scope.row.end_time).toLocaleDateString() + " " + new Date(scope.row.end_time).toLocaleTimeString().slice(0,5) }}</p>
                     </template>
                 </el-table-column>
                 <el-table-column
-                prop="status"
-                label="状态"
-                :formatter="formatStatus"
+                    prop="status"
+                    label="状态"
+                    :formatter="formatStatus"
+                    width="90"
                 ></el-table-column>
+
                 <!-- 编辑 -->
-                <el-table-column fixed="right" label="操作" width="120">
+                <el-table-column width="80">
                     <template slot-scope="scope">
-                        <el-button @click="handleHistoryallDelete(scope.row)" type="text">删除</el-button>
+                        <el-button :disabled="scope.row.status !== 0" @click="handleHistoryContinue(scope.row)" type="text">延期</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column  label="操作" width="80">
+                    <template slot-scope="scope">
+                        <el-button  :disabled="scope.row.status !== 0"  @click="handleHistoryDeal(scope.row)" type="text">归还</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column width="80">
+                    <template slot-scope="scope">
+                        <el-button v-if="['ROOT'].includes($store.getters.getUser?.role)"  @click="handleHistoryDelete(scope.row)" type="text">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -75,7 +92,7 @@
                 :current-page="getPage" 
                 @current-change="handleCurrentChange"
                 :page-size="getPageSize"
-                :total="getHistoryallTotal"
+                :total="getHistoryTotal"
             ></el-pagination>
         </article>
     </main>
@@ -89,14 +106,14 @@ export default {
     name: "HistoryallTable",
     async created() {
         this.setDataReady(false)
-        const { historyallList } = await this.fetchSource()
-        this.setSource(historyallList)
+        const { historyList } = await this.fetchSource()
+        this.setSource(historyList)
         await sleep()
         this.setDataReady(true)
     },
     computed: {
         ...mapGetters([
-            "getSource", "getDataReady", "getPage", "getPageSize", "getHistoryallTotal"
+            "getSource", "getDataReady", "getPage", "getPageSize", "getHistoryTotal"
         ])
     },
     methods: {
@@ -104,19 +121,49 @@ export default {
             "setSource", "setDialogFormVisible", "setDataReady", "setPage"
         ]),
         ...mapActions([
-            "fetchSource", "deleteHistoryall"
+            "fetchSource", "deleteHistory", "dealHistory", "continueHistory"
         ]),
         // 处理删除借阅记录
-        handleHistoryallDelete({ id }) {
-            this.$confirm('此操作将永久删除该订单, 是否继续?', '提示', {
+        handleHistoryDelete({ id }) {
+            this.$confirm('此操作将永久删除该借阅记录, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'error'
             }).then(async () => {
-                await this.deleteHistoryall(id)
+                await this.deleteHistory(id)
                 this.setDataReady(false)
-                const { historyallList } = await this.fetchSource()
-                this.setSource(historyallList)
+                const { historyList } = await this.fetchSource()
+                this.setSource(historyList)
+                await sleep()
+                this.setDataReady(true)
+            }).catch(() => {})
+        },
+        // 处理续借操作
+        handleHistoryContinue({ id }) {
+            this.$confirm('确认续借该图书, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'error'
+            }).then(async () => {
+                await this.continueHistory(id)
+                this.setDataReady(false)
+                const { historyList } = await this.fetchSource()
+                this.setSource(historyList)
+                await sleep()
+                this.setDataReady(true)
+            }).catch(() => {})
+        },
+        // 处理归还操作
+        handleHistoryDeal({ id }) {
+            this.$confirm('确认归还该图书, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'error'
+            }).then(async () => {
+                await this.dealHistory(id)
+                this.setDataReady(false)
+                const { historyList } = await this.fetchSource()
+                this.setSource(historyList)
                 await sleep()
                 this.setDataReady(true)
             }).catch(() => {})
@@ -125,8 +172,8 @@ export default {
         async handleCurrentChange(newPage) {
             this.setDataReady(false)
             this.setPage(newPage)
-            const { historyallList } = await this.fetchSource()
-            this.setSource(historyallList)
+            const { historyList } = await this.fetchSource()
+            this.setSource(historyList)
             await sleep()
             this.setDataReady(true)
         },

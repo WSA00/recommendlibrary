@@ -16,16 +16,20 @@
                 <el-table-column
                     prop="id"
                     label="序号"
-                    width="80"
+                    width="100"
                 ></el-table-column>
                 <el-table-column
                     prop="location"
                     label="地址"
                 ></el-table-column>
                 <!-- 编辑 -->
-                <el-table-column v-if="['ROOT'].includes($store.getters.getUser?.role)" fixed="right" label="操作" width="120">
-                    <template slot-scope="scope">
+                <el-table-column v-if="['ROOT'].includes($store.getters.getUser?.role)"  label="操作" width="80">
+                    <template slot-scope="scope" >
                         <el-button @click="handelLocationChange(scope.row)" type="text">修改</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column v-if="['ROOT'].includes($store.getters.getUser?.role)" fixed="right"  width="80">
+                    <template slot-scope="scope" >
                         <el-button @click="handleWarehouseDelete(scope.row)" type="text">删除</el-button>
                     </template>
                 </el-table-column>

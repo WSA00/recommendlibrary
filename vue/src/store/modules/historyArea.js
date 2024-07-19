@@ -38,13 +38,13 @@ export default {
         setDialogFormVisible: (state, payload) => { state.dialogFormVisible = payload },
     },
     actions: {
-        // 请求接口 - 分页获取借阅记录信息
+        // 请求接口 - 分页获取借阅记录信息//改为登录用户借阅信息
         async fetchSource({ state, commit }) {   
             const response = await api.get(`/api/history?page=${state.page}&pageSize=${state.pageSize}`,{ token: localStorage.getItem("token") })
             commit("setHistoryTotal", response.historyTotal)
             return response
         },
-        // 请求接口 - 获取所有用户
+        // 请求接口 - 获取所有用户//需要改为登录用户
         async fetchUsers() {
             return await api.get(`/api/user`, { token: localStorage.getItem("token") })
         },
@@ -67,10 +67,6 @@ export default {
         // 请求接口 - 创建借阅记录
         async createHistory(context, payload) {
             await api.post(`/api/history`, payload, { token: localStorage.getItem("token") })
-        },
-        // 请求接口 - 删除借阅记录
-        async deleteHistory(context, payload) {
-            await api.delete(`/api/history/${payload}`, { token: localStorage.getItem("token") })
         },
         // 请求接口 - 续借操作
         async continueHistory(context, payload) {

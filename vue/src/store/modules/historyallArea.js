@@ -66,11 +66,19 @@ export default {
         },
         // 请求接口 - 创建借阅记录
         async createHistoryall(context, payload) {
-            await api.post(`/api/historyall`, payload, { token: localStorage.getItem("token") })
+            await api.post(`/api/history`, payload, { token: localStorage.getItem("token") })
         },
         // 请求接口 - 删除借阅记录
-        async deleteHistoryall(context, payload) {
-            await api.delete(`/api/historyall/${payload}`, { token: localStorage.getItem("token") })
+        async deleteHistory(context, payload) {
+            await api.delete(`/api/history/${payload}`, { token: localStorage.getItem("token") })
+        },
+        // 请求接口 - 续借操作
+        async continueHistory(context, payload) {
+            await api.patch(`/api/history/${payload}/continue`,`${payload}`, { token: localStorage.getItem("token") })
+        },
+        // 请求接口 - 归还操作
+        async dealHistory(context, payload) {
+            await api.patch(`/api/history/${payload}/deal`,`${payload}`, { token: localStorage.getItem("token") })
         }
     }
 }

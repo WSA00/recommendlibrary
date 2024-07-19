@@ -39,21 +39,4 @@ public class HistoryallController {
         return historyService.createHistory(history);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROOT','USER')")
-    @PatchMapping("/{id}/continue")
-    public Result continueHistoryById(@PathVariable Integer id){
-        return historyService.continueHistoryById(id);
-    }
-    @PreAuthorize("hasAnyAuthority('ROOT','USER')")
-    @PatchMapping("/{id}/deal")
-    public Result dealHistoryById(@PathVariable Integer id){
-        return historyService.dealHistoryById(id);
-    }
-
-    @PreAuthorize("hasAnyAuthority('ROOT')")
-    @DeleteMapping("{id}")
-    public Result deleteHistoryById(@PathVariable Integer id){
-        return historyService.deleteHistoryById(id);
-    }
-
 }
