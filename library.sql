@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 15/07/2024 22:31:42
+ Date: 19/07/2024 22:13:45
 */
 
 SET NAMES utf8mb4;
@@ -31,9 +31,9 @@ CREATE TABLE `book`  (
   `introduce` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `poster` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `fk_tid`(`tid` ASC) USING BTREE,
-  CONSTRAINT `fk_tid` FOREIGN KEY (`tid`) REFERENCES `type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 80 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+  INDEX `fk_tid_book`(`tid` ASC) USING BTREE,
+  CONSTRAINT `fk_tid_book` FOREIGN KEY (`tid`) REFERENCES `type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for history
@@ -49,9 +49,13 @@ CREATE TABLE `history`  (
   `times` int NULL DEFAULT NULL COMMENT '记录续借次数',
   `status` int NULL DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `fk_history_warehouse`(`wid` ASC) USING BTREE,
-  INDEX `fk_history_book`(`bid` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+  INDEX `fk_uid_history`(`uid` ASC) USING BTREE,
+  INDEX `fk_bid_history`(`bid` ASC) USING BTREE,
+  INDEX `fk_wid_history`(`wid` ASC) USING BTREE,
+  CONSTRAINT `fk_bid_history` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk_uid_history` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk_wid_history` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for inventory
@@ -63,8 +67,10 @@ CREATE TABLE `inventory`  (
   `wid` int NULL DEFAULT NULL,
   `quantity` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `fk_inventory_book`(`bid` ASC) USING BTREE,
-  INDEX `fk_inventory_warehose`(`wid` ASC) USING BTREE
+  INDEX `fk_bid_inventory`(`bid` ASC) USING BTREE,
+  INDEX `fk_wid_inventory`(`wid` ASC) USING BTREE,
+  CONSTRAINT `fk_bid_inventory` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk_wid_inventory` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -78,9 +84,11 @@ CREATE TABLE `stockin`  (
   `quantity` int NULL DEFAULT NULL COMMENT '入库数',
   `createtime` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `fk_stockin_book`(`bid` ASC) USING BTREE,
-  INDEX `fk_stockin_warehouse`(`wid` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+  INDEX `fk_bid_stockin`(`bid` ASC) USING BTREE,
+  INDEX `fk_wid_stockin`(`wid` ASC) USING BTREE,
+  CONSTRAINT `fk_bid_stockin` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `fk_wid_stockin` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for type
@@ -118,6 +126,6 @@ CREATE TABLE `warehouse`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

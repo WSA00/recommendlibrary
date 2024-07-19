@@ -4,15 +4,16 @@ import com.library.utils.Result;
 
 public interface ChartService {
 
-    Result income();
+//    Result income();
+//
+//    Result sales();
+//
+//    Result warehouses();
+//
+//    Result users();
+//
+//    Result user();
+//
+//    Result car();
 
-    Result sales();
-
-    Result warehouses();
-
-    Result users();
-
-    Result user();
-
-    Result car();
 }

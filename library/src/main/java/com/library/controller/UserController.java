@@ -16,10 +16,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("{id}/order")
-    public Result userOrder(@PathVariable String id){
-        return userService.userOrder(id);
-    }
+//    @GetMapping("{id}/order")
+//    public Result userOrder(@PathVariable String id){
+//        return userService.userOrder(id);
+//    }
 
     @GetMapping("")
     public Result userPageSelect(Integer page, Integer pageSize){

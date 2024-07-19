@@ -35,7 +35,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
     private WarehouseMapper warehouseMapper;
 
     @Override
-    public Result historyPageSelect(Integer page, Integer pageSize) {
+    public Result historyallPageSelect(Integer page, Integer pageSize ) {
 
         if (page == null || page <= 0) {
             page = 1; // 默认第一页
@@ -46,6 +46,51 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
 
         // 获取订单总数
         Long count = historyMapper.selectHistoryCount();
+
+        // 分页查询订单列表
+        List<History> records = historyMapper.selectHistoryPage((page - 1) * pageSize, pageSize);
+
+        List<historyResponse> list = new ArrayList<>();
+        for (History record : records) {
+            historyResponse historyResponse = new historyResponse();
+            historyResponse.setId(record.getId());
+            historyResponse.setBname(bookMapper.selectBnameById(record.getBid()));
+            historyResponse.setAuthor(bookMapper.selectBookAuthorById(record.getBid()));
+            historyResponse.setPress(bookMapper.selectBookPressById(record.getBid()));
+            historyResponse.setUser(userMapper.selectUserNameById(record.getUid()));
+            historyResponse.setPhone(userMapper.selectUserPhoneById(record.getUid()));
+            historyResponse.setWarehouse(warehouseMapper.selectLocationById(record.getWid()));
+            historyResponse.setBegin_time(record.getBegin_time());
+            historyResponse.setEnd_time(record.getEnd_time());
+            historyResponse.setTimes(record.getTimes());
+            historyResponse.setStatus(record.getStatus());
+            list.add(historyResponse);
+        }
+
+        Map data = new LinkedHashMap();
+        data.put("tip","成功获取第"+page+"页,共"+pageSize+"条数据");
+        data.put("page",page);
+        data.put("count",pageSize);
+        data.put("pageTotal",(int)Math.ceil(count/pageSize));
+        data.put("historyTotal",count);
+        data.put("historyList",list);
+
+        return Result.ok(data);
+    }
+
+    public Result historyPageSelect(Integer page, Integer pageSize , Integer uid) {
+
+        if (page == null || page <= 0) {
+            page = 1; // 默认第一页
+        }
+        if (pageSize == null || pageSize <= 0) {
+            pageSize = 15; // 默认每页15条记录
+        }
+
+        // 获取订单总数
+        Long count = historyMapper.selectHistoryCount();
+
+        //Long count = historyMapper.selectHistoryCountByUid()
 
         // 分页查询订单列表
         List<History> records = historyMapper.selectHistoryPage((page - 1) * pageSize, pageSize);

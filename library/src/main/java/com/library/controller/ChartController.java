@@ -16,34 +16,34 @@ public class ChartController {
     @Autowired
     private ChartService chartService;
 
-    @GetMapping("/total/income")
-    public Result income(){
-        return chartService.income();
-    }
+//    @GetMapping("/total/income")
+//    public Result income(){
+//        return chartService.income();
+//    }
 
-    @GetMapping("/total/sales")
-    public Result sales(){
-        return chartService.sales();
-    }
-
-    @GetMapping("/total/warehouses")
-    public Result warehouses(){
-        return chartService.warehouses();
-    }
-
-    @GetMapping("/total/users")
-    public Result users(){
-        return chartService.users();
-    }
-
-    @GetMapping("/ranking/user")
-    public Result user(){
-        return chartService.user();
-    }
-
-    @GetMapping("/ranking/car")
-    public Result car(){
-        return chartService.car();
-    }
+//    @GetMapping("/total/sales")
+//    public Result sales(){
+//        return chartService.sales();
+//    }
+//
+//    @GetMapping("/total/warehouses")
+//    public Result warehouses(){
+//        return chartService.warehouses();
+//    }
+//
+//    @GetMapping("/total/users")
+//    public Result users(){
+//        return chartService.users();
+//    }
+//
+//    @GetMapping("/ranking/user")
+//    public Result user(){
+//        return chartService.user();
+//    }
+//
+//    @GetMapping("/ranking/car")
+//    public Result car(){
+//        return chartService.car();
+//    }
 
 }

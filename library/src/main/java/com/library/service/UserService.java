@@ -31,7 +31,7 @@ public interface UserService extends IService<User> {
 
     Result deleteUser(Integer id);
 
-    Result userOrder(String id);
+//    Result userOrder(String id);
 
     Result checkPhone(@Param("phone") String phone);
 

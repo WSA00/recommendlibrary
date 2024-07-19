@@ -17,8 +17,8 @@ public class HistoryController {
 
     @PreAuthorize("hasAnyAuthority('ROOT','USER')")
     @GetMapping("")
-    public Result historyPageSelect(Integer page, Integer pageSize){
-        return historyService.historyPageSelect(page,pageSize);
+    public Result historyPageSelect(Integer page, Integer pageSize , Integer uid){
+        return historyService.historyPageSelect(page,pageSize , uid);
     }
 
     @PreAuthorize("hasAnyAuthority('ROOT','USER')")
