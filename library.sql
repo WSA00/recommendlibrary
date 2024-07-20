@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 19/07/2024 22:13:45
+ Date: 20/07/2024 16:43:49
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `book`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_tid_book`(`tid` ASC) USING BTREE,
   CONSTRAINT `fk_tid_book` FOREIGN KEY (`tid`) REFERENCES `type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for history
@@ -55,7 +55,7 @@ CREATE TABLE `history`  (
   CONSTRAINT `fk_bid_history` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_uid_history` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_history` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventory
@@ -71,7 +71,7 @@ CREATE TABLE `inventory`  (
   INDEX `fk_wid_inventory`(`wid` ASC) USING BTREE,
   CONSTRAINT `fk_bid_inventory` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_inventory` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for stockin
@@ -88,7 +88,7 @@ CREATE TABLE `stockin`  (
   INDEX `fk_wid_stockin`(`wid` ASC) USING BTREE,
   CONSTRAINT `fk_bid_stockin` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_stockin` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for type
@@ -98,7 +98,7 @@ CREATE TABLE `type`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `tname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for user
@@ -116,7 +116,7 @@ CREATE TABLE `user`  (
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
   `joined_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for warehouse
@@ -126,6 +126,219 @@ CREATE TABLE `warehouse`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Triggers structure for table book
+-- ----------------------------
+DROP TRIGGER IF EXISTS `after_inventory_book_insert`;
+delimiter ;;
+CREATE TRIGGER `after_inventory_book_insert` AFTER INSERT ON `book` FOR EACH ROW BEGIN
+    -- 检查库存表中是否已存在该书籍的库存记录
+    DECLARE count_rows INT;
+    SELECT COUNT(*) INTO count_rows
+    FROM inventory
+    WHERE bid = NEW.id;
+
+    -- 如果库存表中不存在，则插入新的库存记录
+    IF count_rows = 0 THEN
+        INSERT INTO inventory (bid, wid, quantity)
+        SELECT NEW.id, w.id, 0
+        FROM warehouse w;
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table book
+-- ----------------------------
+DROP TRIGGER IF EXISTS `before_stockin_book_delete`;
+delimiter ;;
+CREATE TRIGGER `before_stockin_book_delete` BEFORE DELETE ON `book` FOR EACH ROW BEGIN
+    DELETE FROM stockin
+    WHERE bid = OLD.id;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table book
+-- ----------------------------
+DROP TRIGGER IF EXISTS `before_inventory_book_delete`;
+delimiter ;;
+CREATE TRIGGER `before_inventory_book_delete` BEFORE DELETE ON `book` FOR EACH ROW BEGIN
+    -- 删除库存表中与被删除书籍相关的所有库存记录
+    DELETE FROM inventory
+    WHERE bid = OLD.id;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table history
+-- ----------------------------
+DROP TRIGGER IF EXISTS `after_inventory_history_insert`;
+delimiter ;;
+CREATE TRIGGER `after_inventory_history_insert` AFTER INSERT ON `history` FOR EACH ROW BEGIN
+    IF NEW.status = 0 THEN
+        UPDATE inventory
+        SET quantity = quantity - 1
+        WHERE bid = NEW.bid AND wid = NEW.wid;
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table history
+-- ----------------------------
+DROP TRIGGER IF EXISTS `after_inventory_history_status_update`;
+delimiter ;;
+CREATE TRIGGER `after_inventory_history_status_update` AFTER UPDATE ON `history` FOR EACH ROW BEGIN
+    IF NEW.status = 1 AND OLD.status = 0 THEN
+        UPDATE inventory
+        SET quantity = quantity + 1
+        WHERE bid = NEW.bid AND wid = NEW.wid;
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table history
+-- ----------------------------
+DROP TRIGGER IF EXISTS `after_inventory_history_delete`;
+delimiter ;;
+CREATE TRIGGER `after_inventory_history_delete` AFTER DELETE ON `history` FOR EACH ROW BEGIN
+    IF OLD.status = 0 THEN
+        UPDATE inventory
+        SET quantity = quantity + 1
+        WHERE bid = OLD.bid AND wid = OLD.wid;
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table stockin
+-- ----------------------------
+DROP TRIGGER IF EXISTS `after_inventory_stockin_insert`;
+delimiter ;;
+CREATE TRIGGER `after_inventory_stockin_insert` AFTER INSERT ON `stockin` FOR EACH ROW BEGIN
+    DECLARE current_quantity INT;
+    
+    -- 获取当前仓库中这种书籍的库存量
+    SELECT quantity INTO current_quantity
+    FROM inventory
+    WHERE bid = NEW.bid AND wid = NEW.wid;
+    
+    -- 如果记录存在，则更新库存量
+    IF FOUND_ROWS() > 0 THEN
+        UPDATE inventory
+        SET quantity = quantity + NEW.quantity
+        WHERE bid = NEW.bid AND wid = NEW.wid;
+    ELSE
+        -- 否则，插入新的库存记录
+        INSERT INTO inventory (bid, wid, quantity)
+        VALUES (NEW.bid, NEW.wid, NEW.quantity);
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table stockin
+-- ----------------------------
+DROP TRIGGER IF EXISTS `before_inventory_stockin_delete`;
+delimiter ;;
+CREATE TRIGGER `before_inventory_stockin_delete` BEFORE DELETE ON `stockin` FOR EACH ROW BEGIN
+    DECLARE current_quantity INT;
+    
+    -- 获取当前仓库中这种书籍的库存量
+    SELECT quantity INTO current_quantity
+    FROM inventory
+    WHERE bid = OLD.bid AND wid = OLD.wid;
+    
+    -- 如果记录存在，则更新库存量
+    IF FOUND_ROWS() > 0 THEN
+        UPDATE inventory
+        SET quantity = quantity - OLD.quantity
+        WHERE bid = OLD.bid AND wid = OLD.wid;
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table type
+-- ----------------------------
+DROP TRIGGER IF EXISTS `before_book_type_delete`;
+delimiter ;;
+CREATE TRIGGER `before_book_type_delete` BEFORE DELETE ON `type` FOR EACH ROW BEGIN
+    DELETE FROM book
+    WHERE tid = OLD.id;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table user
+-- ----------------------------
+DROP TRIGGER IF EXISTS `before_history_user_delete`;
+delimiter ;;
+CREATE TRIGGER `before_history_user_delete` BEFORE DELETE ON `user` FOR EACH ROW BEGIN
+    -- 删除与用户相关的历史记录
+    DELETE FROM history WHERE uid = OLD.id;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table warehouse
+-- ----------------------------
+DROP TRIGGER IF EXISTS `after_inventory_warehouse_insert`;
+delimiter ;;
+CREATE TRIGGER `after_inventory_warehouse_insert` AFTER INSERT ON `warehouse` FOR EACH ROW BEGIN
+    -- 检查库存表中是否已存在该仓库的库存记录
+    DECLARE count_rows INT;
+    SELECT COUNT(*) INTO count_rows
+    FROM inventory
+    WHERE wid = NEW.id;
+
+    -- 如果库存表中不存在，则插入新的库存记录
+    IF count_rows = 0 THEN
+        INSERT INTO inventory (bid, wid, quantity)
+        SELECT b.id, NEW.id, 0
+        FROM book b;
+    END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table warehouse
+-- ----------------------------
+DROP TRIGGER IF EXISTS `before_inventory_warehouse_delete`;
+delimiter ;;
+CREATE TRIGGER `before_inventory_warehouse_delete` BEFORE DELETE ON `warehouse` FOR EACH ROW BEGIN
+    -- 删除库存表中与被删除仓库相关的所有库存记录
+    DELETE FROM inventory
+    WHERE wid = OLD.id;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table warehouse
+-- ----------------------------
+DROP TRIGGER IF EXISTS `before_stockin_warehouse_delete`;
+delimiter ;;
+CREATE TRIGGER `before_stockin_warehouse_delete` BEFORE DELETE ON `warehouse` FOR EACH ROW BEGIN
+    DELETE FROM stockin
+    WHERE wid = OLD.id;
+END
+;;
+delimiter ;
 
 SET FOREIGN_KEY_CHECKS = 1;
