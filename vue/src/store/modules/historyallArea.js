@@ -6,8 +6,8 @@ export default {
         return {
             // 用户相关配置
             source: new Array(),
-            historyallTotal: 0,
-            historyall: null,
+            historyTotal: 0,
+            history: null,
             // 分页相关配置
             page: 1,
             pageSize: 15,
@@ -19,8 +19,8 @@ export default {
     },
     getters: {
         getSource: state => state.source,
-        getHistoryallTotal: state => state.historyallTotal,
-        getHistoryall: state => state.historyall,
+        getHistoryTotal: state => state.historyTotal,
+        getHistory: state => state.history,
         getPage: state => state.page,
         getPageSize: state => state.pageSize,
         getDataReady: state => state.dataReady,
@@ -29,8 +29,8 @@ export default {
     },
     mutations: {
         setSource: (state, payload) => { state.source = payload },
-        setHistoryallTotal: (state, payload) => { state.historyallTotal = payload },
-        setHistoryall: (state, payload) => { state.historyall = payload },
+        setHistoryTotal: (state, payload) => { state.historyTotal = payload },
+        setHistory: (state, payload) => { state.history = payload },
         setPage: (state, payload) => { state.page = payload },
         setPageSize: (state, payload) => { state.pageSize = payload },
         setDataReady: (state, payload) => { state.dataReady = payload },
@@ -41,7 +41,7 @@ export default {
         // 请求接口 - 分页获取借阅记录信息
         async fetchSource({ state, commit }) {   
             const response = await api.get(`/api/historyall?page=${state.page}&pageSize=${state.pageSize}`,{ token: localStorage.getItem("token") })
-            commit("setHistoryallTotal", response.historyallTotal)
+            commit("setHistoryTotal", response.historyTotal)
             return response
         },
         // 请求接口 - 获取所有用户
@@ -65,7 +65,7 @@ export default {
             return await api.get(`/api/warehouse/${payload}/inventory`, { token: localStorage.getItem("token") })
         },
         // 请求接口 - 创建借阅记录
-        async createHistoryall(context, payload) {
+        async createHistory(context, payload) {
             await api.post(`/api/history`, payload, { token: localStorage.getItem("token") })
         },
         // 请求接口 - 删除借阅记录

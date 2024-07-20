@@ -105,7 +105,7 @@ export default {
     name: "HistoryTable",
     async created() {
         this.setDataReady(false)
-        const { historyList } = await this.fetchSource()
+        const { historyList } = await this.fetchSource(this.$store.getters.getUser.id)
         this.setSource(historyList)
         await sleep()
         this.setDataReady(true)
@@ -131,7 +131,7 @@ export default {
             }).then(async () => {
                 await this.continueHistory(id)
                 this.setDataReady(false)
-                const { historyList } = await this.fetchSource()
+                const { historyList } = await this.fetchSource(this.$store.getters.getUser.id)
                 this.setSource(historyList)
                 await sleep()
                 this.setDataReady(true)
@@ -146,7 +146,7 @@ export default {
             }).then(async () => {
                 await this.dealHistory(id)
                 this.setDataReady(false)
-                const { historyList } = await this.fetchSource()
+                const { historyList } = await this.fetchSource(this.$store.getters.getUser.id)
                 this.setSource(historyList)
                 await sleep()
                 this.setDataReady(true)
@@ -156,7 +156,7 @@ export default {
         async handleCurrentChange(newPage) {
             this.setDataReady(false)
             this.setPage(newPage)
-            const { historyList } = await this.fetchSource()
+            const { historyList } = await this.fetchSource(this.$store.getters.getUser.id)
             this.setSource(historyList)
             await sleep()
             this.setDataReady(true)

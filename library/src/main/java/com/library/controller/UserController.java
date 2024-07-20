@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @GetMapping("{id}/order")
+//    @GetMapping("{id}/history")
 //    public Result userOrder(@PathVariable String id){
 //        return userService.userOrder(id);
 //    }

@@ -77,7 +77,7 @@
 <script>
 import { sleep } from "@/util/sleep"
 import { createNamespacedHelpers } from "vuex"
-const { mapGetters, mapMutations, mapActions } = createNamespacedHelpers("historyArea")
+const { mapGetters, mapMutations, mapActions } = createNamespacedHelpers("historyallArea")
 export default {
     name: "HistoryallFactory",
     async created() {
@@ -122,7 +122,7 @@ export default {
     },
     computed: {
         ...mapGetters([
-            "getDialogFormVisible", "getHistoryallTotal", "getPageSize"
+            "getDialogFormVisible", "getHistoryTotal", "getPageSize"
         ]),
         dialogFormVisible: {
             get() {
@@ -138,7 +138,7 @@ export default {
             "setDialogFormVisible", "setPage", "setSource", "setDataReady"
         ]),
         ...mapActions([
-            "fetchSource", "createHistoryall", "fetchUsers", "fetchBooks", "fetchWarehouses", "fetchBookInventory", "fetchWarehouseInventory"
+            "fetchSource", "createHistory", "fetchUsers", "fetchBooks", "fetchWarehouses", "fetchBookInventory", "fetchWarehouseInventory"
         ]),
         // 提交表单 - 添加新借阅记录
         async submitForm(formName) {
@@ -176,9 +176,9 @@ export default {
                     })
                     this.setDataReady(false)
                     await sleep()
-                    this.setPage(Math.ceil(this.getHistoryallTotal / this.getPageSize) || 0)
-                    const { historyallList } = await this.fetchSource()
-                    this.setSource(historyallList)
+                    this.setPage(Math.ceil(this.getHistoryTotal / this.getPageSize) || 0)
+                    const { historyList } = await this.fetchSource()
+                    this.setSource(historyList)
                     this.setDialogFormVisible(false)
                     this.setDataReady(true)
                     await this.resetForm(formName)

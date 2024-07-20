@@ -30,7 +30,7 @@
     </select>
 
     <select id="selectWarehouseByBid" resultType="com.library.pojo.Warehouse">
-        SELECT warehouse.id,warehouse.location
+        SELECT *
         FROM warehouse
         WHERE warehouse.id IN (SELECT DISTINCT wid
                                FROM inventory

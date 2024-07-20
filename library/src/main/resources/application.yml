@@ -28,5 +28,5 @@ mybatis-plus:
 
 jwt:
   token:
-    tokenExpiration: 90
+    tokenExpiration: 120
     tokenSignKey: library123

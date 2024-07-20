@@ -88,12 +88,10 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
         }
 
         // 获取订单总数
-        Long count = historyMapper.selectHistoryCount();
-
-        //Long count = historyMapper.selectHistoryCountByUid()
+        Long count = Long.valueOf(historyMapper.selectHistoryCountByUid(uid));
 
         // 分页查询订单列表
-        List<History> records = historyMapper.selectHistoryPage((page - 1) * pageSize, pageSize);
+        List<History> records = historyMapper.selectHistoryPageByUid(uid, (page - 1) * pageSize, pageSize);
 
         List<historyResponse> list = new ArrayList<>();
         for (History record : records) {

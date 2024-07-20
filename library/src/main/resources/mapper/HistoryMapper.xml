@@ -51,13 +51,21 @@
 
     <!-- 获取借阅记录总数 -->
     <select id="selectHistoryCount" resultType="java.lang.Long">
-        SELECT COUNT(*) FROM `history`;
+        SELECT COUNT(*) FROM `history`
     </select>
 
     <!-- 分页查询借阅记录列表 -->
     <select id="selectHistoryPage" resultMap="BaseResultMap">
         SELECT * FROM `history`
-        LIMIT #{page}, #{pageSize};
+        ORDER BY `status` ASC
+        LIMIT #{page}, #{pageSize}
+    </select>
+
+    <select id="selectHistoryPageByUid" resultMap="BaseResultMap">
+        SELECT * FROM `history`
+        where `history`.uid = #{uid}
+        ORDER BY `status` ASC
+        LIMIT #{page}, #{pageSize}
     </select>
 
     <select id="selectHistoryById" resultType="com.library.pojo.History">

@@ -16,17 +16,7 @@
             label-position="left"
             class="flex flex-col items-start"
         >
-            <!-- 请选择用户 -->
-            <el-form-item label="用户" prop="uid">
-                <el-select v-model="form.uid" filterable placeholder="请选择用户" clearable>
-                    <el-option
-                        v-for="item in users"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                    ></el-option>
-                </el-select>
-            </el-form-item>
+
             <!-- 请选择图书 -->
             <el-form-item label="图书" prop="bid">
                 <el-select v-model="form.bid" @change="changeBook" filterable placeholder="请选择图书" clearable>
@@ -55,14 +45,13 @@
                     <el-form-item prop="date">
                         <el-date-picker 
                             type="date" 
-                            placeholder="选择日期" 
-                            v-model="form.date" 
+                            placeholder="选择日期" v-model="form.date" disabled
                             class="mr-6"
                             :picker-options="pickerOptions"
                         ></el-date-picker>
                     </el-form-item>
                     <el-form-item prop="time">
-                        <el-time-picker placeholder="选择时间" v-model="form.time"></el-time-picker>
+                        <el-time-picker placeholder="选择时间" v-model="form.time" disabled></el-time-picker>
                     </el-form-item>
                 </el-row>
             </el-form-item>
@@ -81,10 +70,10 @@ const { mapGetters, mapMutations, mapActions } = createNamespacedHelpers("histor
 export default {
     name: "HistoryFactory",
     async created() {
-        this.users = await this.fetchUsers().then(users => users.map(user => ({
-            value: user.id,
-            label: user.username
-        })))
+        
+        const id = this.$store.getters.getUser.id;
+        this.form.uid = id
+
         this.books = await this.fetchBooks().then(books => books.map(book => ({
             value: book.id,
             label: book.bname + "-" + book.author+ "-" + book.press
@@ -107,11 +96,8 @@ export default {
             books: [],
             warehouses: [],
             rules: {
-                uid: { required: true, message: '请输入当前借阅申请人', trigger: 'blur' },
                 bid: { required: true, message: '请输入当前借阅图书', trigger: 'blur' },
-                wid: { required: true, message: '请输入当前借阅图书所属仓库', trigger: 'blur' },
-                date: { required: true, message: '请输入具体借阅日期', trigger: 'blur' },
-                time: { required: true, message: '请输入具体借阅时间', trigger: 'blur' },
+                wid: { required: true, message: '请输入当前借阅图书所属仓库', trigger: 'blur' }
             },
             pickerOptions: {
                 disabledDate(time) {
@@ -138,13 +124,14 @@ export default {
             "setDialogFormVisible", "setPage", "setSource", "setDataReady"
         ]),
         ...mapActions([
-            "fetchSource", "createHistory", "fetchUsers", "fetchBooks", "fetchWarehouses", "fetchBookInventory", "fetchWarehouseInventory"
+            "fetchSource", "createHistory", "fetchBooks", "fetchWarehouses", "fetchBookInventory", "fetchWarehouseInventory"
         ]),
         // 提交表单 - 添加新借阅记录
         async submitForm(formName) {
+
             await this.$refs[formName].validate(async valid => {
                 if(valid) {
-                    const { uid, bid, wid } = this.form
+                    const { uid,bid, wid } = this.form
                     // 合并表单中的日期与时间
                     const date = new Date(this.form.date)
                     const time = new Date(this.form.time)
@@ -177,7 +164,7 @@ export default {
                     this.setDataReady(false)
                     await sleep()
                     this.setPage(Math.ceil(this.getHistoryTotal / this.getPageSize) || 0)
-                    const { historyList } = await this.fetchSource()
+                    const { historyList } = await this.fetchSource(this.$store.getters.getUser.id)
                     this.setSource(historyList)
                     this.setDialogFormVisible(false)
                     this.setDataReady(true)

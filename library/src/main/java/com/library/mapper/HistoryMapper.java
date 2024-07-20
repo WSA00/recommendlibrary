@@ -18,6 +18,8 @@ public interface HistoryMapper extends BaseMapper<History> {
 
     List<History> selectHistoryPage(@Param("page") Integer page, @Param("pageSize") Integer pageSize);
 
+    List<History> selectHistoryPageByUid(@Param("uid")Integer uid,@Param("page") Integer page, @Param("pageSize") Integer pageSize);
+
     History selectHistoryById(@Param("hid") Integer hid);
 
     void updateHistoryById(@Param("TableHistory") History TableHistory);
@@ -64,4 +66,5 @@ public interface HistoryMapper extends BaseMapper<History> {
     Integer selectHistoryCountByUid(Integer uid);
 
     Integer selectNoHistoryCountByUid(Integer uid);
+
 }

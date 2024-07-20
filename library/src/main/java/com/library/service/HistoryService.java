@@ -26,14 +26,4 @@ public interface HistoryService extends IService<History> {
 
     Result dealHistoryById(Integer id);
 
-
-//    Result orderPageSelect(Integer page, Integer pageSize);
-//
-//    Result selectOrderById(Integer id);
-//
-//    Result UpdateOrderById(Integer id, Integer productId, Integer userId, Integer warehouseId);
-//
-//    Result createOrder(Order order);
-//
-//    Result deleteOrderById(Integer id);
 }

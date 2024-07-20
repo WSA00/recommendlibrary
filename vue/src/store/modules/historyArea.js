@@ -38,15 +38,11 @@ export default {
         setDialogFormVisible: (state, payload) => { state.dialogFormVisible = payload },
     },
     actions: {
-        // 请求接口 - 分页获取借阅记录信息//改为登录用户借阅信息
-        async fetchSource({ state, commit }) {   
-            const response = await api.get(`/api/history?page=${state.page}&pageSize=${state.pageSize}`,{ token: localStorage.getItem("token") })
+        // 请求接口 - 分页获取登录用户借阅记录信息
+        async fetchSource({ state, commit },payload) {   
+            const response = await api.get(`/api/history?page=${state.page}&pageSize=${state.pageSize}&uid=${payload}`,{ token: localStorage.getItem("token") })
             commit("setHistoryTotal", response.historyTotal)
             return response
-        },
-        // 请求接口 - 获取所有用户//需要改为登录用户
-        async fetchUsers() {
-            return await api.get(`/api/user`, { token: localStorage.getItem("token") })
         },
         // 请求接口 - 获取所有图书
         async fetchBooks() {
