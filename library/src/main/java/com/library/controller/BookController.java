@@ -39,6 +39,12 @@ public class BookController {
     }
 
     @PreAuthorize("hasAnyAuthority('USER','ROOT')")
+    @GetMapping("/search")
+    public Result bookPageSelect2(@RequestParam Integer page, @RequestParam Integer pageSize, @RequestParam String q){
+        return bookService.bookPageSelect2(page,pageSize,q);
+    }
+
+    @PreAuthorize("hasAnyAuthority('USER','ROOT')")
     @GetMapping("{id}")
     public Result selectBookById(@PathVariable Integer id){
         return bookService.selectBookById(id);

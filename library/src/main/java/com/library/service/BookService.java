@@ -19,7 +19,7 @@ public interface BookService extends IService<Book> {
     Result bookPageSelect1(Integer page, Integer pageSize , Integer tid);
 
     //特定图书名称、作者
-    Result bookPageSelect2(Integer page, Integer pageSize , String BnameOrPress);
+    Result bookPageSelect2(Integer page, Integer pageSize , String BnameOrAuthor);
 
     Result selectBookById(Integer id);
 

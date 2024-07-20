@@ -161,9 +161,52 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
     }
 
     @Override
-    public Result bookPageSelect2(Integer page, Integer pageSize, String BnameOrPress) {
-        return null;
+    public Result bookPageSelect2(Integer page, Integer pageSize, String BnameOrAuthor) {
+        if (BnameOrAuthor == null) {
+            bookPageSelect(page, pageSize);
+        }
+
+        // 构造查询条件
+        QueryWrapper<Book> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("bname", BnameOrAuthor).or().like("author", BnameOrAuthor);
+
+        // 构造分页对象
+        Page<Map<String, Object>> mapPage = new Page<>(page, pageSize);
+        IPage<Map<String, Object>> result = bookMapper.selectMapsPage(mapPage, queryWrapper);
+        List<Map<String, Object>> records = result.getRecords();
+
+        Integer count = bookMapper.selectBookCountByBnameOrAuthor(BnameOrAuthor);
+
+        List list = new ArrayList<>();
+
+        for (Map<String, Object> record : records) {
+            Book book = new Book();
+            book.setId((Integer) record.get("id"));
+            book.setBname((String) record.get("bname"));
+            book.setTid((Integer) record.get("tid"));
+            book.setAuthor((String) record.get("author"));
+            book.setPress((String) record.get("press"));
+            book.setBtimes((Integer) record.get("btimes"));
+            book.setIntroduce((String) record.get("introduce"));
+            book.setPoster((String) record.get("poster"));
+
+            BookResponse bookResponse = new BookResponse(book);
+            bookResponse.setTname(typeMapper.selectTnameById(book.getTid()));
+
+            list.add(bookResponse);
+        }
+
+        Map data = new LinkedHashMap();
+        data.put("tip", "成功获取第" + page + "页,共" + pageSize + "条数据");
+        data.put("page", page);
+        data.put("count", pageSize);
+        data.put("pageTotal", (int) Math.ceil(count / pageSize));
+        data.put("bookTotal", count);
+        data.put("source", list);
+
+        return Result.ok(data);
     }
+
 
     @Override
     public Result selectBookById(Integer id) {

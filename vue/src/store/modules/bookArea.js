@@ -54,6 +54,13 @@ export default {
             commit("setBookTotal", response.bookTotal)
             return response
         },
+        //请求接口 - 分页获取特定搜索图书信息
+        async fetchSource2({ state, commit },payload) {   
+            const decodedSearchString = decodeURIComponent(payload.string);
+            const response = await api.get(`/api/book/search?page=${state.page}&pageSize=${state.pageSize}&q=${decodedSearchString}`,{ token: localStorage.getItem("token") })
+            commit("setBookTotal", response.bookTotal)
+            return response
+        },
         // 请求接口 - 获取指定图书信息
         async fetchBook(context, payload) {
             return await api.get(`/api/book/${payload}`, { token: localStorage.getItem("token") })

@@ -22,6 +22,8 @@ public interface BookMapper extends BaseMapper<Book> {
 
     String selectBookPressById(@Param("bid") Integer bid);
 
+    Integer selectBookCountByBnameOrAuthor(String BnameOrAuthor);
+
 //    Integer saleOfCarById(Integer id);
 
 //    Book selectBookById(@Param("bid") Integer bid);

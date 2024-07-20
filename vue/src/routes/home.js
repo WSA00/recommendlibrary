@@ -56,12 +56,6 @@ export default [
     path: "/historyall",
     meta: { title: "借阅总览", icon: "el-icon-document-copy", role: [ "ROOT" ]},                     
     component: () => import("@/layouts/home/IndexPage.vue"),   
-    //history全部借阅                                       
-    //可续期。正常借阅、将要过期、已过期。  
-    //全部借阅记录
-    //1.正常借阅
-    //2.将要过期
-    //3.已过期
     children: [
       {
         path: "",
