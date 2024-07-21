@@ -26,13 +26,13 @@
                     <el-input v-model="form.bname"></el-input>
                 </el-form-item>
                 <!-- 请选择图书类型 -->
-                <el-form-item label="图书类型" prop="tid">
-                    <el-select v-model="form.bid" filterable placeholder="请选择图书类型" clearable>
+                <el-form-item label="图书类型" prop="tname">
+                    <el-select v-model="form.tname" filterable placeholder="请选择图书类型" clearable>
                         <el-option
                             v-for="item in types"
                             :key="item.value"
                             :label="item.label"
-                            :value="item.value"
+                            :value="item.label"
                         ></el-option>
                     </el-select>
                 </el-form-item>

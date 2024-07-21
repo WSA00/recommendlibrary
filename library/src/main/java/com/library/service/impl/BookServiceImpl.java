@@ -58,14 +58,14 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
                 .eq(Book::getPress,book.getPress())
                 .eq(Book::getIntroduce,book.getIntroduce())
                 .eq(Book::getPoster,book.getPoster());
-        Book dbBook = bookMapper.selectOne(queryWrapper);
+
         Map data = new HashMap();
         if (i == 0) {
             data.put("tip","创建图书失败");
             return Result.ok(requested_resource_no_modified);
         }else{
             data.put("tip","成功创建图书");
-            data.put("book",dbBook);
+            data.put("book",bookResponse);
             return Result.ok(data);
         }
     }
@@ -117,7 +117,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
         bookPageSelect(page,pageSize);
     }
 
-    Integer id = Integer.valueOf(tid);
+    Integer id = tid;
 
     // 构造查询条件
     QueryWrapper<Book> queryWrapper = new QueryWrapper<>();
@@ -168,7 +168,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
 
         // 构造查询条件
         QueryWrapper<Book> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("bname", BnameOrAuthor).or().like("author", BnameOrAuthor);
+        queryWrapper.orderByAsc("tid").like("bname", BnameOrAuthor).or().like("author", BnameOrAuthor) ;
 
         // 构造分页对象
         Page<Map<String, Object>> mapPage = new Page<>(page, pageSize);

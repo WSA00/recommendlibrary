@@ -2,7 +2,7 @@
   <main class="w-full h-auto flex flex-col items-center gap-6">
     <!-- 头部 -->
     <header class="w-full flex justify-between">
-      <h1 class="text-2xl font-bold">图书总览</h1>
+      <h1 class="text-2xl font-bold">搜索总览</h1>
     </header>
            
     <!-- 图书列表 -->
@@ -39,7 +39,7 @@ import BookDetail from '@/views/home/book-area/BookDetail.vue';
 import { createNamespacedHelpers } from 'vuex'
 const { mapGetters, mapMutations, mapActions } = createNamespacedHelpers("bookArea")
 export default {
-  name: "BookArea",
+  name: "SearchArea",
   components: {
     BookCard, BookDetail
   },
@@ -48,7 +48,7 @@ export default {
     }
   },
   async created() {
-    this.setDataReady(false)
+    this.setDataReady(false);
     const q = this.$route.query.q; // 获取路由参数 q
     const { source } = await this.fetchSource2({ string: q }); // 调用 fetchSource2 方法，并传递 q 参数
     this.setSource(source); // 设置数据源
@@ -67,19 +67,33 @@ export default {
     ...mapActions([
       "fetchSource","fetchSource2"
     ]),
-    // 处理页数切换
-    async handleCurrentChange(newPage) {
-      this.setDataReady(false)
-      this.setPage(newPage)
-      const q = this.$route.query.q; // 获取路由参数 q
-      const { source } = await this.fetchSource2({ string: q }); // 调用 fetchSource2 方法，并传递 q 参数
-      this.setSource(source); // 设置数据源
+    async fetchData() {
+      this.setDataReady(false);
+      const q = this.$route.query.q;
+      const { source } = await this.fetchSource2({ string: q });
+      this.setSource(source);
       await sleep();
       this.setDataReady(true);
+    },
+    handleCurrentChange(newPage) {
+      this.setPage(newPage);
+      this.fetchData();
+    },
+    handleSearchInput() {
+      this.fetchData(); // 处理搜索输入变化时的数据获取
+    }
+  },
+  watch: {
+    // 监听 $route.query.q 的变化，确保数据同步更新
+    '$route.query.q'(newQ, oldQ) {
+      if (newQ !== oldQ) {
+        this.fetchData();
+      }
     }
   }
 }
 </script>
+
 
 <style scoped>
   .aspect {
