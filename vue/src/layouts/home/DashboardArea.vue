@@ -25,12 +25,12 @@
     <article class="w-full h-auto flex gap-6 select-none">
       <!-- 柱状图 -->
       <section class="flex-1 h-auto bg-white rounded-xl py-10 flex flex-col gap-10">
-        <h1 class="text-left font-bold text-xl pl-10">员工销售榜 (近 5 年榜单, 前 7 名数据)</h1>
+        <h1 class="text-left font-bold text-xl pl-10">活跃读者榜 (近 5 年榜单, 前 7 名数据)</h1>
         <HistogramChart class="w-full h-96"/>
       </section>
       <!-- 折线图 -->
       <section class="flex-1 h-auto bg-white rounded-xl py-10 flex flex-col gap-10">
-        <h1 class="text-left font-bold text-xl pl-10">汽车热销榜 (近 10 年榜单, 前 7 名数据)</h1>
+        <h1 class="text-left font-bold text-xl pl-10">热门图书榜 (近 10 年榜单, 前 7 名数据)</h1>
         <LineChart class="w-full h-96"/>
       </section>
     </article>
@@ -52,11 +52,11 @@ export default {
   async created() {
     await sleep()
     const { total: income } = await api.get("/api/chart/total/income")
-    const { total: sales } = await api.get("/api/chart/total/sales")
+    const { total: orders } = await api.get("/api/chart/total/orders")
     const { total: warehouses } = await api.get("/api/chart/total/warehouses")
     const { total: users } = await api.get("/api/chart/total/users")
     this.income = income 
-    this.sales = sales 
+    this.orders = orders 
     this.warehouses = warehouses 
     this.users = users 
     this.dataReady = true
@@ -65,7 +65,7 @@ export default {
     return {
       dataReady: false,
       income: 0,
-      sales: 0,
+      orders: 0,
       warehouses: 0,
       users: 0
     }
@@ -84,7 +84,7 @@ export default {
         {
           icon: "el-icon-s-marketing text-3xl",
           title: "汽车成交量",
-          value: this.sales || 0,
+          value: this.orders || 0,
           rate: 0.52,
           color: "#ff7e86",
           component: DashboardChart
@@ -99,7 +99,7 @@ export default {
         },
         {
           icon: "el-icon-menu",
-          title: "员工总数",
+          title: "读者总数",
           value: this.users || 0,
           rate: 0.77,
           color: "#70cf97",

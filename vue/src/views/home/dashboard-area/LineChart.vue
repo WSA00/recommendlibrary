@@ -30,7 +30,7 @@ echarts.use([
 export default {
     name: "LineChart",
     async mounted() {
-        const { xList, source } = await api.get("/api/chart/ranking/car")
+        const { xList, source } = await api.get("/api/chart/ranking/book")
         this.xList = xList
         this.source = source
         this.InitChart()
@@ -48,8 +48,8 @@ export default {
             const datasetWithFilters = [];
             const seriesList = [];
 
-            echarts.util.each(this.xList, (product) => {
-                let datasetId = 'dataset_' + product
+            echarts.util.each(this.xList, (book) => {
+                let datasetId = 'dataset_' + book
                 datasetWithFilters.push({
                     id: datasetId,
                     fromDatasetId: 'dataset_raw',
@@ -58,7 +58,7 @@ export default {
                         config: {
                             and: [
                                 { dimension: 'year', gte: 2013 },
-                                { dimension: 'product', '=': product }
+                                { dimension: 'book', '=': book }
                             ]
                         }
                     }
@@ -67,7 +67,7 @@ export default {
                     type: 'line',
                     datasetId: datasetId,
                     showSymbol: false,
-                    name: product,
+                    name: book,
                     endLabel: {
                         show: true,
                         formatter: function (params) {
@@ -82,10 +82,10 @@ export default {
                     },
                     encode: {
                         x: 'year',
-                        y: 'sales',
-                        label: ['product', 'sales'],
+                        y: 'orders',
+                        label: ['book', 'orders'],
                         itemName: 'year',
-                        tooltip: ['sales']
+                        tooltip: ['orders']
                     }
                 })
             })
