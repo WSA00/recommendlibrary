@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.library.pojo.History;
 import org.apache.ibatis.annotations.Param;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface HistoryMapper extends BaseMapper<History> {
@@ -45,10 +44,11 @@ public interface HistoryMapper extends BaseMapper<History> {
 
     void UpdateHistoryTimesAndEndTimeById(Integer hid);//续借
 
-    void UpdateHistoryStatusAndEndTimeById(Integer hid, LocalDateTime currentTime);//归还
+    void UpdateHistoryStatusAndEndTimeById(Integer hid);//归还
 
     Integer selectHistoryCountByUid(Integer uid);
 
     Integer selectNoHistoryCountByUid(Integer uid);
 
+    Integer selectMonthCountById(Integer id);
 }

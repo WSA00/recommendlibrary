@@ -8,7 +8,7 @@
       </el-card>
 
       <!-- 我的信息 -->
-      <el-card v-loading="!getUser || !count " shadow="never">
+      <el-card v-loading="!getUser || !count || !monthcount" shadow="never">
         <h1 slot="header" class="clearfix text-xl font-bold">我的信息</h1>
         <el-descriptions :border="true" :column="1" :labelStyle="{ 'color': 'black', 'white-space': 'nowrap' }">
           <el-descriptions-item label="用户名">{{ getUser?.username }}</el-descriptions-item>
@@ -18,7 +18,8 @@
             <el-tag v-if="getUser?.role==='USER'" size="small">普通用户</el-tag>
             <el-tag v-if="getUser?.role==='ROOT'" size="small">管理员</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="借阅量">{{ count }}</el-descriptions-item>
+          <el-descriptions-item label="总借阅量">{{ count }}</el-descriptions-item>
+          <el-descriptions-item label="本月借阅量">{{ monthcount }}</el-descriptions-item>
         </el-descriptions>
       </el-card>
     </aside>
@@ -72,12 +73,14 @@ export default {
     await sleep()
     const response = await api.get(`/api/user/${this.getUser?.id}/history`, { token: localStorage.getItem("token") })
     this.count = response?.count
+    this.monthcount = response?.monthcount
     this.source = response?.source || []
   },
   data() {
     return {
       source: [],
-      count: ""
+      count: "",
+      monthcount: ""
     }
   },
   computed: {

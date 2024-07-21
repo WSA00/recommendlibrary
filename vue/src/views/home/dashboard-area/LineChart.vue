@@ -38,7 +38,7 @@ export default {
     data() {
         return {
             xName: "年份",
-            yName: "销量",
+            yName: "借阅量",
             xList: new Array(),
             source: new Array()
         }

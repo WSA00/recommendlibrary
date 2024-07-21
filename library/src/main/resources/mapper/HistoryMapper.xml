@@ -71,10 +71,17 @@
         where `history`.uid = #{uid}
     </select>
 
+    <select id="selectMonthCountById" resultType="java.lang.Integer">
+        select count(*)
+        from `history`
+        where `history`.uid = #{uid}
+          and `history`.begin_time >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+    </select>
+
     <update id="UpdateHistoryStatusAndEndTimeById" parameterType="java.util.Map">
         update `history`
         set status = 1,
-            end_time = #{currentTime}
+            end_time = NOW()
         where `history`.id = #{hid}
     </update>
 

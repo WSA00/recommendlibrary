@@ -16,18 +16,6 @@
             label-position="left"
             class="flex flex-col items-start"
         >
-
-            <!-- 请选择图书 -->
-            <el-form-item label="图书" prop="bid">
-                <el-select v-model="form.bid" @change="changeBook" filterable placeholder="请选择图书" clearable>
-                    <el-option
-                        v-for="item in books"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                    ></el-option>
-                </el-select>
-            </el-form-item>
             <!-- 请选择仓库 -->
             <el-form-item label="仓库" prop="wid">
                 <el-select v-model="form.wid" @change="changeWarehouse" filterable placeholder="请选择仓库" clearable>
@@ -39,6 +27,19 @@
                     ></el-option>
                 </el-select>
             </el-form-item>
+            
+            <!-- 请选择图书 -->
+            <el-form-item label="图书" prop="bid">
+                <el-select v-model="form.bid" @change="changeBook" filterable placeholder="请选择图书" clearable>
+                    <el-option
+                        v-for="item in books"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                    ></el-option>
+                </el-select>
+            </el-form-item>
+            
             <!-- 请选择创建时间 -->
             <el-form-item label="创建时间" required>
                 <el-row class="flex justify-start max-w-md">

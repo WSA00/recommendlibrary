@@ -192,8 +192,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
     @Override
     public Result dealHistoryById(Integer id) {
 
-        LocalDateTime currentTime = LocalDateTime.now();  // 获取当前时间
-        historyMapper.UpdateHistoryStatusAndEndTimeById(id,currentTime);           //修改状态0==》1,createtime=>currentTime
+        historyMapper.UpdateHistoryStatusAndEndTimeById(id);           //修改状态0==》1,createtime=>currentTime
 
         History history = historyMapper.selectHistoryById(id);
         Map data = new LinkedHashMap();

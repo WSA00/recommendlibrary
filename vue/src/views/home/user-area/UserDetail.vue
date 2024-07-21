@@ -7,8 +7,8 @@
   width="800px"
 > 
   <el-row class="w-full h-64 flex">
-    <DashboardChartVue :title="'借阅量（本）'" :value="count" :color="'#a162f7'" :rate="count" class="w-full h-full"/>
-    <DashboardChartVue :title="'本月借阅(本)'" :value="sales" :color="'#a162f7'" :rate="sales / average_sales" class="w-full h-full"/>
+    <DashboardChartVue :title="'总借阅量（本）'" :value="count" :color="'#a162f7'" :rate="count" class="w-full h-full"/>
+    <DashboardChartVue :title="'本月借阅(本)'" :value="monthcount" :color="'#a162f7'" :rate="monthcount/count" class="w-full h-full"/>
   </el-row>
   
   <section class="rounded-xl w-full h-96 overflow-auto">
@@ -56,6 +56,9 @@ export default {
   computed: {
     count() {
       return this.getUserDetail?.count || 0
+    },
+    monthcount() {
+      return this.getUserDetail?.monthcount || 0
     },
     source() {
       return this.getUserDetail?.source || []

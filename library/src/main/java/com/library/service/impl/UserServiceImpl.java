@@ -51,13 +51,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public Result userHistory(Integer id) {
         //指定用户总借阅量
         Integer count = userMapper.selectUtimesById(id);
-//        //指定用户总销售额
-//        Double sales = orderMapper.salesOrderByUserId(id);
-//        //所有用户的平均售卖的订单数
-//        Integer average_count = orderMapper.AverageCountOrderByUserId();
-//        //所有用户平均销售额
-//        Double average_sales = orderMapper.AverageSalesOrderByUserId();
-        //指定用户订单信息
+
+        //指定用户本月借阅量
+        Integer monthcount = historyMapper.selectMonthCountById(id);
+
+        //指定用户借阅信息
         List<History> historyList = historyMapper.selectHistoryByUserId(id);
 
         // 创建用于存放转换后数据的列表
@@ -84,6 +82,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         Map data = new LinkedHashMap();
         data.put("count",count);
+        data.put("monthcount",monthcount);
         data.put("source",userhistoryResponseList);
 
         return Result.ok(data);
