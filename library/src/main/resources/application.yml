@@ -23,8 +23,10 @@ mybatis-plus:
   type-aliases-package: com.library.pojo
   global-config:
     db-config:
-      logic-delete-field: isDeleted  #全局逻辑删除
-      id-type: auto #主键策略自增长
+      logic-delete-field: isDeleted
+      id-type: auto
+  configuration:
+    map-underscore-to-camel-case: false
 
 jwt:
   token:

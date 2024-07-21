@@ -2,7 +2,6 @@ package com.library.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.library.pojo.History;
-import com.library.response.historyResponse;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
@@ -42,7 +41,7 @@ public interface HistoryMapper extends BaseMapper<History> {
 
     Integer selectSalesByYearAndCarId(@Param("year") Integer year, @Param("id") Integer id);
 
-    List<historyResponse> selectHistoryByUserId(@Param("uid") String uid);
+    List<History> selectHistoryByUserId( Integer uid);
 
     void UpdateHistoryTimesAndEndTimeById(Integer hid);//续借
 

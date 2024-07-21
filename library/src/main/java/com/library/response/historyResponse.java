@@ -19,7 +19,7 @@ public class historyResponse {
 
     private String phone;
 
-    private String warehouse;
+    private String location;
 
     private Date begin_time;
 

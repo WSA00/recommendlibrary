@@ -28,7 +28,7 @@
                     <el-option label="管理员" value="ROOT"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="入职时间" required>
+            <el-form-item label="注册时间" required>
                 <el-row class="flex justify-start max-w-md">
                     <el-form-item prop="date">
                         <el-date-picker 

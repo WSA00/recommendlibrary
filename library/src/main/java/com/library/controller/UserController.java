@@ -17,7 +17,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("{id}/history")
-    public Result userHistory(@PathVariable String id){
+    public Result userHistory(@PathVariable Integer id){
         return userService.userHistory(id);
     }
 

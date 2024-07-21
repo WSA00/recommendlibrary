@@ -6,9 +6,9 @@
 
     <resultMap id="BaseResultMap" type="com.library.pojo.History">
         <id property="id" column="id" jdbcType="INTEGER"/>
-        <id property="uid" column="uid" jdbcType="INTEGER"/>
-        <id property="bid" column="bid" jdbcType="INTEGER"/>
-        <id property="wid" column="wid" jdbcType="INTEGER"/>
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+        <result property="bid" column="bid" jdbcType="INTEGER"/>
+        <result property="wid" column="wid" jdbcType="INTEGER"/>
         <result property="begin_time" column="begin_time" jdbcType="TIMESTAMP"/>
         <result property="end_time" column="end_time" jdbcType="TIMESTAMP"/>
         <result property="times" column="times" jdbcType="INTEGER"/>
@@ -17,9 +17,15 @@
 
     <sql id="Base_Column_List">
         id,uid,bid,wid,
-        begin_time,end_time
+        begin_time,end_time,
         times,status
     </sql>
+
+    <select id="selectHistoryByUserId" resultType="com.library.pojo.History">
+        select * from `history`
+        where `history`.uid = #{uid}
+        ORDER BY `status` ASC
+    </select>
 
     <delete id="deleteHistoryById">
         delete

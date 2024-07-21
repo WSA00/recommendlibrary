@@ -7,8 +7,8 @@
   width="800px"
 > 
   <el-row class="w-full h-64 flex">
-    <DashboardChartVue :title="'共售出(台)'" :value="count" :color="'#a162f7'" :rate="count / average_count" class="w-full h-full"/>
-    <DashboardChartVue :title="'总经营(万元)'" :value="sales" :color="'#a162f7'" :rate="sales / average_sales" class="w-full h-full"/>
+    <DashboardChartVue :title="'借阅量（本）'" :value="count" :color="'#a162f7'" :rate="count" class="w-full h-full"/>
+    <DashboardChartVue :title="'本月借阅(本)'" :value="sales" :color="'#a162f7'" :rate="sales / average_sales" class="w-full h-full"/>
   </el-row>
   
   <section class="rounded-xl w-full h-96 overflow-auto">
@@ -21,11 +21,24 @@
       header-cell-class-name="text-black" 
     >
       <!-- 占位列 -->
-      <el-table-column prop="id" label="订单号" width="80"></el-table-column>
-      <el-table-column prop="name" label="品牌" width="80"></el-table-column>
-      <el-table-column prop="model" label="型号" width="100"></el-table-column>
+      <el-table-column prop="id" label="借阅号" width="80"></el-table-column>
+      <el-table-column prop="bname" label="图书名称" width="120"></el-table-column>
+      <el-table-column prop="author" label="作者" width="90"></el-table-column>
+      <el-table-column prop="press" label="出版社" width="100"></el-table-column>
       <el-table-column prop="location" label="来源仓库"></el-table-column>
-      <el-table-column prop="createtime" label="交易时间" :formatter="formatCreatetime" width="180"></el-table-column>
+      <el-table-column label="创建时间"
+                width="160">
+                    <template slot-scope="scope">
+                    <p>{{ new Date(scope.row.begin_time).toLocaleDateString() + " " + new Date(scope.row.begin_time).toLocaleTimeString().slice(0,5) }}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column label="截止/归还时间"
+                    width="160">
+                    <template slot-scope="scope">
+                    <p>{{ new Date(scope.row.end_time).toLocaleDateString() + " " + new Date(scope.row.end_time).toLocaleTimeString().slice(0,5) }}</p>
+                    </template>
+                </el-table-column>
+      <el-table-column prop="status" label="状态" :formatter="formatStatus" width="90" ></el-table-column>
     </el-table>
     <el-empty v-if="!source?.length" class="text-gray-300 font-bold">空空如也</el-empty>
   </section>
@@ -44,15 +57,6 @@ export default {
     count() {
       return this.getUserDetail?.count || 0
     },
-    sales() {
-      return this.getUserDetail?.sales || 0
-    },
-    average_count() {
-      return this.getUserDetail?.average_count || 0
-    },
-    average_sales() {
-      return this.getUserDetail?.average_sales || 0
-    },
     source() {
       return this.getUserDetail?.source || []
     },
@@ -69,10 +73,11 @@ export default {
     }
   },
   methods: {
-    // 格式化 - createtime
-    formatCreatetime(row) {
-      const date = new Date(row.createtime)
-      return date.toLocaleString()
+    formatStatus(row, column) {
+    // row 是当前行的数据对象
+    // column 是当前列的配置对象
+    const status = row[column.property]; // 获取 status 属性的值，即 0 或 1
+    return status === 0 ? '借阅中' : '已归还';
     },
     ...mapMutations([
       "setDialogTableVisible"

@@ -16,8 +16,6 @@ public interface HistoryService extends IService<History> {
 
     Result selectHistoryById(Integer id);
 
-    Result UpdateHistoryById(Integer id);
-
     Result createHistory(History history);
 
     Result deleteHistoryById(Integer id);

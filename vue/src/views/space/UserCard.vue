@@ -8,7 +8,7 @@
       </el-card>
 
       <!-- 我的信息 -->
-      <el-card v-loading="!getUser || !count || !sales" shadow="never">
+      <el-card v-loading="!getUser || !count " shadow="never">
         <h1 slot="header" class="clearfix text-xl font-bold">我的信息</h1>
         <el-descriptions :border="true" :column="1" :labelStyle="{ 'color': 'black', 'white-space': 'nowrap' }">
           <el-descriptions-item label="用户名">{{ getUser?.username }}</el-descriptions-item>
@@ -18,29 +18,42 @@
             <el-tag v-if="getUser?.role==='USER'" size="small">普通用户</el-tag>
             <el-tag v-if="getUser?.role==='ROOT'" size="small">管理员</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="出货量">{{ count }}</el-descriptions-item>
-          <el-descriptions-item label="营业额">{{ sales }}</el-descriptions-item>
+          <el-descriptions-item label="借阅量">{{ count }}</el-descriptions-item>
         </el-descriptions>
       </el-card>
     </aside>
 
     <!-- 我的借阅 -->
-    <el-card v-loading="!source?.length" shadow="never" class="w-full h-auto">
+    <el-card shadow="never" class="w-full h-auto">
       <h1 slot="header" class="clearfix text-xl font-bold">我的借阅</h1>
       <article class="w-full flex flex-col justify-start items-start p-4 rounded-lg relative overflow-hidden" style="height: 960px;">
-        <section class="w-full h-full overflow-auto absolute top-0 left-0">
+        <section v-if="source && source.length > 0" class="w-full h-full overflow-auto absolute top-0 left-0">
           <el-table
             :data="source"
             stripe
             style="width: 100%;"
-            header-cell-class-name="text-black" 
+            header-cell-class-name="text-black"
           >
-            <el-table-column prop="id" fixed label="订单号" width="80"></el-table-column>
-            <el-table-column prop="name" label="品牌"></el-table-column>
-            <el-table-column prop="model" label="型号"></el-table-column>
-            <el-table-column prop="location" label="来源仓库"></el-table-column>
-            <el-table-column prop="createtime" fixed label="交易时间" width="150" :formatter="formatCreatetime"></el-table-column>
+            <el-table-column prop="id" fixed label="借阅号" width="80"></el-table-column>
+            <el-table-column prop="bname" label="图书名称" width="150"></el-table-column>
+            <el-table-column prop="author" label="作者" width="165"></el-table-column>
+            <el-table-column prop="press" label="出版社" width="165"></el-table-column>
+            <el-table-column prop="location" label="来源仓库" width="180"></el-table-column>
+            <el-table-column label="创建时间" width="180">
+              <template slot-scope="scope">
+                <p>{{ new Date(scope.row.begin_time).toLocaleDateString() + " " + new Date(scope.row.begin_time).toLocaleTimeString().slice(0,5) }}</p>
+              </template>
+            </el-table-column>
+            <el-table-column label="截止/归还时间" width="180">
+              <template slot-scope="scope">
+                <p>{{ new Date(scope.row.end_time).toLocaleDateString() + " " + new Date(scope.row.end_time).toLocaleTimeString().slice(0,5) }}</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="status" label="状态" :formatter="formatStatus" width="120"></el-table-column>
           </el-table>
+        </section>
+        <section v-else class="w-full h-full flex items-center justify-center absolute top-0 left-0">
+          <p class="text-5xl text-blue-1000">空空如也</p>
         </section>
       </article>
     </el-card>
@@ -54,23 +67,17 @@ import { mapGetters } from "vuex"
 import { createNamespacedHelpers } from "vuex"
 const { mapActions: mapUserActions } = createNamespacedHelpers("userArea")
 export default {
-  name: "UserCard",//需要修改，借阅记录
+  name: "UserCard",
   async created() {
     await sleep()
     const response = await api.get(`/api/user/${this.getUser?.id}/history`, { token: localStorage.getItem("token") })
-    this.source = response?.source || []
-    this.average_count = response?.average_count
-    this.average_sales = response?.average_sales
     this.count = response?.count
-    this.sales = response?.sales
+    this.source = response?.source || []
   },
   data() {
     return {
       source: [],
-      average_count: "",
-      average_sales: "",
-      count: "",
-      sales: ""
+      count: ""
     }
   },
   computed: {
@@ -85,10 +92,11 @@ export default {
     ...mapUserActions([
       "fetchUserDetail"
     ]),
-    // 格式化 - createtime
-    formatCreatetime(row) {
-      const date = new Date(row.createtime)
-      return date.toLocaleString()
+    formatStatus(row, column) {
+    // row 是当前行的数据对象
+    // column 是当前列的配置对象
+    const status = row[column.property]; // 获取 status 属性的值，即 0 或 1
+    return status === 0 ? '借阅中' : '已归还';
     }
   }
 }

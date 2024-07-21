@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.library.mapper.BookMapper;
 import com.library.mapper.HistoryMapper;
+import com.library.mapper.WarehouseMapper;
+import com.library.pojo.History;
 import com.library.pojo.User;
 import com.library.response.*;
 import com.library.service.UserService;
@@ -36,10 +39,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     private HistoryMapper historyMapper;
 
     @Autowired
+    private BookMapper bookMapper;
+
+    @Autowired
+    private WarehouseMapper warehouseMapper;
+
+    @Autowired
     private JwtHelper jwtHelper;
 
     @Override
-    public Result userHistory(String id) {
+    public Result userHistory(Integer id) {
         //指定用户总借阅量
         Integer count = userMapper.selectUtimesById(id);
 //        //指定用户总销售额
@@ -49,12 +58,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 //        //所有用户平均销售额
 //        Double average_sales = orderMapper.AverageSalesOrderByUserId();
         //指定用户订单信息
-        List<historyResponse> historyResponseList = historyMapper.selectHistoryByUserId(id);
+        List<History> historyList = historyMapper.selectHistoryByUserId(id);
+
+        // 创建用于存放转换后数据的列表
+        List<historyResponse> userhistoryResponseList = new ArrayList<>();
+
+        // 遍历历史记录列表，转换并封装到historyResponseList中
+        for (History history : historyList) {
+
+            historyResponse historyResponse = new historyResponse();
+            historyResponse.setId(history.getId());
+            historyResponse.setBname(bookMapper.selectBnameById(history.getBid()));
+            historyResponse.setAuthor(bookMapper.selectBookAuthorById(history.getBid()));
+            historyResponse.setPress(bookMapper.selectBookPressById(history.getBid()));
+            historyResponse.setLocation(warehouseMapper.selectLocationById(history.getWid()));
+            historyResponse.setBegin_time(history.getBegin_time());
+            historyResponse.setEnd_time(history.getEnd_time());
+            historyResponse.setTimes(history.getTimes());
+            historyResponse.setStatus(history.getStatus());
+            // 将封装好的historyResponse对象添加到列表中
+            userhistoryResponseList.add(historyResponse);
+        }
+
 
 
         Map data = new LinkedHashMap();
         data.put("count",count);
-        data.put("source",historyResponseList);
+        data.put("source",userhistoryResponseList);
 
         return Result.ok(data);
 

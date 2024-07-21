@@ -44,7 +44,7 @@
                     width="120"
                 ></el-table-column>
                 <el-table-column
-                    prop="warehouse"
+                    prop="location"
                     label="来源仓库"
                     width="200"
                 ></el-table-column>

@@ -37,5 +37,5 @@ public interface UserService extends IService<User> {
 
     Result updatePassword(String id, ChangePassword changePassword);
 
-    Result userHistory(String id);
+    Result userHistory(Integer id);
 }

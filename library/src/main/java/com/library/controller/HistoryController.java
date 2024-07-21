@@ -28,12 +28,6 @@ public class HistoryController {
     }
 
     @PreAuthorize("hasAnyAuthority('ROOT','USER')")
-    @PatchMapping("{id}")
-    public Result UpdateHistoryById(@PathVariable Integer id){
-        return historyService.UpdateHistoryById(id);
-    }
-
-    @PreAuthorize("hasAnyAuthority('ROOT','USER')")
     @PostMapping("")
     public Result createHistory(@RequestBody History history){
         return historyService.createHistory(history);

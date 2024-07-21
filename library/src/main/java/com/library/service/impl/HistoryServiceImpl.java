@@ -59,7 +59,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
             historyResponse.setPress(bookMapper.selectBookPressById(record.getBid()));
             historyResponse.setUser(userMapper.selectUserNameById(record.getUid()));
             historyResponse.setPhone(userMapper.selectUserPhoneById(record.getUid()));
-            historyResponse.setWarehouse(warehouseMapper.selectLocationById(record.getWid()));
+            historyResponse.setLocation(warehouseMapper.selectLocationById(record.getWid()));
             historyResponse.setBegin_time(record.getBegin_time());
             historyResponse.setEnd_time(record.getEnd_time());
             historyResponse.setTimes(record.getTimes());
@@ -102,7 +102,7 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
             historyResponse.setPress(bookMapper.selectBookPressById(record.getBid()));
             historyResponse.setUser(userMapper.selectUserNameById(record.getUid()));
             historyResponse.setPhone(userMapper.selectUserPhoneById(record.getUid()));
-            historyResponse.setWarehouse(warehouseMapper.selectLocationById(record.getWid()));
+            historyResponse.setLocation(warehouseMapper.selectLocationById(record.getWid()));
             historyResponse.setBegin_time(record.getBegin_time());
             historyResponse.setEnd_time(record.getEnd_time());
             historyResponse.setTimes(record.getTimes());
@@ -131,20 +131,6 @@ public class HistoryServiceImpl extends ServiceImpl<HistoryMapper, History>
 
         return Result.ok(data);
 
-    }
-
-
-    @Override
-    public Result UpdateHistoryById(Integer id) {
-        History history = new History();
-
-        //updateOrderResponse updateOrderResponse = new updateOrderResponse(order);
-
-        Map data = new LinkedHashMap();
-        data.put("tip","成功修改借阅记录");
-        //data.put("order",updateOrderResponse);
-
-        return Result.ok(data);
     }
 
     @Override
