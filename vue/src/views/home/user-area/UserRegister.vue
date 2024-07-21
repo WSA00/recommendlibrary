@@ -34,8 +34,8 @@
                     <el-input type="password" v-model="form.passwordConfirmed" autocomplete="off"></el-input>
                 </el-form-item>
             </el-row>
-            <el-form-item label="职位" prop="role">
-                <el-select v-model="form.role" placeholder="请选择职位">
+            <el-form-item label="权限" prop="role">
+                <el-select v-model="form.role" placeholder="请设置用户权限">
                     <el-option label="普通用户" value="USER"></el-option>
                     <el-option label="管理员" value="ROOT"></el-option>
                 </el-select>
@@ -55,9 +55,6 @@
                         <el-time-picker placeholder="选择时间" v-model="form.time"></el-time-picker>
                     </el-form-item>
                 </el-row>
-            </el-form-item>
-            <el-form-item label="家庭住址" prop="address" class="w-full">
-                <el-input type="textarea" v-model="form.address"></el-input>
             </el-form-item>
         </el-form>
         <section slot="footer" class="dialog-footer">
@@ -107,8 +104,7 @@ export default {
                 passwordConfirmed: 'admin123',
                 role: '',
                 date: new Date(),
-                time: new Date(),
-                address: ''
+                time: new Date()
             },
             rules: {
                 username: [
@@ -128,8 +124,7 @@ export default {
                 ],
                 role: { required: true, message: '请选择角色权限', trigger: 'change' },
                 date: { required: true, message: '请选择注册日期', trigger: 'change' },
-                time: { required: true, message: '请选择注册时间', trigger: 'change' },
-                address: { required: true, message: '请输入家庭住址', trigger: 'blur' }
+                time: { required: true, message: '请选择注册时间', trigger: 'change' }
             },
             pickerOptions: {
                 disabledDate(time) {
@@ -165,7 +160,7 @@ export default {
                 if(valid) {
                     // 清空预览图片
                     this.setPreviewImage(null)
-                    const { username, phone, password, passwordConfirmed, role, address } = this.form
+                    const { username, phone, password, passwordConfirmed, role } = this.form
                     // 合并表单中的日期与时间
                     const date = new Date(this.form.date)
                     const time = new Date(this.form.time)
@@ -189,7 +184,6 @@ export default {
                         password,
                         passwordConfirmed,
                         role,
-                        address,
                         joined_date,
                         avatar
                     })

@@ -78,4 +78,10 @@
         from `user`
         where `user`.`id` = #{uid}
     </select>
+
+    <select id="selectUtimesById" resultType="java.lang.Integer">
+        select `user`.`utimes`
+        from `user`
+        where `user`.`id` = #{uid}
+    </select>
 </mapper>

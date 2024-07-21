@@ -2,17 +2,13 @@ package com.library.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.library.pojo.History;
-import com.library.response.UserHistoryResponse;
+import com.library.response.historyResponse;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface HistoryMapper extends BaseMapper<History> {
-
-    Integer deleteHistoryByBookId(@Param("bid") Integer bid);
-
-    void deleteHistoryByWarehouseId(@Param("wid") Integer wid);
 
     Long selectHistoryCount();
 
@@ -21,8 +17,6 @@ public interface HistoryMapper extends BaseMapper<History> {
     List<History> selectHistoryPageByUid(@Param("uid")Integer uid,@Param("page") Integer page, @Param("pageSize") Integer pageSize);
 
     History selectHistoryById(@Param("hid") Integer hid);
-
-    void updateHistoryById(@Param("TableHistory") History TableHistory);
 
     void deleteHistoryById(@Param("id") Integer id);
 
@@ -48,16 +42,7 @@ public interface HistoryMapper extends BaseMapper<History> {
 
     Integer selectSalesByYearAndCarId(@Param("year") Integer year, @Param("id") Integer id);
 
-
-    List<UserHistoryResponse> selectHistoryByUserId(@Param("uid") String uid);
-
-    Integer countHistoryByUserId(@Param("uid") String uid);
-
-    Double salesHistoryByUserId(@Param("uid") String uid);
-
-    Integer AverageCountHistoryByUserId();//平均借阅量
-
-    Double AverageSalesOrderByUserId();
+    List<historyResponse> selectHistoryByUserId(@Param("uid") String uid);
 
     void UpdateHistoryTimesAndEndTimeById(Integer hid);//续借
 

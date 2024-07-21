@@ -31,11 +31,11 @@ public interface UserService extends IService<User> {
 
     Result deleteUser(Integer id);
 
-//    Result userOrder(String id);
-
     Result checkPhone(@Param("phone") String phone);
 
     Result getAllUser();
 
     Result updatePassword(String id, ChangePassword changePassword);
+
+    Result userHistory(String id);
 }

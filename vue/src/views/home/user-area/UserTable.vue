@@ -23,20 +23,20 @@
                 </el-table-column>
                 <!-- 第 2 列: 电话 -->
                 <el-table-column prop="phone" label="电话" min-width="150"></el-table-column>
-                <!-- 第 2 列: 电话 -->
-                <el-table-column label="职位">
+                <!-- 第 3 列: 权限 -->
+                <el-table-column label="权限">
                     <template slot-scope="scope">
                         <p v-if="scope.row.role === 'USER'">普通用户</p>
                         <p v-else-if="scope.row.role === 'ROOT'">管理员</p>
                     </template>
                 </el-table-column>
-                <!-- 第 3 列: 注册日期 -->
+                <!-- 第 4 列: 注册日期 -->
                 <el-table-column label="注册日期"  min-width="120">
                     <template slot-scope="scope">
                         <p>{{ new Date(scope.row.joined_date).toLocaleDateString() }}</p>
                     </template>
                 </el-table-column>
-                <!-- 第 4 列: 其他操作(详情 & 编辑) -->
+                <!-- 第 5 列: 其他操作(详情 & 编辑) -->
                 <el-table-column fixed="right" label="其他操作" width="150">
                     <template slot-scope="scope">
                         <el-button @click="handleDetail(scope.row)" type="text">详情</el-button>

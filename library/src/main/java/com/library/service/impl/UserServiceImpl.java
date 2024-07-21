@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.library.mapper.HistoryMapper;
 import com.library.pojo.User;
 import com.library.response.*;
 import com.library.service.UserService;
@@ -31,36 +32,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Autowired
     private UserMapper userMapper;
 
-//    @Autowired
-//    private OrderMapper orderMapper;
+    @Autowired
+    private HistoryMapper historyMapper;
 
     @Autowired
     private JwtHelper jwtHelper;
 
-//    @Override
-//    public Result userOrder(String id) {
-//        //指定用户总共售卖的订单数
-//        Integer count = orderMapper.countOrderByUserId(id);
+    @Override
+    public Result userHistory(String id) {
+        //指定用户总借阅量
+        Integer count = userMapper.selectUtimesById(id);
 //        //指定用户总销售额
 //        Double sales = orderMapper.salesOrderByUserId(id);
 //        //所有用户的平均售卖的订单数
 //        Integer average_count = orderMapper.AverageCountOrderByUserId();
 //        //所有用户平均销售额
 //        Double average_sales = orderMapper.AverageSalesOrderByUserId();
-//        //指定用户订单信息
-//        List<UserHistoryResponse> orders = orderMapper.selectOrderByUserId(id);
-//
-//
-//        Map data = new LinkedHashMap();
-//        data.put("count",count);
-//        data.put("sales",sales);
-//        data.put("average_count",average_count);
-//        data.put("average_sales",average_sales);
-//        data.put("source",orders);
-//
-//        return Result.ok(data);
-//
-//    }
+        //指定用户订单信息
+        List<historyResponse> historyResponseList = historyMapper.selectHistoryByUserId(id);
+
+
+        Map data = new LinkedHashMap();
+        data.put("count",count);
+        data.put("source",historyResponseList);
+
+        return Result.ok(data);
+
+    }
 
 
     @Override
@@ -142,7 +140,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             user.setUsername((String) record.get("username"));
             user.setPhone((String) record.get("phone"));
             user.setJoined_date((LocalDateTime) record.get("joined_date"));
-            //user.setAddress((String) record.get("address"));
             user.setRole((String) record.get("role"));
             list.add(user);
         }

@@ -13,10 +13,9 @@
         <el-descriptions :border="true" :column="1" :labelStyle="{ 'color': 'black', 'white-space': 'nowrap' }">
           <el-descriptions-item label="用户名">{{ getUser?.username }}</el-descriptions-item>
           <el-descriptions-item label="手机号">{{ getUser?.phone }}</el-descriptions-item>
-          <el-descriptions-item label="居住地">{{ getUser?.address }}</el-descriptions-item>
-          <el-descriptions-item label="入职时间">{{ joined_date }}</el-descriptions-item>
-          <el-descriptions-item label="职位">
-            <el-tag v-if="getUser?.role==='USER'" size="small">职员</el-tag>
+          <el-descriptions-item label="注册时间">{{ joined_date }}</el-descriptions-item>
+          <el-descriptions-item label="权限">
+            <el-tag v-if="getUser?.role==='USER'" size="small">普通用户</el-tag>
             <el-tag v-if="getUser?.role==='ROOT'" size="small">管理员</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="出货量">{{ count }}</el-descriptions-item>
@@ -25,9 +24,9 @@
       </el-card>
     </aside>
 
-    <!-- 我的订单 -->
+    <!-- 我的借阅 -->
     <el-card v-loading="!source?.length" shadow="never" class="w-full h-auto">
-      <h1 slot="header" class="clearfix text-xl font-bold">我的订单</h1>
+      <h1 slot="header" class="clearfix text-xl font-bold">我的借阅</h1>
       <article class="w-full flex flex-col justify-start items-start p-4 rounded-lg relative overflow-hidden" style="height: 960px;">
         <section class="w-full h-full overflow-auto absolute top-0 left-0">
           <el-table

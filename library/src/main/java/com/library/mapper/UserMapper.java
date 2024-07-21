@@ -33,6 +33,8 @@ public interface UserMapper extends BaseMapper<User> {
     Integer selectNumById(Integer uid);
 
     Integer selectTimesById(Integer uid);
+
+    Integer selectUtimesById(String uid);
 }
 
 

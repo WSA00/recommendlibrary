@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 20/07/2024 16:43:49
+ Date: 21/07/2024 15:19:42
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `book`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_tid_book`(`tid` ASC) USING BTREE,
   CONSTRAINT `fk_tid_book` FOREIGN KEY (`tid`) REFERENCES `type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 81 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 107 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for history
@@ -71,7 +71,7 @@ CREATE TABLE `inventory`  (
   INDEX `fk_wid_inventory`(`wid` ASC) USING BTREE,
   CONSTRAINT `fk_bid_inventory` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_inventory` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 98 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for stockin
@@ -98,7 +98,7 @@ CREATE TABLE `type`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `tname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for user
@@ -186,6 +186,25 @@ CREATE TRIGGER `after_inventory_history_insert` AFTER INSERT ON `history` FOR EA
         SET quantity = quantity - 1
         WHERE bid = NEW.bid AND wid = NEW.wid;
     END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table history
+-- ----------------------------
+DROP TRIGGER IF EXISTS `after_history_times_insert`;
+delimiter ;;
+CREATE TRIGGER `after_history_times_insert` AFTER INSERT ON `history` FOR EACH ROW BEGIN
+    -- 更新book表中对应bid的借阅次数加一
+    UPDATE book
+    SET btimes = btimes + 1
+    WHERE id = NEW.bid;
+
+    -- 更新user表中对应uid的借阅次数加一
+    UPDATE user
+    SET utimes = utimes + 1
+    WHERE id = NEW.uid;
 END
 ;;
 delimiter ;

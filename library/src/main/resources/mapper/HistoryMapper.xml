@@ -21,28 +21,6 @@
         times,status
     </sql>
 
-    <!--    <update id="updateOrderById" parameterType="com.library.pojo.Order">-->
-    <!--        UPDATE `order`-->
-    <!--        SET productId = ${TableOrder.productId},-->
-    <!--            userId = ${TableOrder.userId},-->
-    <!--            warehouseId = ${TableOrder.warehouseId}-->
-    <!--        WHERE id = ${TableOrder.Id}-->
-    <!--    </update>-->
-
-
-    <!--    <delete id="deleteOrderByProductId">-->
-    <!--        delete-->
-    <!--        from `order`-->
-    <!--        where `order`.productId = #{productId}-->
-
-    <!--    </delete>-->
-
-    <!--    <delete id="deleteOrderByWarehouseId">-->
-    <!--        delete-->
-    <!--        from `order`-->
-    <!--        where `order`.warehouseId = #{warehouseId}-->
-    <!--    </delete>-->
-
     <delete id="deleteHistoryById">
         delete
         from `history`
@@ -237,19 +215,4 @@
     <!--        where `order`.userId=`user`.id and `user`.id=#{userId}-->
     <!--    </select>-->
 
-    <!--    <select id="salesOrderByUserId" resultType="java.lang.Double">-->
-    <!--        select round(sum(product.price),2)-->
-    <!--        from `order`,`user`,product-->
-    <!--        where `order`.userId=`user`.id and `order`.productId=product.id and `user`.id=#{userId}-->
-    <!--    </select>-->
-
-    <!--    <select id="AverageCountOrderByUserId" resultType="java.lang.Integer">-->
-    <!--        SELECT-->
-    <!--        round((SELECT COUNT(id) FROM `order`) / (SELECT COUNT(id) FROM `user`),0)-->
-    <!--    </select>-->
-
-    <!--    <select id="AverageSalesOrderByUserId" resultType="java.lang.Double">-->
-    <!--        SELECT-->
-    <!--        round((SELECT SUM(product.price) FROM `order`,product WHERE `order`.productId=product.id) / (SELECT COUNT(id) FROM `user`),0)-->
-    <!--    </select>-->
 </mapper>

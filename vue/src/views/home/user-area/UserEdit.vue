@@ -44,9 +44,6 @@
                     </el-form-item>
                 </el-row>
             </el-form-item>
-            <el-form-item label="家庭住址" prop="address" class="w-full">
-                <el-input type="textarea" v-model="getUser.address"></el-input>
-            </el-form-item>
         </el-form>
         <section slot="footer" class="dialog-footer">
             <el-button @click="setDialogFormVisible(false)">取 消</el-button>
@@ -74,8 +71,7 @@ export default {
                 ],
                 role: { required: true, message: '请选择角色权限', trigger: 'change' },
                 date: { required: true, message: '请选择注册日期', trigger: 'change' },
-                time: { required: true, message: '请选择注册时间', trigger: 'change' },
-                address: { required: true, message: '请输入家庭住址', trigger: 'blur' }
+                time: { required: true, message: '请选择注册时间', trigger: 'change' }
             },
             pickerOptions: {
                 disabledDate(time) {
@@ -106,7 +102,7 @@ export default {
         ]),
         async handleUserChange() {
             const user = this.getUser
-            const { id, username, role, address } = user
+            const { id, username, role } = user
             // 合并表单中的日期与时间
             const date = new Date(user.date)
             const time = new Date(user.time)
@@ -130,7 +126,6 @@ export default {
                     username,
                     role,
                     joined_date,
-                    address,
                     avatar
                 }
             })
