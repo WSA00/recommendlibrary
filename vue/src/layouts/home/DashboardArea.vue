@@ -1,5 +1,5 @@
 <template>
-  <main class="w-full h-auto flex flex-col gap-6" v-loading="!dataReady">
+  <main class="w-full h-auto flex flex-col gap-6" v-loading="!dataReady" >
     <!-- 块行容器 -->
     <article class="w-full h-80 flex justify-between gap-6">
       <!-- 仪表盘遍历 -->
@@ -25,12 +25,12 @@
     <article class="w-full h-auto flex gap-6 select-none">
       <!-- 柱状图 -->
       <section class="flex-1 h-auto bg-white rounded-xl py-10 flex flex-col gap-10">
-        <h1 class="text-left font-bold text-xl pl-10">活跃读者榜 (近 5 年榜单, 前 7 名数据)</h1>
+        <h1 class="text-left font-bold text-xl pl-10">活跃读者榜 (近 3 年榜单, 前 7 名数据, 借阅次数)</h1>
         <HistogramChart class="w-full h-96"/>
       </section>
       <!-- 折线图 -->
       <section class="flex-1 h-auto bg-white rounded-xl py-10 flex flex-col gap-10">
-        <h1 class="text-left font-bold text-xl pl-10">热门图书榜 (近 10 年榜单, 前 7 名数据)</h1>
+        <h1 class="text-left font-bold text-xl pl-10">热门图书榜 (近 4 月榜单, 前 9 名数据, 借出次数)</h1>
         <LineChart class="w-full h-96"/>
       </section>
     </article>
@@ -75,7 +75,7 @@ export default {
       return [
         {
           icon: "el-icon-s-flag text-3xl",
-          title: "汽车营业额(万元)",
+          title: "本月借阅量",
           value: this.income || 0,
           rate: 0.64,
           color: "#a162f7",
@@ -83,7 +83,7 @@ export default {
         },
         {
           icon: "el-icon-s-marketing text-3xl",
-          title: "汽车成交量",
+          title: "图书总借阅量",
           value: this.orders || 0,
           rate: 0.52,
           color: "#ff7e86",
@@ -91,7 +91,7 @@ export default {
         },
         {
           icon: "el-icon-s-data text-3xl",
-          title: "全国仓库总数",
+          title: "图书馆总数",
           value: this.warehouses || 0,
           rate: 0.42,
           color: "#f6cc0d",

@@ -27,45 +27,37 @@ echarts.use([
   LabelLayout,
   UniversalTransition
 ]);
+
 export default {
     name: "LineChart",
     async mounted() {
-        const { xList, source } = await api.get("/api/chart/ranking/book")
-        this.xList = xList
-        this.source = source
-        this.InitChart()
+        const { xList, yList, source } = await api.get("/api/chart/ranking/book");
+        this.xList = xList.reverse(); // 反转顺序
+        this.yList = yList.reverse(); // 反转顺序
+        this.source = source;
+        this.InitChart();
     },
     data() {
         return {
-            xName: "年份",
+            xName: "月份",
             yName: "借阅量",
-            xList: new Array(),
-            source: new Array()
+            xList: [],
+            yList: [],
+            source: []
         }
     },
     computed: {
         option() {
-            const datasetWithFilters = [];
             const seriesList = [];
 
-            echarts.util.each(this.xList, (book) => {
-                let datasetId = 'dataset_' + book
-                datasetWithFilters.push({
-                    id: datasetId,
-                    fromDatasetId: 'dataset_raw',
-                    transform: {
-                        type: 'filter',
-                        config: {
-                            and: [
-                                { dimension: 'year', gte: 2013 },
-                                { dimension: 'book', '=': book }
-                            ]
-                        }
-                    }
-                })
+            this.xList.forEach(book => {
+                const dataPoints = this.source.filter(item => item[1] === book).map(item => ({
+                    value: [item[2], item[0]] // [yearMonth, orders]
+                }));
+
                 seriesList.push({
                     type: 'line',
-                    datasetId: datasetId,
+                    data: dataPoints,
                     showSymbol: false,
                     name: book,
                     endLabel: {
@@ -81,24 +73,19 @@ export default {
                         focus: 'series'
                     },
                     encode: {
-                        x: 'year',
-                        y: 'orders',
+                        x: 0, // 对应 yearMonth
+                        y: 1, // 对应 orders
                         label: ['book', 'orders'],
-                        itemName: 'year',
                         tooltip: ['orders']
                     }
-                })
-            })
+                });
+            });
 
             return {
                 animationDuration: 5000,
-                dataset: [
-                    {
-                        id: 'dataset_raw',
-                        source: this.source
-                    },
-                    ...datasetWithFilters
-                ],
+                dataset: [{
+                    source: this.source
+                }],
                 title: {
                     show: false,
                     left: 'center',
@@ -110,6 +97,7 @@ export default {
                 },
                 xAxis: {
                     type: 'category',
+                    data: this.yList // 使用 yList 中的时间数据
                 },
                 yAxis: {
                     name: this.yName,
@@ -120,21 +108,20 @@ export default {
                     bottom: 30
                 },
                 series: seriesList
-            }
+            };
         }
     },
     methods: {
         InitChart() {
-            let dom = this.$refs.chart
+            let dom = this.$refs.chart;
             let chart = echarts.init(dom, null, {
                 renderer: 'svg'
-            })
-            this.option && chart.setOption(this.option)
+            });
+            this.option && chart.setOption(this.option);
         }
     }
-}
+};
 </script>
 
 <style>
-
 </style>

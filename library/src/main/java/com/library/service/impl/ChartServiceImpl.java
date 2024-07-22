@@ -6,6 +6,7 @@ import com.library.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,7 +21,7 @@ public class ChartServiceImpl implements ChartService {
 
     @Override
     public Result income() {
-        Double income = historyMapper.selectIncome();
+        Integer income = historyMapper.selectIncome();
 
         Map data = new LinkedHashMap();
         data.put("tip","成功获取营业额");
@@ -69,18 +70,18 @@ public class ChartServiceImpl implements ChartService {
 
         int currentYear = Year.now().getValue();
         List<Integer> years = new ArrayList<>();
-        for (int i = 4; i >= 0; i--) {
+        for (int i = 2; i >= 0; i--) {
             years.add(currentYear - i);
         }
 
-        List<List<Double>> source = new ArrayList<>();
+        List<List<Integer>> source = new ArrayList<>();
         for (Integer id : userId) {
-            List<Double> salesByYear = new ArrayList<>();
+            List<Integer> ordersByYear = new ArrayList<>();
             for (Integer year : years) {
-                Double sales = historyMapper.selectSalesByYearAndUserId(year, id);
-                salesByYear.add(sales != null ? sales : 0); // 如果借阅量为null，则默认为0
+                Integer orders = historyMapper.selectOrdersByYearAndUserId(year, id);
+                ordersByYear.add(orders != null ? orders : 0); // 如果借阅量为null，则默认为0
             }
-            source.add(salesByYear);
+            source.add(ordersByYear);
         }
 
         Map data = new LinkedHashMap();
@@ -89,56 +90,64 @@ public class ChartServiceImpl implements ChartService {
         data.put("xList",userName);
         data.put("yList",years);
         data.put("source", source);
-
         return Result.ok(data);
     }
 
     @Override
     public Result book() {
-        List<Integer> carId = historyMapper.selectTopCarId();
-        List<String> carName = historyMapper.selectTopCarName();
-        List<String> carModel = historyMapper.selectTopCarModel();
+        List<Integer> bookId = historyMapper.selectTopBookId();
+        List<String> bookName = historyMapper.selectTopBookName();
+        List<String> bookAuthor = historyMapper.selectTopBookAuthor();
+        List<String> bookPress = historyMapper.selectTopBookPress();
 
-        List<String> fullCarList = new ArrayList<>();
-        for (int i = 0; i < carName.size(); i++) {
-            fullCarList.add(carName.get(i) + "-" + carModel.get(i));
+        List<String> fullBookList = new ArrayList<>();
+        for (int i = 0; i < bookName.size(); i++) {
+            fullBookList.add(bookName.get(i) + "-" + bookAuthor.get(i)+ "-" + bookPress.get(i));
         }
 
-        int currentYear = Year.now().getValue();
-        List<Integer> years = new ArrayList<>();
-        for (int i = 9; i >= 0; i--) {
-            years.add(currentYear - i);
+        // 获取当前日期的年份和月份
+        LocalDate currentDate = LocalDate.now();
+
+        List<String> yearMonths = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            // 计算当前日期前第i个月的年份和月份
+            LocalDate date = currentDate.minusMonths(i);
+            int year = date.getYear();
+            int month = date.getMonthValue();
+            // 格式化成"yyyy-MM"的字符串
+            String yearMonth = String.format("%d-%02d", year, month);
+            yearMonths.add(yearMonth);
         }
 
         List<List<Object>> source = new ArrayList<>();
         List<Object> header = new ArrayList<>();
-        header.add("orders"); // 添加销售额列
-        header.add("book"); // 添加汽车名称列
-        header.add("year"); // 添加年份列
-        source.add(header); // 添加表头selectSalesByYearAndCarId
+        header.add("orders"); // 添加借阅量列
+        header.add("book"); // 添加书本名称列
+        header.add("yearMonth"); // 添加年份列
+        source.add(header); // 添加表头
 
-        // 获取每个年份每个产品的销量数据，并加入source
-        for (int j = 0; j < years.size(); j++) {
-            for (int i = 0; i < carId.size(); i++) {
-                // 根据产品ID和年份查询销量数据，这里需要根据实际情况调整方法名和参数
-                int sales = historyMapper.selectSalesByYearAndCarId( years.get(j),carId.get(i));
+       //  获取每个月份每个图书的借阅量数据，并加入source
+        for (int j = 0; j < yearMonths.size(); j++) {
+            for (int i = 0; i < bookId.size(); i++) {
+                // 根据产品ID和当年年份查询借阅数据
+                int orders = historyMapper.selectOrdersByYearMonthAndBookId( j,bookId.get(i));
                 // 创建包含销量、产品名称和年份的子列表
-                List<Object> saleData = new ArrayList<>();
-                saleData.add(sales);
-                saleData.add(carName.get(i)+"-"+carModel.get(i));
-                saleData.add(years.get(j));
+                List<Object> orderData = new ArrayList<>();
+                orderData.add(orders);
+                orderData.add(bookName.get(i) + "-" + bookAuthor.get(i)+ "-" + bookPress.get(i));
+                orderData.add(yearMonths.get(j));
                 // 将销量数据加入source
-                source.add(saleData);
+                source.add(orderData);
             }
         }
 
         Map<String, Object> data = new LinkedHashMap<>();
         data.put("tip", "成功获取热门图书榜");
-        data.put("idList", carId);
-        data.put("xList", fullCarList);
-        data.put("yList", years);
+        data.put("idList", bookId);
+        data.put("xList", fullBookList);
+        data.put("yList", yearMonths);
         data.put("source", source);
-
+        System.out.println(source);
         return Result.ok(data);
     }
 

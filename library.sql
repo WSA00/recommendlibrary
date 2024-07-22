@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 21/07/2024 20:37:46
+ Date: 22/07/2024 21:34:42
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `book`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_tid_book`(`tid` ASC) USING BTREE,
   CONSTRAINT `fk_tid_book` FOREIGN KEY (`tid`) REFERENCES `type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 107 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 122 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for history
@@ -55,7 +55,7 @@ CREATE TABLE `history`  (
   CONSTRAINT `fk_bid_history` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_uid_history` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_history` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 183 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventory
@@ -71,7 +71,7 @@ CREATE TABLE `inventory`  (
   INDEX `fk_wid_inventory`(`wid` ASC) USING BTREE,
   CONSTRAINT `fk_bid_inventory` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_inventory` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 98 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 135 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for stockin
@@ -88,7 +88,7 @@ CREATE TABLE `stockin`  (
   INDEX `fk_wid_stockin`(`wid` ASC) USING BTREE,
   CONSTRAINT `fk_bid_stockin` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_stockin` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 65 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for type
@@ -127,6 +127,12 @@ CREATE TABLE `warehouse`  (
   `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- View structure for book_monthly_borrow_view
+-- ----------------------------
+DROP VIEW IF EXISTS `book_monthly_borrow_view`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `book_monthly_borrow_view` AS select `b`.`id` AS `id`,`b`.`bname` AS `bname`,`b`.`author` AS `author`,`b`.`press` AS `press`,sum((case when (month(`h`.`begin_time`) = month(curdate())) then 1 else 0 end)) AS `d`,sum((case when (month(`h`.`begin_time`) = (month(curdate()) - 1)) then 1 else 0 end)) AS `c`,sum((case when (month(`h`.`begin_time`) = (month(curdate()) - 2)) then 1 else 0 end)) AS `b`,sum((case when (month(`h`.`begin_time`) = (month(curdate()) - 3)) then 1 else 0 end)) AS `a` from (`history` `h` join `book` `b` on((`h`.`bid` = `b`.`id`))) where (`h`.`begin_time` >= (curdate() - interval 3 month)) group by `b`.`id` order by (((`a` + `b`) + `c`) + `d`) desc;
 
 -- ----------------------------
 -- Triggers structure for table book

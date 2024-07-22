@@ -18,9 +18,7 @@ public interface HistoryMapper extends BaseMapper<History> {
 
     void deleteHistoryById(@Param("id") Integer id);
 
-
-//
-    Double selectIncome();
+    Integer selectIncome();
 
     Integer orders();
 
@@ -32,15 +30,18 @@ public interface HistoryMapper extends BaseMapper<History> {
 
     List<String> selectTopUserName();
 
-    Double selectSalesByYearAndUserId(@Param("year") Integer year, @Param("id") Integer id);
+    Integer selectOrdersByYearAndUserId(@Param("year") Integer year, @Param("id") Integer id);
 
-    List<Integer> selectTopCarId();
+//
+    List<Integer> selectTopBookId();
 
-    List<String> selectTopCarName();
+    List<String> selectTopBookName();
 
-    List<String> selectTopCarModel();
+    List<String> selectTopBookAuthor();
 
-    Integer selectSalesByYearAndCarId(@Param("year") Integer year, @Param("id") Integer id);
+    List<String> selectTopBookPress();
+
+    Integer selectOrdersByYearMonthAndBookId(Integer j, @Param("id") Integer id);
 //
 
     List<History> selectHistoryByUserId( Integer uid);
