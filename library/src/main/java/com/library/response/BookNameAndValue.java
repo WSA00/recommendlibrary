@@ -3,7 +3,7 @@ package com.library.response;
 import lombok.Data;
 
 @Data
-public class ProductNameAndValue {
+public class BookNameAndValue {
     private String name;
     private String value;
 }

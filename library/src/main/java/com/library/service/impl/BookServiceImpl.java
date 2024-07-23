@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static com.library.utils.ResultCodeEnum.requested_resource_no_modified;
@@ -214,40 +215,47 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
         Book book = bookMapper.selectById(id);
         BookResponse bookResponse = new BookResponse(book);
         bookResponse.setTname(typeMapper.selectTnameById(book.getTid()));
-        System.out.println(bookResponse);
+
+        List<BookNameAndValue> bookNameAndValues = bookMapper.selectBookNameAndValueById(id);
+
+        // 获取当前日期的年份和月份
+        LocalDate currentDate = LocalDate.now();
+
+        List<String> yearMonths = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            // 计算当前日期前第i个月的年份和月份
+            LocalDate date = currentDate.minusMonths(i);
+            int year = date.getYear();
+            int month = date.getMonthValue();
+            // 格式化成"yyyy-MM"的字符串
+            String yearMonth = String.format("%d-%02d", year, month);
+            yearMonths.add(yearMonth);
+        }
+
+        // 提取月份和借阅数量到对应的列表中
+        List<String> gradientBarX = new ArrayList<>();
+        List<String> gradientBarY = new ArrayList<>();
+
+        //  获取每个月份每个图书的借阅量数据，并加入source
+        for (int j = 0; j < yearMonths.size(); j++) {
+                // 根据产品ID和月份查询借阅数据
+                Integer order = historyMapper.selectOrdersByYearMonthAndBookId( j,id);
+
+                gradientBarX.add(yearMonths.get(j));
+                gradientBarY.add(String.valueOf(order));
+        }
+        Collections.reverse(gradientBarX);
+        Collections.reverse(gradientBarY);
+
         Map data = new LinkedHashMap();
         data.put("tip","成功获取指定图书");
+        data.put("gradientBarX",gradientBarX);
+        data.put("gradientBarY",gradientBarY);
+        data.put("pie",bookNameAndValues);
         data.put("book",bookResponse);
-
+        System.out.println(data);
         return Result.ok(data);
     }
-
-//    @Override
-//    public Result selectBookById(Integer id) {
-//
-//        Product product = productMapper.selectProductById(id);
-//
-//        List<ProductNameAndValue> productNameAndValues = productMapper.selectProductNameAndValueById(id);
-//
-//        List<ProductYearAndSalesResponse> productYearAndSalesResponse = productMapper.selectYearAndSalesById(id);
-//
-//        // 提取年份和销售数量到对应的列表中
-//        List<String> gradientBarX = new ArrayList<>();
-//        List<String> gradientBarY = new ArrayList<>();
-//        for (ProductYearAndSalesResponse response : productYearAndSalesResponse) {
-//            gradientBarX.add(response.getYear());
-//            gradientBarY.add(response.getSalesCount());
-//        }
-//
-//        Map data = new LinkedHashMap();
-//        data.put("tip","成功获取指定产品");
-//        data.put("gradientBarX",gradientBarX);
-//        data.put("gradientBarY",gradientBarY);
-//        data.put("pie",productNameAndValues);
-//        data.put("product",product);
-//
-//        return Result.ok(data);
-//    }
 
     @Override
     public Result UpdateBookById(Integer id, String bname, String tname, String author, String press,String introduce,String poster) {
@@ -313,31 +321,6 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
         }
         return Result.ok(bookResponseList);
     }
-
-//    @Override
-//    @Transactional
-//    public Result deleteProductById(Integer id) {
-//
-//        Map data = new LinkedHashMap();
-//        data.put("tip","成功删除产品");
-//        countResponse count = new countResponse();
-//
-//        int orderCount = orderMapper.deleteOrderByProductId(id);
-//        count.setCount(orderCount);
-//        data.put("orderCount",count);
-//
-//        int supplyCount = supplyMapper.deleteSupplyByProductId(id);
-//        count.setCount(supplyCount);
-//        data.put("supplyCount",count);
-//
-//        int inventoryCount = inventoryMapper.deleteInventoryByProductId(id);
-//        count.setCount(inventoryCount);
-//        data.put("inventoryCount",count);
-//
-//        int deleteProduct = productMapper.deleteById(id);
-//
-//        return Result.ok(data);
-//    }
 
     @Override
     public Result selectWarehouseByBookId(Integer id) {

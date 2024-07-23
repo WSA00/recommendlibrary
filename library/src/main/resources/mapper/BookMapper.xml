@@ -53,32 +53,10 @@
            OR author LIKE CONCAT('%', #{BnameOrAuthor}, '%')
     </select>
 
+    <select id="selectBookNameAndValueById" resultType="com.library.response.BookNameAndValue">
+        SELECT warehouse.location as name, inventory.quantity as value
+        FROM `inventory`,warehouse
+        WHERE inventory.wid=warehouse.id and inventory.bid=#{bid}
+    </select>
 
-    <!--    <select id="saleOfCarById" resultType="java.lang.Integer">-->
-<!--        select count(*)-->
-<!--        from `order`-->
-<!--        where productId = #{id}-->
-<!--    </select>-->
-
-<!--    <select id="selectProductById" resultType="com.library.pojo.Product">-->
-<!--        select *-->
-<!--        from product-->
-<!--        where product.id = #{productId}-->
-<!--    </select>-->
-
-
-
-<!--    <select id="selectProductNameAndValueById" resultType="com.library.response.ProductNameAndValue">-->
-<!--        SELECT warehouse.location as name, inventory.quantity as value-->
-<!--        FROM `inventory`,warehouse-->
-<!--        WHERE inventory.warehouseId=warehouse.id and inventory.productId=#{productId}-->
-<!--    </select>-->
-
-<!--    <select id="selectYearAndSalesById" resultType="com.library.response.ProductYearAndSalesResponse">-->
-<!--        SELECT YEAR(createtime) AS year, COUNT(*) AS salesCount-->
-<!--        FROM `order`-->
-<!--        WHERE productId = #{productId}-->
-<!--        GROUP BY YEAR(createtime)-->
-<!--        ORDER BY YEAR(createtime);-->
-<!--    </select>-->
 </mapper>

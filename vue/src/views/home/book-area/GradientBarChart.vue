@@ -72,7 +72,9 @@ export default {
           },
           axisLabel: {
             color: '#999'
-          }
+          },
+          minInterval: 1,  // 设置最小间隔为1
+          splitNumber: 10, 
         },
         dataZoom: [
           {

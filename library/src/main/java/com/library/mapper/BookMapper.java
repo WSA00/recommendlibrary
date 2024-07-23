@@ -2,8 +2,7 @@ package com.library.mapper;
 
 import com.library.pojo.Book;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.library.response.ProductNameAndValue;
-import com.library.response.ProductYearAndSalesResponse;
+import com.library.response.BookNameAndValue;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -24,12 +23,5 @@ public interface BookMapper extends BaseMapper<Book> {
 
     Integer selectBookCountByBnameOrAuthor(String BnameOrAuthor);
 
-//    Integer saleOfCarById(Integer id);
-
-//    Book selectBookById(@Param("bid") Integer bid);
-
-//    List<ProductNameAndValue> selectProductNameAndValueById(@Param("bid") Integer bid);
-
-//
-//    List<ProductYearAndSalesResponse> selectYearAndSalesById(Integer id);
+    List<BookNameAndValue> selectBookNameAndValueById(@Param("bid") Integer bid);
 }
