@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.library.mapper.*;
 import com.library.pojo.Book;
 import com.library.pojo.Warehouse;
+import com.library.response.inventoryResponse;
 import com.library.service.WarehouseService;
 import com.library.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,13 +106,6 @@ public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse
     @Override
     @Transactional
     public Result deleteWarehouseById(Integer id) {
-//        //1.删除库存表中对应的仓库的记录
-//        inventoryMapper.deleteInventoryByWarehouseId(id);
-//        //2.删除供应记录表中的记录
-//        supplyMapper.deleteSupplyByWarehouseId(id);
-//        //3.删除订单表中的记录
-//        orderMapper.deleteOrderByWarehouseId(id);
-        //3.删除仓库
         warehouseMapper.deleteById(id);
 
         Map data = new LinkedHashMap();
@@ -131,6 +125,16 @@ public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse
     public Result getAllWarehouse() {
         List<Warehouse> warehouses = warehouseMapper.getAllWarehouse();
         return Result.ok(warehouses);
+    }
+
+    @Override
+    public Result WarehouseInventory(Integer id) {
+
+        List<inventoryResponse> list = warehouseMapper.WarehouseInventoryselectByWid(id);
+
+        Map data = new LinkedHashMap();
+        data.put("source",list);
+        return Result.ok(data);
     }
 }
 

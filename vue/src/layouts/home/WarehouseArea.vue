@@ -13,6 +13,8 @@
     <WarehouseTableVue class="w-full"/>
     <!-- 添加仓库 -->
     <WarehouseFactoryVue/>
+    <!-- 用户详情 -->
+    <WarehouseDetailVue/>
     <!-- 编辑仓库 - 修改地址 -->
     <WarehouseEditVue/>
   </main>
@@ -21,13 +23,14 @@
 <script>
 import WarehouseTableVue from '@/views/home/warehouse-area/WarehouseTable.vue'
 import WarehouseFactoryVue from '@/views/home/warehouse-area/WarehouseFactory.vue'
+import WarehouseDetailVue from '@/views/home/warehouse-area/WarehouseDetail.vue'
 import WarehouseEditVue from '@/views/home/warehouse-area/WarehouseEdit.vue'
 import { createNamespacedHelpers } from "vuex"
 const { mapMutations } = createNamespacedHelpers("warehouseArea")
 export default {
   name: "WarehouseArea",
   components: {
-    WarehouseTableVue, WarehouseFactoryVue, WarehouseEditVue
+    WarehouseTableVue, WarehouseFactoryVue, WarehouseEditVue,WarehouseDetailVue
   },
   methods: {
     ...mapMutations([

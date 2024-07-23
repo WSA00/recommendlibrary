@@ -19,4 +19,6 @@ public interface WarehouseService extends IService<Warehouse> {
     Result selectWarehouseAndInventoryById(Integer id);
 
     Result getAllWarehouse();
+
+    Result WarehouseInventory(Integer id);
 }

@@ -48,4 +48,13 @@
                                AND quantity > 0
         )
     </select>
+
+    <select id="WarehouseInventoryselectByWid" resultType="com.library.response.inventoryResponse">
+        SELECT  b.id, b.bname, b.author, b.press, i.quantity
+        FROM inventory i
+                 INNER JOIN book b ON i.bid = b.id
+        WHERE i.wid = #{wid}
+        ORDER BY i.quantity DESC
+    </select>
+
 </mapper>

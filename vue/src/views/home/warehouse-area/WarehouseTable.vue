@@ -23,6 +23,11 @@
                     label="地址"
                 ></el-table-column>
                 <!-- 编辑 -->
+                <el-table-column width="80">
+                    <template slot-scope="scope" >
+                        <el-button @click="handleDetail(scope.row)" type="text">详情</el-button>
+                    </template>
+                </el-table-column>
                 <el-table-column v-if="['ROOT'].includes($store.getters.getUser?.role)"  label="操作" width="80">
                     <template slot-scope="scope" >
                         <el-button @click="handelLocationChange(scope.row)" type="text">修改</el-button>
@@ -63,16 +68,23 @@ export default {
     },
     computed: {
         ...mapGetters([
-            "getSource", "getDataReady", "getPage", "getPageSize", "getWarehouseTotal"
+            "getSource", "getDataReady", "getPage", "getPageSize", "getWarehouseTotal", "getWarehouseDetail"
         ])
     },
     methods: {
         ...mapMutations([
-            "setSource", "setDialogEditVisible", "setDataReady", "setWarehouse", "setPage"
+            "setSource", "setDialogEditVisible", "setDialogTableVisible", "setDataReady", "setWarehouse", "setPage", "setWarehouseDetail"
         ]),
         ...mapActions([
-            "fetchSource", "fetchWarehouse", "deleteWarehouse"
+            "fetchSource", "fetchWarehouse", "deleteWarehouse", "fetchWarehouseDetail"
         ]),
+        // 处理库存详情
+        async handleDetail({ id }) {
+            this.setWarehouseDetail(await this.fetchWarehouseDetail(id))
+            const warehouse = await this.fetchWarehouse(id)
+            this.setWarehouse(warehouse)
+            this.setDialogTableVisible(true)
+        },
         // 处理修改地址
         async handelLocationChange({ id }) {
             const warehouse = await this.fetchWarehouse(id)

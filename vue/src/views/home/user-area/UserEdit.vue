@@ -19,6 +19,7 @@
         >
             <!-- 修改用户头像 -->
             <UploadAvatar :avatar="getUser.avatar" class="self-center mb-6"/>
+            
             <el-form-item label="姓名" prop="username">
                 <el-input v-model="getUser.username" class="max-w-xs"></el-input>
             </el-form-item>

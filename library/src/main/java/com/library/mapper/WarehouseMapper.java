@@ -4,6 +4,7 @@ import com.library.pojo.Book;
 import com.library.pojo.Warehouse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import com.library.response.inventoryResponse;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public interface WarehouseMapper extends BaseMapper<Warehouse> {
     List<Warehouse> getAllWarehouse();
 
     String selectLocationById(@Param("wid") Integer wid);
+
+    List<inventoryResponse> WarehouseInventoryselectByWid(Integer id);
 }
 
 

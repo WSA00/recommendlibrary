@@ -15,6 +15,11 @@ public class WarehouseController {
     @Autowired
     private WarehouseService warehouseService;
 
+    @PreAuthorize("hasAnyAuthority('ROOT')")
+    @GetMapping("{id}/WarehouseInventory")
+    public Result WarehouseInventory(@PathVariable Integer id){
+        return warehouseService.WarehouseInventory(id);
+    }
 
     @PreAuthorize("hasAnyAuthority('ROOT')")
     @PostMapping("")
