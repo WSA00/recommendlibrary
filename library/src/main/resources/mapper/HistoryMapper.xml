@@ -196,5 +196,18 @@
         WHERE id = #{id}
     </select>
 
+    <select id="warn" resultType="com.library.response.historyResponse">
+        select h.id,b.bname,b.author,b.press,w.location,h.begin_time,h.end_time,h.times
+        from `history` h
+                 JOIN
+             `book` b ON h.bid = b.id
+                 JOIN
+            `user` u ON h.uid = u.id
+                JOIN
+            warehouse w ON h.wid = w.id
+        where u.id = #{id} and h.status = 0 and (DATE_ADD(CURDATE(), INTERVAL 3 DAY) >= h.end_time)
+        order by end_time asc
+    </select>
+
 
 </mapper>

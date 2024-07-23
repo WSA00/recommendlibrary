@@ -1,5 +1,36 @@
 <template>
-  <main class="w-full h-auto flex flex-col gap-6" v-loading="!dataReady" >
+  <main class="w-full h-auto flex flex-col gap-6" v-loading="!dataReady">
+    <!-- 温馨提示对话框 -->
+    <el-dialog
+      v-if="warn.length > 0"
+      :title="'温馨提示'"
+      :visible.sync="dialogVisible"
+      top=" 10rem"
+      width="950px"
+    >
+      <p>你当前有以下借阅需要注意哦！请及时续借或归还！</p>
+      <!-- 借阅警告列表 -->
+      <el-table :data="warn" v-if="warn.length" stripe style="width: 100%" header-cell-class-name="text-black">
+        <el-table-column prop="id" label="借阅号" width="80"></el-table-column>
+        <el-table-column prop="bname" label="图书名称" width="120"></el-table-column>
+        <el-table-column prop="author" label="作者" width="90"></el-table-column>
+        <el-table-column prop="press" label="出版社" width="100"></el-table-column>
+        <el-table-column prop="location" label="图书馆"></el-table-column>
+        <el-table-column label="创建时间" width="160">
+          <template slot-scope="scope">
+            <p>{{ new Date(scope.row.begin_time).toLocaleDateString() + " " + new Date(scope.row.begin_time).toLocaleTimeString().slice(0,5) }}</p>
+          </template>
+        </el-table-column>
+        <el-table-column label="截止/归还时间" width="160">
+          <template slot-scope="scope">
+            <p>{{ new Date(scope.row.end_time).toLocaleDateString() + " " + new Date(scope.row.end_time).toLocaleTimeString().slice(0,5) }}</p>
+          </template>
+        </el-table-column>
+        <el-table-column prop="times" label="状态" :formatter="formatTimes" width="90"></el-table-column>
+      </el-table>
+    </el-dialog>
+
+
     <!-- 块行容器 -->
     <article class="w-full h-80 flex justify-between gap-6">
       <!-- 仪表盘遍历 -->
@@ -35,6 +66,8 @@
       </section>
     </article>
   </main>
+
+  
 </template>
 
 <script>
@@ -55,10 +88,14 @@ export default {
     const { total: orders } = await api.get("/api/chart/total/orders")
     const { total: warehouses } = await api.get("/api/chart/total/warehouses")
     const { total: users } = await api.get("/api/chart/total/users")
+    const id = this.$store.getters.getUser.id;
+    const { warn } = await api.get(`/api/chart/${id}/warn`)
+
     this.income = income 
     this.orders = orders 
     this.warehouses = warehouses 
     this.users = users 
+    this.warn = warn
     this.dataReady = true
   },
   data() {
@@ -67,7 +104,9 @@ export default {
       income: 0,
       orders: 0,
       warehouses: 0,
-      users: 0
+      users: 0,
+      warn: [],
+      dialogVisible: true  // 控制警告框的显示与隐藏
     }
   },
   computed: {
@@ -106,6 +145,14 @@ export default {
           component: DashboardChart
         }
       ]
+    }
+  },
+  methods: {
+    formatTimes(row, column) {
+    // row 是当前行的数据对象
+    // column 是当前列的配置对象
+    const times = row[column.property]; // 获取 times 属性的值，即 0 或 1
+    return times === 0 ? '可续借' : '请归还';
     }
   }
 }

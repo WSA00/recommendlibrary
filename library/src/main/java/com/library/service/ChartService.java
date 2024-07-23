@@ -16,4 +16,5 @@ public interface ChartService {
 
     Result book();
 
+    Result warn(Integer id);
 }

@@ -13,7 +13,7 @@
     <WarehouseTableVue class="w-full"/>
     <!-- 添加仓库 -->
     <WarehouseFactoryVue/>
-    <!-- 用户详情 -->
+    <!-- 库存详情 -->
     <WarehouseDetailVue/>
     <!-- 编辑仓库 - 修改地址 -->
     <WarehouseEditVue/>

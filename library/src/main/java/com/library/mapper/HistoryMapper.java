@@ -2,6 +2,7 @@ package com.library.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.library.pojo.History;
+import com.library.response.historyResponse;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -56,4 +57,5 @@ public interface HistoryMapper extends BaseMapper<History> {
 
     Integer selectMonthCountById(Integer id);
 
+    List<historyResponse> warn(Integer id);
 }

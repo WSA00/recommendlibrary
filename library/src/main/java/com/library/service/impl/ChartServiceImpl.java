@@ -1,6 +1,7 @@
 package com.library.service.impl;
 
 import com.library.mapper.HistoryMapper;
+import com.library.response.historyResponse;
 import com.library.service.ChartService;
 import com.library.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,7 +148,18 @@ public class ChartServiceImpl implements ChartService {
         data.put("xList", fullBookList);
         data.put("yList", yearMonths);
         data.put("source", source);
-        System.out.println(source);
+        return Result.ok(data);
+    }
+
+    @Override
+    public Result warn(Integer id) {
+
+        List <historyResponse> warn = historyMapper.warn(id);
+
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("tip", "温馨提示");
+        data.put("warn", warn);
+        System.out.println(data);
         return Result.ok(data);
     }
 
