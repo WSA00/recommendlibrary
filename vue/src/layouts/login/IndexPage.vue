@@ -1,14 +1,14 @@
 <template>
   <main class="w-full h-full px-24 overflow-hidden flex bg-white">
     <!-- 左半部分 -->
-    <aside class="w-5/12 h-full flex flex-col justify-center items-center" style="background-color: #a162f7;">
+    <!-- <aside class="w-5/12 h-full flex flex-col justify-center items-center" style="background-color: #a162f7;">
       <img src="@/assets/icon/loginpng.png" class="transform -translate-y-20" style="object-fit: cover;">
     </aside>
-    
-    <!--   cdn加速
+     -->
+      <!-- cdn加速 -->
     <aside class="w-5/12 h-full flex flex-col justify-center items-center" style="background-color: #a162f7;">
-      <el-image :src="'http://cdn.takoko.top/CarSale%20Poster.png'" fit="cover" class="transform -translate-y-20"></el-image>
-    </aside> -->
+      <el-image :src="'http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/loginpng.png'" fit="cover" class="transform -translate-y-20"></el-image>
+    </aside>
 
     <!-- 右半部分 -->
     <article class="w-7/12 h-auto flex flex-col gap-16 justify-center items-center transform -translate-y-12">

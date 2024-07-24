@@ -2,14 +2,14 @@ import api from "./api"
 import * as qiniu from "qiniu-js"
 import { Message } from "element-ui";
 import { v4 } from "uuid"
-export const action = "http://upload-z2.qiniup.com"
-export const hostname = "http://cdn.takoko.top"
-export const bucket = "wutongroad"
+export const action = "http://up-z2.qiniup.com"
+export const hostname = "http://sh4kj2q5q.hn-bkt.clouddn.com"
+export const bucket = "wsa00"
 
-// 上传图片
+// 上传图片 
 export const uploadQiniuImage = async (file) => {
     try {
-        const { uploadToken: token } = await api.get("/api/qiniu/upload-token", { token: localStorage.getItem("token") })
+        const { uploadToken: token } = await api.get("/api/user/upload-token", { token: localStorage.getItem("token") })
         console.log(token);
         const key = `${new Date().getFullYear()}-${new Date().getMonth() + 1}/${v4()}`
         const putExtra = {}

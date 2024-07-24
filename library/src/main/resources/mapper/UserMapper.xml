@@ -23,7 +23,7 @@
         role,avatar,joined_date
     </sql>
 
-    <update id="updatePasswordByUserId">
+    <update id="updatePasswordByUserId" parameterType="java.lang.Integer">
         UPDATE `user`
         SET `password` = #{password}
         WHERE id = #{userId};
@@ -84,4 +84,10 @@
         from `user`
         where `user`.`id` = #{uid}
     </select>
+
+    <update id="updateAvatar">
+        update `user`
+        SET `avatar` = #{avatar}
+        WHERE id = #{id};
+    </update>
 </mapper>

@@ -4,8 +4,10 @@ import com.library.pojo.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.library.response.ChangePassword;
 import com.library.utils.Result;
+import com.qiniu.api.auth.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.ibatis.annotations.Param;
+import org.json.JSONException;
 
 /**
 * @author ASUS
@@ -27,7 +29,7 @@ public interface UserService extends IService<User> {
 
     Result updateUserById(Integer id, User user);
 
-    Result updateAvatar(Integer id, User user);
+    Result updateAvatar(Integer id,String avatar);
 
     Result deleteUser(Integer id);
 
@@ -35,7 +37,9 @@ public interface UserService extends IService<User> {
 
     Result getAllUser();
 
-    Result updatePassword(String id, ChangePassword changePassword);
+    Result updatePassword(Integer id, ChangePassword changePassword);
 
     Result userHistory(Integer id);
+
+    Result userUpload() throws AuthException, JSONException;
 }

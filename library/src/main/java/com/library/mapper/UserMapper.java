@@ -26,15 +26,17 @@ public interface UserMapper extends BaseMapper<User> {
 
     String selectUserNameById(@Param("userId")Integer userId);
 
-    String selectUserPasswordById(@Param("userId")String userId);
+    String selectUserPasswordById(@Param("userId") Integer userId);
 
-    void updatePasswordByUserId(@Param("userId")String userId, @Param("password")String password);
+    void updatePasswordByUserId(@Param("userId")Integer userId, @Param("password")String password);
 
     Integer selectNumById(Integer uid);
 
     Integer selectTimesById(Integer uid);
 
     Integer selectUtimesById(Integer uid);
+
+    void updateAvatar(Integer id, String avatar);
 }
 
 

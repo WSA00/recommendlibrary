@@ -16,12 +16,17 @@ import com.library.mapper.UserMapper;
 import com.library.utils.JwtHelper;
 import com.library.utils.Result;
 import com.library.utils.ResultCodeEnum;
+import com.qiniu.api.auth.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import com.qiniu.api.auth.digest.Mac;
+import com.qiniu.api.rs.PutPolicy;
+
 
 /**
 * @author ASUS
@@ -46,6 +51,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Autowired
     private JwtHelper jwtHelper;
+
+    @Override
+    public Result userUpload() throws AuthException, JSONException {
+
+        String ACCESS_KEY = "SObw8EKoebhu1fGvweX_m8-i5Y3llZ456Jyv0Raf";
+        String SECRET_KEY = "6Qsk9dR7pb2Y2GwlvHl_Q1DTZ3IMb8vluoF41w2M";
+        Mac mac = new Mac(ACCESS_KEY, SECRET_KEY);
+        // 请确保该bucket已经存在
+        String bucketName = "wsa01";
+        PutPolicy putPolicy = new PutPolicy(bucketName);
+        String uploadtoken = putPolicy.token(mac);
+
+        // 构造返回的数据
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("tip", "成功获取七牛云上传凭据");
+        data.put("uploadToken", uploadtoken);
+
+        // 返回 Result 对象
+        return Result.ok(data);
+    }
 
     @Override
     public Result userHistory(Integer id) {
@@ -217,13 +242,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public Result updateAvatar(Integer id, User user) {
+    public Result updateAvatar(Integer id,String avatar) {
 
+        if (avatar != null && avatar.length() > 1 && avatar.startsWith("\"") && avatar.endsWith("\"")) {
+            avatar = avatar.substring(1, avatar.length() - 1);
+        }
+
+        User user =new User();
         user.setId(id);
-        userMapper.updateById(user);
-
+        user.setAvatar(avatar);
+        userMapper.updateAvatar(id,avatar);
         Map data = new HashMap();
         data.put("tip","成功修改用户头像");
+        data.put("avatar",user.getAvatar());
         return Result.ok(data);
     }
 
@@ -263,7 +294,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public Result updatePassword(String id, ChangePassword changePassword) {
+    public Result updatePassword(Integer id, ChangePassword changePassword) {
         Map data = new HashMap();
 
         String dbPassword = userMapper.selectUserPasswordById(id);

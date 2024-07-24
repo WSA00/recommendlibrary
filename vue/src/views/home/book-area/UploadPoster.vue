@@ -1,17 +1,17 @@
 <template>
     <main>
-        <!-- 上传头像文件 -->
+        <!-- 上传图书文件 -->
         <el-upload
             list-type="picture-card"
             :action="action"
             :show-file-list="false"
             :http-request="handleUpload"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
+            :on-success="handlePosterSuccess"
+            :before-upload="beforePosterUpload"
             class="overflow-hidden"
         >
             <el-image
-                :src="getPreviewImage || avatar ||'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"
+                :src="getPreviewImage || poster ||'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"
                 class="w-full h-full"
                 fit="cover"
             ></el-image>
@@ -22,11 +22,11 @@
 <script>
 import { hostname, action } from "@/api/upload"
 import { createNamespacedHelpers } from "vuex"
-const { mapGetters, mapMutations } = createNamespacedHelpers("userArea")
+const { mapGetters, mapMutations } = createNamespacedHelpers("bookArea")
 export default {
-    name: "UploadAvatar",
+    name: "UploadPoster",
     props: [
-        "avatar"
+        "poster"
     ],
     data() {
         return {
@@ -44,20 +44,20 @@ export default {
             "setFile", "setPreviewImage"
         ]),
         // 上传图片前...约束
-        beforeAvatarUpload(file) {
+        beforePosterUpload(file) {
             const isJPG = file.type === 'image/jpeg';
             const isLt2M = file.size / 1024 / 1024 < 2;
 
             if (!isJPG) {
-            this.$message.error('上传头像图片只能是 JPG 格式!');
+            this.$message.error('上传图书图片只能是 JPG 格式!');
             }
             if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 2MB!');
+            this.$message.error('上传图书图片大小不能超过 2MB!');
             }
             return isJPG && isLt2M;
         },
-        // 上传图片后...预览头像
-        handleAvatarSuccess(res, file) {
+        // 上传图片后...预览图片
+        handlePosterSuccess(res, file) {
             this.setPreviewImage(URL.createObjectURL(file.raw))
         },
         // 上传图片

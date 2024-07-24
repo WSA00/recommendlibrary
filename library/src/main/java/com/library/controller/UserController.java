@@ -4,6 +4,8 @@ import com.library.pojo.User;
 import com.library.response.ChangePassword;
 import com.library.service.UserService;
 import com.library.utils.Result;
+import com.qiniu.api.auth.AuthException;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping("/upload-token")
+    public Result userUpload() throws AuthException, JSONException {return userService.userUpload();}
 
     @GetMapping("{id}/history")
     public Result userHistory(@PathVariable Integer id){
@@ -44,8 +49,8 @@ public class UserController {
     }
 
     @PatchMapping("{id}/avatar")
-    public Result updateAvatar(@PathVariable Integer id, User user){
-        return userService.updateAvatar(id,user);
+    public Result updateAvatar(@PathVariable Integer id,@RequestBody String avatar){
+        return userService.updateAvatar(id,avatar);
     }
 
     @PreAuthorize("hasAnyAuthority('ROOT')")
@@ -60,7 +65,7 @@ public class UserController {
     }
 
     @PatchMapping("{id}/password")
-    public Result updatePassword(@PathVariable String id, @RequestBody ChangePassword changePassword){
+    public Result updatePassword(@PathVariable Integer id, @RequestBody ChangePassword changePassword){
         return userService.updatePassword(id,changePassword);
     }
 
