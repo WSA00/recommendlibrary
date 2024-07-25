@@ -18,6 +18,7 @@
         >
             <!-- 上传头像 -->
             <UploadAvatarVue class="self-center mb-6"/>
+            
             <el-row class="flex justify-between">
                 <el-form-item label="姓名" prop="username" class="mr-6">
                     <el-input v-model="form.username"></el-input>

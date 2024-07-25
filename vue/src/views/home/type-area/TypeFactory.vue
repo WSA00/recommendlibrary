@@ -41,7 +41,7 @@ export default {
             rules: {
                 tname: [
                     { required: true, message: '请输入当前图书类型名称', trigger: 'blur' },
-                    { min: 1, max: 15, message: '名称应当在 15 个字符以内', trigger: 'blur' },
+                    { min: 1, max: 25, message: '名称应当在 25 个字符以内', trigger: 'blur' },
                 ]
             }
         }

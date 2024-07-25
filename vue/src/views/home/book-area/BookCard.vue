@@ -6,7 +6,7 @@
         <el-image
             class="w-full flex-1"
             :src="book.poster"
-            fit="cover"
+            fit="contain"
         >
             <!-- 加载图片失败 -->
             <div slot="error" class="image-slot">

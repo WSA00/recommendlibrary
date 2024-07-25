@@ -17,10 +17,9 @@
             label-position="left"
             class="flex flex-col items-start"
         >
-            <section class="w-80 h-36 my-6 self-center">
-                <el-image v-if="form.poster" :src="form.poster" fit="cover" class="w-full h-full" :preview-src-list="[form.poster]"></el-image>
-                <el-empty v-if="!form.poster" class="w-full h-full"></el-empty>
-            </section>
+        
+            <UploadPosterVue class="self-center mb-6"/>
+            
             <el-row class="flex justify-between">
                 <el-form-item label="图书名称" prop="bname" class="mr-4">
                     <el-input v-model="form.bname"></el-input>
@@ -45,20 +44,6 @@
                     <el-input v-model="form.press"></el-input>
                 </el-form-item>
             </el-row>
-            <!--             
-                <el-form-item label="车型" prop="poster">
-                    <el-select v-model="form.poster" placeholder="请选择车型" clearable>
-                        <el-option
-                            v-for="item in types"
-                            :key="item.poster"
-                            :label="item.label"
-                            :value="item.poster"
-                        >
-                            <el-image class="float-left w-10 h-full" :src="item.poster" fit="cover"></el-image>
-                            <span class="float-right text-gray-500 font-bold">{{ item.label }}</span>
-                        </el-option>
-                    </el-select>
-                </el-form-item> -->
 
             <el-form-item label="简介" prop="introduce" class="w-full">
                 <el-input type="textarea" v-model="form.introduce"></el-input>
@@ -74,9 +59,14 @@
 <script>
 import { sleep } from "@/util/sleep"
 import { createNamespacedHelpers } from "vuex"
+import UploadPosterVue from "./UploadPoster.vue"
+import { uploadQiniuImage, hostname } from "@/api/upload"
 const { mapGetters, mapMutations, mapActions } = createNamespacedHelpers("bookArea")
 export default {
     name: "BookFactory",
+    components: {
+        UploadPosterVue
+    },
     async created() {
         this.types = await this.fetchTypes().then(types => types.map(type => ({
             value: type.id,
@@ -90,7 +80,6 @@ export default {
                 tname: '',
                 author:'',
                 press:'',
-                poster: '',
                 introduce: '',
             },
             rules: {
@@ -98,7 +87,6 @@ export default {
                 tname: { required: true, message: '请输入当前图书类型', trigger: 'blur' },
                 author: { required: true, message: '请输入当前图书作者', trigger: 'blur' },
                 press: { required: true, message: '请输入当前图书出版社', trigger: 'blur' },
-                poster: { required: true, message: '请上传当前图书图片', trigger: 'change' },
                 introduce: [
                     { required: true, message: '请输入当前产品简介', trigger: 'blur' },
                     { min: 1, max: 200, message: '简介应当在 1 到 200 个字符', trigger: 'blur' },
@@ -108,7 +96,7 @@ export default {
     },
     computed: {
         ...mapGetters([
-            "getDialogFormVisible", "getBookTotal", "getPageSize"
+            "getDialogFormVisible", "getBookTotal", "getPageSize", "getFile"
         ]),
         dialogFormVisible: {
             get() {
@@ -121,7 +109,7 @@ export default {
     },
     methods: {
         ...mapMutations([
-            "setDialogFormVisible", "setPage", "setSource", "setDataReady"
+            "setDialogFormVisible", "setPage", "setSource", "setDataReady", "setFile", "setPreviewImage"
         ]),
         ...mapActions([
             "fetchSource", "createBook","fetchTypes"
@@ -130,8 +118,25 @@ export default {
         async submitForm(formName) {
             await this.$refs[formName].validate(async valid => {
                 if(valid) {
+                    this.setPreviewImage(null)
                     // 表单验证通过后...
-                    await this.createBook(this.form)
+                    const { bname, tname, author, press, introduce } = this.form
+                    let poster = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                    // 判断有没有上传图片
+                    if(this.getFile) {
+                        const { key } = await uploadQiniuImage(this.getFile)
+                        poster = `${hostname}/${key}`
+                        this.setFile(null)
+                    }
+                    await this.createBook({
+                        bname, 
+                        tname, 
+                        author, 
+                        press, 
+                        poster,
+                        introduce
+                    })
+                    
                     this.setDataReady(false)
                     await sleep()
                     this.setPage(Math.ceil(this.getBookTotal / this.getPageSize))

@@ -8,6 +8,9 @@ export default {
             source: new Array(),
             bookTotal: 0,
             book: null,
+            // 上传相关配置
+            file: null,
+            previewImage: '',
             // 图表相关配置
             chartSource: null,
             // 分页相关配置
@@ -24,6 +27,8 @@ export default {
         getChartSource: state => state.chartSource,
         getBookTotal: state => state.bookTotal,
         getBook: state => state.book,
+        getFile: state => state.file,
+        getPreviewImage: state => state.previewImage,
         getPage: state => state.page,
         getPageSize: state => state.pageSize,
         getDataReady: state => state.dataReady,
@@ -35,6 +40,8 @@ export default {
         setChartSource: (state, payload) => { state.chartSource = payload },
         setBookTotal: (state, payload) => { state.bookTotal = payload },
         setBook: (state, payload) => { state.book = payload },
+        setFile: (state, payload) => { state.file = payload },
+        setPreviewImage: (state, payload) => { state.previewImage = payload },
         setPage: (state, payload) => { state.page = payload },
         setPageSize: (state, payload) => { state.pageSize = payload },
         setDataReady: (state, payload) => { state.dataReady = payload },

@@ -27,7 +27,7 @@
         <p class="h-80 overflow-auto italic font-bold text-xl text-white" style="text-indent: 2em;">{{ getBook.introduce }}</p>
         <!-- 图书图片 -->
         <section class="w-full h-48 my-6 absolute left-0 bottom-0 transform translate-y-2/3 scale-125">
-          <el-image v-if="getBook" :src="getBook?.poster" fit="cover" class="w-full h-full"></el-image>
+          <el-image v-if="getBook" :src="getBook?.poster" fit="contain" class="w-full h-full"></el-image>
         </section>
       </article>
       <!-- 右半部分 -->
