@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 22/07/2024 21:34:42
+ Date: 01/08/2024 05:05:26
 */
 
 SET NAMES utf8mb4;
@@ -22,32 +22,32 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `book`;
 CREATE TABLE `book`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `bname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `tid` int NULL DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '图书ID',
+  `bname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图书名称',
+  `tid` int NULL DEFAULT NULL COMMENT '图书类型ID',
   `author` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '作者',
   `press` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '出版社',
   `btimes` int NULL DEFAULT 0 COMMENT '被借阅次数',
-  `introduce` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `poster` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `introduce` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '介绍',
+  `poster` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图书海报',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_tid_book`(`tid` ASC) USING BTREE,
   CONSTRAINT `fk_tid_book` FOREIGN KEY (`tid`) REFERENCES `type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 122 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 137 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for history
 -- ----------------------------
 DROP TABLE IF EXISTS `history`;
 CREATE TABLE `history`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `uid` int NULL DEFAULT NULL,
-  `bid` int NULL DEFAULT NULL,
-  `wid` int NULL DEFAULT NULL,
-  `begin_time` datetime NULL DEFAULT NULL,
-  `end_time` datetime NULL DEFAULT NULL,
-  `times` int NULL DEFAULT NULL COMMENT '记录续借次数',
-  `status` int NULL DEFAULT NULL COMMENT '状态',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '借阅记录ID',
+  `uid` int NULL DEFAULT NULL COMMENT '用户ID',
+  `bid` int NULL DEFAULT NULL COMMENT '图书ID',
+  `wid` int NULL DEFAULT NULL COMMENT '仓库ID',
+  `begin_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  `times` int NULL DEFAULT 0 COMMENT '记录续借次数',
+  `status` int NULL DEFAULT 0 COMMENT '记录状态',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_uid_history`(`uid` ASC) USING BTREE,
   INDEX `fk_bid_history`(`bid` ASC) USING BTREE,
@@ -55,78 +55,81 @@ CREATE TABLE `history`  (
   CONSTRAINT `fk_bid_history` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_uid_history` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_history` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 183 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 189 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventory
 -- ----------------------------
 DROP TABLE IF EXISTS `inventory`;
 CREATE TABLE `inventory`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `bid` int NULL DEFAULT NULL,
-  `wid` int NULL DEFAULT NULL,
-  `quantity` int NULL DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '库存ID',
+  `bid` int NULL DEFAULT NULL COMMENT '图书ID',
+  `wid` int NULL DEFAULT NULL COMMENT '仓库ID',
+  `quantity` int NULL DEFAULT NULL COMMENT '库存数量',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_bid_inventory`(`bid` ASC) USING BTREE,
   INDEX `fk_wid_inventory`(`wid` ASC) USING BTREE,
   CONSTRAINT `fk_bid_inventory` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_inventory` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 135 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 237 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for stockin
 -- ----------------------------
 DROP TABLE IF EXISTS `stockin`;
 CREATE TABLE `stockin`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `bid` int NULL DEFAULT NULL,
-  `wid` int NULL DEFAULT NULL,
-  `quantity` int NULL DEFAULT NULL COMMENT '入库数',
-  `createtime` datetime NULL DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '入库ID',
+  `bid` int NULL DEFAULT NULL COMMENT '图书ID',
+  `wid` int NULL DEFAULT NULL COMMENT '仓库ID',
+  `quantity` int NULL DEFAULT NULL COMMENT '入库数量',
+  `createtime` datetime NULL DEFAULT NULL COMMENT '入库时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_bid_stockin`(`bid` ASC) USING BTREE,
   INDEX `fk_wid_stockin`(`wid` ASC) USING BTREE,
   CONSTRAINT `fk_bid_stockin` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `fk_wid_stockin` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 65 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+  CONSTRAINT `fk_wid_stockin` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `check_quantity_positive` CHECK (`quantity` > 0)
+) ENGINE = InnoDB AUTO_INCREMENT = 69 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for type
 -- ----------------------------
 DROP TABLE IF EXISTS `type`;
 CREATE TABLE `type`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `tname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '图书类型ID',
+  `tname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图书类型名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户姓名',
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '联系电话，登录账号',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '登录密码',
   `utimes` int NULL DEFAULT 0 COMMENT '借阅次数',
   `max_num` int NULL DEFAULT 3 COMMENT '最大借阅数',
   `max_times` int NULL DEFAULT 1 COMMENT '最大延长借阅次数',
-  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'USER',
-  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
-  `joined_date` datetime NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'USER' COMMENT '权限',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' COMMENT '头像',
+  `joined_date` datetime NULL DEFAULT NULL COMMENT '注册时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `unique_phone`(`phone` ASC) USING BTREE,
+  CONSTRAINT `check_phone_format` CHECK (regexp_like(`phone`,_utf8mb4'^1[0-9]{10}$'))
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for warehouse
 -- ----------------------------
 DROP TABLE IF EXISTS `warehouse`;
 CREATE TABLE `warehouse`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '仓库ID',
+  `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '仓库名称（地址）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- View structure for book_monthly_borrow_view

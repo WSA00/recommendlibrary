@@ -114,51 +114,47 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
     public Result bookPageSelect1(Integer page, Integer pageSize , Integer tid) {
 
 
-    if (tid == null) {
-        bookPageSelect(page,pageSize);
-    }
+        Integer id = tid;
 
-    Integer id = tid;
+        // 构造查询条件
+        QueryWrapper<Book> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("tid", id);  // 筛选条件，只选择 tid 等于 id 的记录
 
-    // 构造查询条件
-    QueryWrapper<Book> queryWrapper = new QueryWrapper<>();
-    queryWrapper.eq("tid", id);  // 筛选条件，只选择 tid 等于 id 的记录
+        // 构造分页对象
+        Page<Map<String, Object>> mapPage = new Page<>(page, pageSize);
+        IPage<Map<String, Object>> result = bookMapper.selectMapsPage(mapPage, queryWrapper);
+        List<Map<String, Object>> records = result.getRecords();
 
-    // 构造分页对象
-    Page<Map<String, Object>> mapPage = new Page<>(page, pageSize);
-    IPage<Map<String, Object>> result = bookMapper.selectMapsPage(mapPage, queryWrapper);
-    List<Map<String, Object>> records = result.getRecords();
+        Integer count = bookMapper.selectBookCountByTid(id);
 
-    Integer count = bookMapper.selectBookCountByTid(id);
+        List list = new ArrayList<>();
 
-    List list = new ArrayList<>();
+        for (Map<String, Object> record : records) {
+            Book book = new Book();
+            book.setId((Integer) record.get("id"));
+            book.setBname((String) record.get("bname"));
+            book.setTid((Integer) record.get("tid"));
+            book.setAuthor((String) record.get("author"));
+            book.setPress((String) record.get("press"));
+            book.setBtimes((Integer) record.get("btimes"));
+            book.setIntroduce((String) record.get("introduce"));
+            book.setPoster((String) record.get("poster"));
 
-    for (Map<String, Object> record : records) {
-        Book book = new Book();
-        book.setId((Integer) record.get("id"));
-        book.setBname((String) record.get("bname"));
-        book.setTid((Integer) record.get("tid"));
-        book.setAuthor((String) record.get("author"));
-        book.setPress((String) record.get("press"));
-        book.setBtimes((Integer) record.get("btimes"));
-        book.setIntroduce((String) record.get("introduce"));
-        book.setPoster((String) record.get("poster"));
+            BookResponse bookResponse = new BookResponse(book);
+            bookResponse.setTname(typeMapper.selectTnameById(book.getTid()));
 
-        BookResponse bookResponse = new BookResponse(book);
-        bookResponse.setTname(typeMapper.selectTnameById(book.getTid()));
-
-        list.add(bookResponse);
+            list.add(bookResponse);
         }
 
-    Map data = new LinkedHashMap();
-    data.put("tip", "成功获取第" + page + "页,共" + pageSize + "条数据");
-    data.put("page", page);
-    data.put("count", pageSize);
-    data.put("pageTotal", (int) Math.ceil(count / pageSize));
-    data.put("bookTotal", count);
-    data.put("source", list);
+        Map data = new LinkedHashMap();
+        data.put("tip", "成功获取第" + page + "页,共" + pageSize + "条数据");
+        data.put("page", page);
+        data.put("count", pageSize);
+        data.put("pageTotal", (int) Math.ceil(count / pageSize));
+        data.put("bookTotal", count);
+        data.put("source", list);
 
-    return Result.ok(data);
+        return Result.ok(data);
     }
 
     @Override

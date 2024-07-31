@@ -56,10 +56,16 @@ export default {
             return response
         },
         //请求接口 - 分页获取特定类型图书信息
-        async fetchSource1({ state, commit },payload) {   
-            const response = await api.get(`/api/book/type?page=${state.page}&pageSize=${state.pageSize}&tid=${payload.tid}`,{ token: localStorage.getItem("token") })
-            commit("setBookTotal", response.bookTotal)
-            return response
+        async fetchSource1({ state, commit }, payload) {   
+            let url = `/api/book?page=${state.page}&pageSize=${state.pageSize}`;
+
+            if (payload && payload.tid) {
+                url = `/api/book/type?page=${state.page}&pageSize=${state.pageSize}&tid=${payload.tid}`;
+            }
+
+            const response = await api.get(url, { token: localStorage.getItem("token") });
+            commit("setBookTotal", response.bookTotal);
+            return response;
         },
         //请求接口 - 分页获取特定搜索图书信息
         async fetchSource2({ state, commit },payload) {   

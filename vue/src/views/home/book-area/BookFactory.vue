@@ -89,7 +89,7 @@ export default {
                 press: { required: true, message: '请输入当前图书出版社', trigger: 'blur' },
                 introduce: [
                     { required: true, message: '请输入当前产品简介', trigger: 'blur' },
-                    { min: 1, max: 200, message: '简介应当在 1 到 200 个字符', trigger: 'blur' },
+                    { min: 1, max: 500, message: '简介应当在 1 到 500 个字符', trigger: 'blur' },
                 ]
             }
         }
@@ -121,7 +121,7 @@ export default {
                     this.setPreviewImage(null)
                     // 表单验证通过后...
                     const { bname, tname, author, press, introduce } = this.form
-                    let poster = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                    let poster = "http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/Book.jpg"
                     // 判断有没有上传图片
                     if(this.getFile) {
                         const { key } = await uploadQiniuImage(this.getFile)

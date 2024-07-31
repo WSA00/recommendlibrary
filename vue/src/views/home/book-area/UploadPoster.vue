@@ -11,7 +11,7 @@
             class="overflow-hidden"
         >
             <el-image
-                :src="getPreviewImage || poster ||'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"
+                :src="getPreviewImage || poster ||'http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/Book.jpg'"
                 class="w-full h-full"
                 fit="cover"
             ></el-image>

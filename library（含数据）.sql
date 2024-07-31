@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 24/07/2024 00:04:55
+ Date: 26/07/2024 17:31:53
 */
 
 SET NAMES utf8mb4;
@@ -33,11 +33,13 @@ CREATE TABLE `book`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `fk_tid_book`(`tid` ASC) USING BTREE,
   CONSTRAINT `fk_tid_book` FOREIGN KEY (`tid`) REFERENCES `type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 122 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 124 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of book
 -- ----------------------------
+INSERT INTO `book` VALUES (122, '测试123wsa', 1, '三大22www', 'www123qas', 0, '撒大苏打撒旦123wwwwww', 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png');
+INSERT INTO `book` VALUES (123, '测试2', 2, '素数对', 'fff', 0, '的撒', 'http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/Book.jpg');
 
 -- ----------------------------
 -- Table structure for history
@@ -59,7 +61,7 @@ CREATE TABLE `history`  (
   CONSTRAINT `fk_bid_history` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_uid_history` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_history` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1286 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 183 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of history
@@ -79,11 +81,19 @@ CREATE TABLE `inventory`  (
   INDEX `fk_wid_inventory`(`wid` ASC) USING BTREE,
   CONSTRAINT `fk_bid_inventory` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_inventory` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 198 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 146 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of inventory
 -- ----------------------------
+INSERT INTO `inventory` VALUES (135, 122, 6, 0);
+INSERT INTO `inventory` VALUES (136, 122, 7, 0);
+INSERT INTO `inventory` VALUES (137, 122, 8, 0);
+INSERT INTO `inventory` VALUES (138, 122, 9, 0);
+INSERT INTO `inventory` VALUES (142, 123, 6, 0);
+INSERT INTO `inventory` VALUES (143, 123, 7, 0);
+INSERT INTO `inventory` VALUES (144, 123, 8, 0);
+INSERT INTO `inventory` VALUES (145, 123, 9, 0);
 
 -- ----------------------------
 -- Table structure for stockin
@@ -114,11 +124,33 @@ CREATE TABLE `type`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `tname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of type
 -- ----------------------------
+INSERT INTO `type` VALUES (1, '马克思主义、列宁主义、毛泽东思想、邓小平理论');
+INSERT INTO `type` VALUES (2, '哲学、宗教');
+INSERT INTO `type` VALUES (3, '社会科学总论');
+INSERT INTO `type` VALUES (4, '政治、法律');
+INSERT INTO `type` VALUES (5, '军事');
+INSERT INTO `type` VALUES (6, '经济');
+INSERT INTO `type` VALUES (7, '文化、科学、教育、体育');
+INSERT INTO `type` VALUES (8, '语言、文字');
+INSERT INTO `type` VALUES (9, '文学');
+INSERT INTO `type` VALUES (10, '艺术');
+INSERT INTO `type` VALUES (11, '历史、地理');
+INSERT INTO `type` VALUES (12, '自然科学总论');
+INSERT INTO `type` VALUES (13, '数理科学、化学');
+INSERT INTO `type` VALUES (14, '天文学、地球科学');
+INSERT INTO `type` VALUES (15, '生物科学');
+INSERT INTO `type` VALUES (16, '医药、卫生');
+INSERT INTO `type` VALUES (17, '农业科学');
+INSERT INTO `type` VALUES (18, '工业技术');
+INSERT INTO `type` VALUES (19, '交通运输');
+INSERT INTO `type` VALUES (20, '航空、航天');
+INSERT INTO `type` VALUES (21, '环境科学、劳动保护科学（安全科学）');
+INSERT INTO `type` VALUES (22, '综合性图书');
 
 -- ----------------------------
 -- Table structure for user
@@ -136,16 +168,14 @@ CREATE TABLE `user`  (
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
   `joined_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '小行星', '18877445369', 'admin123', 126, 3, 1, 'ROOT', 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', '2024-07-20 18:29:02');
-INSERT INTO `user` VALUES (2, '大将军', '19925927806', 'admin123', 0, 3, 1, 'USER', 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', '2024-07-20 21:04:11');
-INSERT INTO `user` VALUES (4, '小宝贝', '19929992322', 'admin123', 0, 3, 1, 'USER', 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', '2024-07-21 08:16:41');
-INSERT INTO `user` VALUES (5, 'Heung Kwok Yin', '13307292006', 'fXnBVe8vOX', 0, 3, 1, 'USER', 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', '2007-04-03 18:05:16');
-INSERT INTO `user` VALUES (6, 'Pan Yunxi', '15502257428', 'axp0mYNaUZ', 0, 3, 1, 'ROOT', 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', '2014-03-09 23:40:25');
+INSERT INTO `user` VALUES (1, '小行星', '18877445369', 'admin123', 0, 3, 1, 'ROOT', 'http://sh4kj2q5q.hn-bkt.clouddn.com/2024-7/f52266ea-59a0-4db9-acc7-0c0462423afe', '2024-07-24 18:45:04');
+INSERT INTO `user` VALUES (2, '小饼干', '17725927806', 'admin123', 0, 3, 1, 'USER', 'http://sh4kj2q5q.hn-bkt.clouddn.com/2024-7/7a9d65de-1e9d-4c48-a015-7ef85e9b2e44', '2024-07-25 10:45:35');
+INSERT INTO `user` VALUES (5, '大大怪', '12312311111', 'admin123', 0, 3, 1, 'USER', 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', '2024-07-25 10:59:41');
 
 -- ----------------------------
 -- Table structure for warehouse
@@ -155,11 +185,15 @@ CREATE TABLE `warehouse`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of warehouse
 -- ----------------------------
+INSERT INTO `warehouse` VALUES (6, '广东药科大学中山校区');
+INSERT INTO `warehouse` VALUES (7, '广东药科大学云浮校区');
+INSERT INTO `warehouse` VALUES (8, '广东药科大学大学城校区');
+INSERT INTO `warehouse` VALUES (9, '广东药科大学赤岗校区');
 
 -- ----------------------------
 -- View structure for book_monthly_borrow_view
