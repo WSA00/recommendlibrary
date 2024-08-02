@@ -38,7 +38,7 @@ export default {
 > 
 > 密码：admin123
 
-![image.png](http://cdn.takoko.top/markdown/login1.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/userlogin.jpg)
 
 ## 运行环境
 
@@ -85,7 +85,12 @@ Java、MySQL
 - 提供 Echarts 可视化图表来展示销售业务的相关数据
 
 
-![image.png](http://cdn.takoko.top/markdown/dashboard1.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/dashboard.jpg)
+
+
+- 若有借阅即将到期或已过期，弹出提示
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/warn.jpg)
+
 
 ### 2. 用户模块
 
@@ -93,64 +98,84 @@ Java、MySQL
 - 支持角色和权限系统，确保安全可控的用户管理。
 
 
-![image.png](http://cdn.takoko.top/markdown/user1.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/user.jpg)
 
-![image.png](http://cdn.takoko.top/markdown/user2.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/user2.jpg)
 
-![image.png](http://cdn.takoko.top/markdown/user3.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/user3.jpg)
 
-![image.png](http://cdn.takoko.top/markdown/user4.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/user4.jpg)
+
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/user5.jpg)
 
 
-### 3. 图书模块
+### 3. 图书类型模块
+
+- 提供详细的图书类型信息。
+
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/type.jpg)
+
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/type2.jpg)
+
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/type3.jpg)
+
+
+### 4. 图书模块
 
 - 提供详细的图书信息，包括作者、出版社、简介等。
 
-![image.png](http://cdn.takoko.top/markdown/product1.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/book.jpg)
 
-![image.png](http://cdn.takoko.top/markdown/product2.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/book1.jpg)
 
-![image.png](http://cdn.takoko.top/markdown/product3.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/book2.jpg)
 
 
-### 4. 图书查询模块
+### 5. 图书查询模块
 
 - 对图书名称或作者模糊查询
 
-![image.png](http://cdn.takoko.top/markdown/product1.jpg)
-
-![image.png](http://cdn.takoko.top/markdown/product2.jpg)
-
-![image.png](http://cdn.takoko.top/markdown/product3.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/search.jpg)
 
 
-### 5. 仓库模块
+### 6. 个人借阅模块
+
+- 用户进行借阅操作，包括创建、续借和归还。
+- 记录订单状态，确保用户对借阅流程的了解、掌控。
+
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/history1.jpg)
+
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/history2.jpg)
+
+
+### 7. 借阅总览模块
+
+- 管理借阅记录生命周期，包括创建、续借、归还和删除。
+- 记录订单状态，确保对借阅流程的完整掌控。
+
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/historyall1.jpg)
+
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/historyall2.jpg)
+
+
+### 8. 仓库模块
 
 - 追踪图书库存情况，包括图书的状态和位置。
 
-![image.png](http://cdn.takoko.top/markdown/warehouse1.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/warehouse1.jpg)
 
-![image.png](http://cdn.takoko.top/markdown/warehouse2.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/warehouse2.jpg)
 
-![image.png](http://cdn.takoko.top/markdown/warehouse3.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/warehouse3.jpg)
 
 
-### 6. 借阅模块
-
-- 管理借阅订单生命周期，包括创建、编辑和取消订单。
-- 记录订单状态，确保对借阅流程的完整掌控。
-
-![image.png](http://cdn.takoko.top/markdown/order1.jpg)
-
-![image.png](http://cdn.takoko.top/markdown/order2.jpg)
-
-### 7. 入库记录模块
+### 9. 入库记录模块
 
 - 记录入库信息，包括入库数量、时间、图书等。
 
-![image.png](http://cdn.takoko.top/markdown/supply1.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/stockin1.jpg)
 
-![image.png](http://cdn.takoko.top/markdown/supply2.jpg)
+![image.png](http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/notice/stockin2.jpg)
 
 
 ## 反馈与支持
@@ -158,8 +183,6 @@ Java、MySQL
 如果您在使用过程中遇到任何问题、有建议，或者对该项目有任何反馈，请随时联系（2084977781@qq.com）。欢迎您的反馈，以不断改进和优化平台。
 
 这是在大学学习过程中一个重要的项目，代表了本人对专业技术的深入理解和实际运用，感谢您选择该图书馆借阅管理平台！感谢您的支持！
-
-
 
 
             `
