@@ -23,7 +23,7 @@
         role,avatar,joined_date
     </sql>
 
-    <update id="updatePasswordByUserId" parameterType="java.lang.Integer">
+    <update id="updatePasswordByUserId">
         UPDATE `user`
         SET `password` = #{password}
         WHERE id = #{userId};
