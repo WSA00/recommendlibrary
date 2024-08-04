@@ -19,9 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @author ASUS
 * @description 针对表【warehouse】的数据库操作Service实现
-* @createDate 2024-04-09 14:59:47
 */
 @Service
 public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse>

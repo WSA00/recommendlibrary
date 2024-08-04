@@ -10,9 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.json.JSONException;
 
 /**
-* @author ASUS
 * @description 针对表【user】的数据库操作Service
-* @createDate 2024-04-09 14:59:47
 */
 public interface UserService extends IService<User> {
 

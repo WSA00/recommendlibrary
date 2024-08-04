@@ -9,10 +9,6 @@ import java.util.List;
 public interface StockinMapper extends BaseMapper<Stockin> {
     void createStockin(@Param("stockin") Stockin stockin);
 
-//    int deleteStockinByBid(@Param("bid") Integer bid);
-
-//    void deleteStockinByWid(@Param("wid") Integer wid);
-
     List<Stockin> selectStockinPage(@Param("page") Integer page, @Param("pageSize") Integer pageSize);
 
 }

@@ -9,7 +9,6 @@ import com.library.response.inventoryResponse;
 import java.util.List;
 
 /**
-*
 *  针对表【warehouse】的数据库操作Mapper
 */
 public interface WarehouseMapper extends BaseMapper<Warehouse> {

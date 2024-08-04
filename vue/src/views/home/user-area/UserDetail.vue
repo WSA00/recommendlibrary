@@ -4,7 +4,7 @@
   title="员工详情" 
   :visible.sync="dialogTableVisible"
   top="1rem"
-  width="800px"
+  width="1000px"
 > 
   <el-row class="w-full h-64 flex">
     <DashboardChartVue :title="'总借阅量（本）'" :value="count" :color="'#a162f7'" :rate="count" class="w-full h-full"/>

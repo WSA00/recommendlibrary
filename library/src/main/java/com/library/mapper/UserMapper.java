@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
-* @author ASUS
 * @description 针对表【user】的数据库操作Mapper
-* @createDate 2024-04-09 14:59:47
-* @Entity com.carsale.pojo.User
 */
 public interface UserMapper extends BaseMapper<User> {
 

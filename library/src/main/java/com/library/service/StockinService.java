@@ -1,7 +1,6 @@
 package com.library.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-//import com.library.pojo.Supply;
 import com.library.pojo.Stockin;
 import com.library.utils.Result;
 

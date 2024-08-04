@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 03/08/2024 02:57:32
+ Date: 04/08/2024 22:00:36
 */
 
 SET NAMES utf8mb4;
@@ -55,7 +55,7 @@ CREATE TABLE `history`  (
   CONSTRAINT `fk_bid_history` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_uid_history` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_history` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1198 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2198 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for inventory
@@ -71,7 +71,7 @@ CREATE TABLE `inventory`  (
   INDEX `fk_wid_inventory`(`wid` ASC) USING BTREE,
   CONSTRAINT `fk_bid_inventory` FOREIGN KEY (`bid`) REFERENCES `book` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `fk_wid_inventory` FOREIGN KEY (`wid`) REFERENCES `warehouse` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 10884 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10883 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for stockin
@@ -180,6 +180,17 @@ CREATE TRIGGER `before_inventory_book_delete` BEFORE DELETE ON `book` FOR EACH R
     -- 删除库存表中与被删除书籍相关的所有库存记录
     DELETE FROM inventory
     WHERE bid = OLD.id;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table book
+-- ----------------------------
+DROP TRIGGER IF EXISTS `before_history_book_delete`;
+delimiter ;;
+CREATE TRIGGER `before_history_book_delete` BEFORE DELETE ON `book` FOR EACH ROW BEGIN
+    DELETE FROM history WHERE bid = OLD.id;
 END
 ;;
 delimiter ;
@@ -365,6 +376,17 @@ delimiter ;;
 CREATE TRIGGER `before_stockin_warehouse_delete` BEFORE DELETE ON `warehouse` FOR EACH ROW BEGIN
     DELETE FROM stockin
     WHERE wid = OLD.id;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table warehouse
+-- ----------------------------
+DROP TRIGGER IF EXISTS `before_history_warehouse_delete`;
+delimiter ;;
+CREATE TRIGGER `before_history_warehouse_delete` BEFORE DELETE ON `warehouse` FOR EACH ROW BEGIN
+    DELETE FROM history WHERE wid = OLD.id;
 END
 ;;
 delimiter ;

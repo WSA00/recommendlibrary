@@ -7,14 +7,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.library.mapper.*;
 import com.library.pojo.Book;
-import com.library.pojo.Type;
 import com.library.pojo.Warehouse;
 import com.library.response.*;
 import com.library.service.BookService;
 import com.library.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -36,12 +34,6 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
 
     @Autowired
     private HistoryMapper historyMapper;
-
-    @Autowired
-    private StockinMapper stockinMapper;
-
-    @Autowired
-    private InventoryMapper inventoryMapper;
 
     @Autowired
     private WarehouseMapper warehouseMapper;
