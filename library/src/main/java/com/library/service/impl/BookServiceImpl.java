@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.library.utils.ResultCodeEnum.requested_resource_no_modified;
 
@@ -196,6 +197,40 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
         return Result.ok(data);
     }
 
+    public Result bookPageSelect3(Integer page, Integer pageSize) {//随机推荐36本
+        // 计算 OFFSET
+        int offset = (page - 1) * pageSize;
+
+        // 随机查询 36 条记录
+        List<Book> allRecords = bookMapper.getRandomBook();
+
+        // 获取总记录数
+        Long count = (long) allRecords.size();  // 假设总数是 36
+
+        // 进行分页，使用 subList 获取指定范围的记录
+        List<Book> records = allRecords.stream()
+                .skip(offset)
+                .limit(pageSize)
+                .collect(Collectors.toList());
+
+        List<BookResponse> list = new ArrayList<>();
+
+        for (Book book : records) {
+            BookResponse bookResponse = new BookResponse(book);
+            bookResponse.setTname(typeMapper.selectTnameById(book.getTid()));
+            list.add(bookResponse);
+        }
+
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("tip", "成功获取第" + page + "页, 共" + pageSize + "条数据");
+        data.put("page", page);
+        data.put("count", pageSize);
+        data.put("pageTotal", (int) Math.ceil(count / (double) pageSize));
+        data.put("bookTotal", count);
+        data.put("source", list);
+
+        return Result.ok(data);
+    }
 
     @Override
     public Result selectBookById(Integer id) {
@@ -289,6 +324,25 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
             bookResponseList.add(bookResponse);
         }
 
+        return Result.ok(bookResponseList);
+    }
+
+    public Result getRandomBook() {
+        List<Book> bookList = bookMapper.getRandomBook();
+        List<BookResponse> bookResponseList = new ArrayList<>();
+
+        for (Book book : bookList) {
+            // 查询对应的类型名称 tname
+            String tname = typeMapper.selectTnameById(book.getTid());
+            // 创建 BookResponse 对象，包含原始的 Book 属性和额外的 tname 属性
+            BookResponse bookResponse = new BookResponse(book);
+            // 设置 tname 属性
+            bookResponse.setTname(tname);
+            // 将 BookResponse 对象添加到列表中
+            bookResponseList.add(bookResponse);
+        }
+        System.out.println(bookList);
+        System.out.println(bookResponseList);
         return Result.ok(bookResponseList);
     }
 

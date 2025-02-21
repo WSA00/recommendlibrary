@@ -32,4 +32,8 @@ public interface BookService extends IService<Book> {
     Result getAllBook();
 
     Result selectBookByTid(Integer tid);
+
+    Result getRandomBook();
+
+    Result bookPageSelect3(Integer page, Integer pageSize);
 }

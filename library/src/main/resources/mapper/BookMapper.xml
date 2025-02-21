@@ -22,6 +22,12 @@
         select * from book
     </select>
 
+    <select id="getRandomBook" resultType="com.library.pojo.Book">
+        select * from book
+        ORDER BY RAND()
+            LIMIT 36;
+    </select>
+
     <select id="selectBookByTid" resultType="com.library.pojo.Book">
         select * from book
         where tid = #{tid}

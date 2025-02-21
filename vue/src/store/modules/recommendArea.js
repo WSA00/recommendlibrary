@@ -49,9 +49,9 @@ export default {
         setDialogFormVisible: (state, payload) => { state.dialogFormVisible = payload },
     },
     actions: {
-        // 请求接口 - 分页获取所有图书信息
-        async fetchSource({ state, commit }) {   
-            const response = await api.get(`/api/book?page=${state.page}&pageSize=${state.pageSize}`,{ token: localStorage.getItem("token") })
+        // 请求接口 - 分页获取随机推荐图书信息
+        async fetchRandomSource({ state, commit }) {   
+            const response = await api.get(`/api/book/random?page=${state.page}&pageSize=${state.pageSize}`,{ token: localStorage.getItem("token") })
             commit("setBookTotal", response.bookTotal)
             return response
         },
@@ -66,13 +66,6 @@ export default {
             const response = await api.get(url, { token: localStorage.getItem("token") });
             commit("setBookTotal", response.bookTotal);
             return response;
-        },
-        //请求接口 - 分页获取特定搜索图书信息
-        async fetchSource2({ state, commit },payload) {   
-            const decodedSearchString = decodeURIComponent(payload.string);
-            const response = await api.get(`/api/book/search?page=${state.page}&pageSize=${state.pageSize}&q=${decodedSearchString}`,{ token: localStorage.getItem("token") })
-            commit("setBookTotal", response.bookTotal)
-            return response
         },
         // 请求接口 - 获取指定图书信息
         async fetchBook(context, payload) {

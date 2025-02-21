@@ -45,6 +45,16 @@ public class BookController {
     }
 
     @PreAuthorize("hasAnyAuthority('USER','ROOT')")
+    @GetMapping("/random")
+    public Result bookPageSelect3(Integer page, Integer pageSize){
+
+        if (page == null && pageSize == null) {
+            return bookService.getRandomBook();
+        }else {
+            return bookService.bookPageSelect3(page,pageSize);
+        }
+    }
+    @PreAuthorize("hasAnyAuthority('USER','ROOT')")
     @GetMapping("{id}")
     public Result selectBookById(@PathVariable Integer id){
         return bookService.selectBookById(id);

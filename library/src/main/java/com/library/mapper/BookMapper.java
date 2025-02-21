@@ -24,4 +24,6 @@ public interface BookMapper extends BaseMapper<Book> {
     Integer selectBookCountByBnameOrAuthor(String BnameOrAuthor);
 
     List<BookNameAndValue> selectBookNameAndValueById(@Param("bid") Integer bid);
+
+    List<Book> getRandomBook();
 }

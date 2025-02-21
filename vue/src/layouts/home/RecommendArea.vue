@@ -4,9 +4,9 @@
       <header class="w-full flex justify-between">
         <h1 class="text-2xl font-bold">为你推荐</h1>
   
-        <el-select v-model="selectedType" placeholder="请选择图书类型"  @change="handleTypeChange(selectedType)">
+        <el-select v-model="selectedRecommend" @change="handleRecommendChange(selectedType)">
           <el-option
-            v-for="type in types"
+            v-for="type in recommendtypes"
             :key="type.value"
             :label="type.label"
             :value="type.value"
@@ -39,7 +39,7 @@
       <!-- 图书详情 -->
       <BookDetail/>
       
-      <!-- 表单 - 用于添加图书 -->
+      <!-- 无表单功能 - 用于获取图书数据 -->
       <BookFactory/>
     </main>
   </template>
@@ -58,20 +58,19 @@
     },
     data() {
       return {
-        selectedType: '', // 当前选中的图书类型
-        types: [],        // 图书类型列表
-        }
+        selectedType: 'popularity', 
+        recommendtypes: [
+          { value: 'popularity', label: '图书热度榜' },
+          { value: 'recommendation', label: '猜你喜欢' }
+        ],
+      }
     },
     async created() {
       this.setDataReady(false)
-      const { source } = await this.fetchSource()
+      const { source } = await this.fetchRandomSource()
       this.setSource(source)
       await sleep()
       this.setDataReady(true)
-      this.types = await this.fetchTypes().then(types => types.map(type => ({
-              value: type.id,
-              label: type.tname
-          })))
     },
     computed: {
       ...mapGetters([
@@ -83,8 +82,32 @@
         "setSource", "setPage", "setDataReady", "setDialogFormVisible"
       ]),
       ...mapActions([
-        "fetchSource","fetchTypes","fetchSource1"
+        "fetchRandomSource","fetchTypes","fetchSource1"
       ]),
+
+      // 处理页数切换
+      async handleCurrentChange(newPage) {
+        this.setDataReady(false)
+        this.setPage(newPage)
+        const { source } = await this.fetchRandomSource()
+        this.setSource(source)
+        await sleep()
+        this.setDataReady(true)
+      },
+      async handleRecommendChange(/*selectedTid*/) {
+      this.setDataReady(false);
+      // 清空当前页数
+      this.setPage(1);
+      const { source } = await this.fetchRandomSource()
+      this.setSource(source)
+      await sleep()
+      this.setDataReady(true)
+      this.types = await this.fetchTypes().then(types => types.map(type => ({
+              value: type.id,
+              label: type.tname
+          })))
+
+      /*
       // 处理页数切换
       async handleCurrentChange(newPage) {
         this.setDataReady(false)
@@ -94,7 +117,7 @@
         await sleep()
         this.setDataReady(true)
       },
-      async handleTypeChange(selectedTid) {
+      async handleRecommendChange(selectedTid) {
       this.setDataReady(false);
       // 清空当前页数
       this.setPage(1);
@@ -106,6 +129,7 @@
               value: type.id,
               label: type.tname
           })))
+        */
       }
     }
   }
