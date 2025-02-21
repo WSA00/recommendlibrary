@@ -5,6 +5,7 @@ import historyArea from "./modules/historyArea";
 import historyallArea from "./modules/historyallArea";
 import stockinArea from "./modules/stockinArea";
 import typeArea from "./modules/typeArea";
+import recommendArea from "./modules/recommendArea";
 
 export default () => {
     return {
@@ -25,6 +26,7 @@ export default () => {
             stockinArea,
             historyArea,
             historyallArea,
+            recommendArea,
             typeArea
         }
     }

@@ -39,6 +39,19 @@ export default [
     ]
   },
   {
+    path: "/recommend",
+    meta: { title: "图书推荐", icon: "el-icon-document-copy", role: [ "USER", "ROOT" ]},  //recommend推荐
+    component: () => import("@/layouts/home/IndexPage.vue"),    
+    children: [
+      {
+        path: "",
+        name: "recommend",
+        meta: { auth: true, role: [ "USER","ROOT" ] },
+        component: () => import("@/layouts/home/RecommendArea.vue"),
+      }
+    ]
+  },
+  {
     path: "/history",
     meta: { title: "借阅记录", icon: "el-icon-document-copy", role: [ "USER", "ROOT" ]},  //history借阅，个人用户借阅，曾经订单order
     component: () => import("@/layouts/home/IndexPage.vue"),    //可续期。正常借阅、将要过期、已过期。
@@ -51,7 +64,6 @@ export default [
       }
     ]
   },
-
   {
     path: "/historyall",
     meta: { title: "借阅总览", icon: "el-icon-document-copy", role: [ "ROOT" ]},                     
