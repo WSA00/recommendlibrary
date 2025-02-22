@@ -197,15 +197,15 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
         return Result.ok(data);
     }
 
-    public Result bookPageSelect3(Integer page, Integer pageSize) {//随机推荐36本
+    public Result bookPageSelect3(Integer page, Integer pageSize) {//随机推荐
         // 计算 OFFSET
         int offset = (page - 1) * pageSize;
 
-        // 随机查询 36 条记录
+        // 随机查询
         List<Book> allRecords = bookMapper.getRandomBook();
 
         // 获取总记录数
-        Long count = (long) allRecords.size();  // 假设总数是 36
+        Long count = (long) allRecords.size();
 
         // 进行分页，使用 subList 获取指定范围的记录
         List<Book> records = allRecords.stream()

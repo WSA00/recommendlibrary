@@ -4,12 +4,12 @@
       <header class="w-full flex justify-between">
         <h1 class="text-2xl font-bold">为你推荐</h1>
   
-        <el-select v-model="selectedRecommend" @change="handleRecommendChange(selectedType)">
+        <el-select v-model="selectedType" placeholder="随机推荐中...（点击我开启个性化推荐）" @change="handleRecommendChange(selectedType)" class="custom-select">
           <el-option
-            v-for="type in recommendtypes"
-            :key="type.value"
-            :label="type.label"
-            :value="type.value"
+            v-for="item in recommendtypes"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
           ></el-option>
         </el-select>
         
@@ -40,7 +40,7 @@
       <BookDetail/>
       
       <!-- 无表单功能 - 用于获取图书数据 -->
-      <BookFactory/>
+      <!-- <BookFactory/> -->
     </main>
   </template>
   
@@ -48,17 +48,18 @@
   import { sleep } from '@/util/sleep'
   import BookCard from '@/views/home/recommend-area/BookCard.vue';
   import BookDetail from '@/views/home/recommend-area/BookDetail.vue';
-  import BookFactory from '@/views/home/recommend-area/BookFactory.vue';
+  //import BookFactory from '@/views/home/recommend-area/BookFactory.vue';
   import { createNamespacedHelpers } from 'vuex'
   const { mapGetters, mapMutations, mapActions } = createNamespacedHelpers("recommendArea")
   export default {
     name: "RecommendArea",
     components: {
-      BookCard, BookFactory, BookDetail
+      BookCard, BookDetail//, BookFactory
     },
     data() {
       return {
-        selectedType: 'popularity', 
+        selectedType: null, 
+        types:[],        // 图书类型列表
         recommendtypes: [
           { value: 'popularity', label: '图书热度榜' },
           { value: 'recommendation', label: '猜你喜欢' }
@@ -67,7 +68,15 @@
     },
     async created() {
       this.setDataReady(false)
-      const { source } = await this.fetchRandomSource()
+
+      // 定义默认参数
+      let defaultParams = {
+        hot: 0,
+        smart: 0,
+        uid: 0 
+      };
+      
+      const { source } = await this.fetchSource(defaultParams)
       this.setSource(source)
       await sleep()
       this.setDataReady(true)
@@ -82,30 +91,66 @@
         "setSource", "setPage", "setDataReady", "setDialogFormVisible"
       ]),
       ...mapActions([
-        "fetchRandomSource","fetchTypes","fetchSource1"
+        "fetchSource","fetchTypes"
       ]),
 
       // 处理页数切换
       async handleCurrentChange(newPage) {
         this.setDataReady(false)
         this.setPage(newPage)
-        const { source } = await this.fetchRandomSource()
-        this.setSource(source)
-        await sleep()
-        this.setDataReady(true)
+        
+        let hot=0;
+        let smart=0;
+        // 获取用户 ID
+        const uid = this.$store.getters.getUser.id;
+
+        // 根据 selectedType 进行不同的处理
+        if (this.selectedType === 'popularity') {
+          smart = 0; 
+          hot = 1;
+          } 
+        else if (this.selectedType === 'recommendation') {
+          smart = 1;
+          hot = 0;
+        }
+
+        const { source } = await this.fetchSource({ hot, smart, uid});
+
+        this.setSource(source);
+        await sleep();
+        this.setDataReady(true);
       },
-      async handleRecommendChange(/*selectedTid*/) {
-      this.setDataReady(false);
-      // 清空当前页数
-      this.setPage(1);
-      const { source } = await this.fetchRandomSource()
-      this.setSource(source)
-      await sleep()
-      this.setDataReady(true)
-      this.types = await this.fetchTypes().then(types => types.map(type => ({
-              value: type.id,
-              label: type.tname
-          })))
+      async handleRecommendChange(selectedType) {
+        this.setDataReady(false);
+        // 清空当前页数
+        this.setPage(1);
+
+        let hot=0;
+        let smart=0;
+        // 获取用户 ID
+        const uid = this.$store.getters.getUser.id;
+
+        // 根据 selectedType 进行不同的处理
+        if (selectedType === 'popularity') {
+          smart = 0; 
+          hot = 1;
+        } 
+        else if (selectedType === 'recommendation') {
+          smart = 1;
+          hot = 0;
+        }
+
+        const { source } = await this.fetchSource({ hot, smart, uid});
+
+          this.setSource(source);
+          await sleep();
+          this.setDataReady(true);
+          
+          // // 更新类型
+          // this.types = await this.fetchTypes().then(types => types.map(type => ({
+          //     value: type.id,
+          //     label: type.tname
+          // })))
 
       /*
       // 处理页数切换
@@ -139,4 +184,8 @@
     .aspect {
       aspect-ratio: 4/3;
     }
+    .custom-select {
+      width: 300px; /* 设置最小宽度 */
+      white-space: nowrap;/* 禁止换行 */
+  }
   </style>

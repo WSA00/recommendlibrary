@@ -45,7 +45,7 @@ public class BookController {
     }
 
     @PreAuthorize("hasAnyAuthority('USER','ROOT')")
-    @GetMapping("/random")
+    @GetMapping("/recommend/random")
     public Result bookPageSelect3(Integer page, Integer pageSize){
 
         if (page == null && pageSize == null) {
@@ -54,6 +54,28 @@ public class BookController {
             return bookService.bookPageSelect3(page,pageSize);
         }
     }
+    @PreAuthorize("hasAnyAuthority('USER','ROOT')")
+    @GetMapping("/recommend/hot")//热门图书榜，未完成
+    public Result bookPageSelect4(Integer page, Integer pageSize){
+
+        if (page == null && pageSize == null) {
+            return bookService.getHotBook();
+        }else {
+            return bookService.bookPageSelect4(page,pageSize);
+        }
+    }
+    @PreAuthorize("hasAnyAuthority('USER','ROOT')")
+    @GetMapping("/recommend/smart")//个性化推荐，未完成
+    public Result bookPageSelect5(Integer page, Integer pageSize){
+
+        if (page == null && pageSize == null) {
+            return bookService.getSmartRecommendBook();
+        }else {
+            return bookService.bookPageSelect5(page,pageSize);
+        }
+    }
+
+
     @PreAuthorize("hasAnyAuthority('USER','ROOT')")
     @GetMapping("{id}")
     public Result selectBookById(@PathVariable Integer id){

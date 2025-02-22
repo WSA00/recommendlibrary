@@ -61,7 +61,7 @@
       </section>
       <!-- 折线图 -->
       <section class="flex-1 h-auto bg-white rounded-xl py-10 flex flex-col gap-10">
-        <h1 class="text-left font-bold text-xl pl-10">热门图书榜 (近 4 月榜单, 前 9 名数据, 借出次数)</h1>
+        <h1 class="text-left font-bold text-xl pl-10">近期热门图书 (近 4 月榜单, 前 9 名数据, 借出次数)</h1>
         <LineChart class="w-full h-96"/>
       </section>
     </article>

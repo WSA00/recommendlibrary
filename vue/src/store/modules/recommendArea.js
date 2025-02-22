@@ -50,23 +50,35 @@ export default {
     },
     actions: {
         // 请求接口 - 分页获取随机推荐图书信息
-        async fetchRandomSource({ state, commit }) {   
-            const response = await api.get(`/api/book/random?page=${state.page}&pageSize=${state.pageSize}`,{ token: localStorage.getItem("token") })
+        async fetchSource({ state, commit }, payload) {
+            
+            let url;
+
+            if(payload.hot==1)
+                url = `/api/book/recommend/hot?page=${state.page}&pageSize=${state.pageSize}`;//热门图书榜
+            else if(payload.smart==1)
+                url = `/api/book/recommend/smart?page=${state.page}&pageSize=${state.pageSize}&uid=${payload.uid}`;//个性化推荐
+            else
+                url = `/api/book/recommend/random?page=${state.page}&pageSize=${state.pageSize}`;//随机推荐
+
+            const response = await api.get(url,{ token: localStorage.getItem("token") })
             commit("setBookTotal", response.bookTotal)
             return response
         },
-        //请求接口 - 分页获取特定类型图书信息
-        async fetchSource1({ state, commit }, payload) {   
-            let url = `/api/book?page=${state.page}&pageSize=${state.pageSize}`;
 
-            if (payload && payload.tid) {
-                url = `/api/book/type?page=${state.page}&pageSize=${state.pageSize}&tid=${payload.tid}`;
-            }
+        // //请求接口 - 分页获取特定类型图书信息
+        // async fetchSource1({ state, commit }, payload) {   
+        //     let url = `/api/book?page=${state.page}&pageSize=${state.pageSize}`;
 
-            const response = await api.get(url, { token: localStorage.getItem("token") });
-            commit("setBookTotal", response.bookTotal);
-            return response;
-        },
+        //     if (payload && payload.tid) {
+        //         url = `/api/book/type?page=${state.page}&pageSize=${state.pageSize}&tid=${payload.tid}`;
+        //     }
+
+        //     const response = await api.get(url, { token: localStorage.getItem("token") });
+        //     commit("setBookTotal", response.bookTotal);
+        //     return response;
+        // },
+        
         // 请求接口 - 获取指定图书信息
         async fetchBook(context, payload) {
             return await api.get(`/api/book/${payload}`, { token: localStorage.getItem("token") })
