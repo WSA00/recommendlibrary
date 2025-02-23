@@ -26,4 +26,8 @@ public interface BookMapper extends BaseMapper<Book> {
     List<BookNameAndValue> selectBookNameAndValueById(@Param("bid") Integer bid);
 
     List<Book> getRandomBook();
+
+    List<Book> getHotBook();
+
+    List<Book> getSmartRecommendBook(@Param("uid") Integer uid);
 }

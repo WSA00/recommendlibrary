@@ -28,6 +28,29 @@
             LIMIT 60;
     </select>
 
+    <select id="getHotBook" resultType="com.library.pojo.Book">
+        select * from book
+        ORDER BY btimes DESC
+            LIMIT 144;
+    </select>
+
+    <select id="getSmartRecommendBook" resultType="com.library.pojo.Book">
+        SELECT b.*
+        FROM book b
+                 JOIN (
+            SELECT tid
+            FROM history h
+                     JOIN book b_sub ON h.bid = bid
+                     JOIN type t ON b_sub.tid = tid
+            WHERE h.uid = #{uid}
+            GROUP BY tid
+            ORDER BY COUNT(*) DESC
+                LIMIT 3
+        ) AS top_types ON b.tid = top_types.tid
+        ORDER BY b.btimes DESC
+            LIMIT 144;
+    </select>
+
     <select id="selectBookByTid" resultType="com.library.pojo.Book">
         select * from book
         where tid = #{tid}
