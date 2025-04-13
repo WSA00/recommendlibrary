@@ -34,7 +34,7 @@
             LIMIT 144;
     </select>
 
-    <select id="getSmartRecommendBook" resultType="com.library.pojo.Book">
+    <select id="getSmartRecommendBook1" resultType="com.library.pojo.Book">
         SELECT b.*
         FROM book b
                  JOIN (
@@ -48,7 +48,37 @@
                 LIMIT 3
         ) AS top_types ON b.tid = top_types.tid
         ORDER BY b.btimes DESC
-            LIMIT 144;
+            LIMIT 24;
+    </select>
+
+    <select id="getSmartRecommendBook2" resultType="com.library.pojo.Book">
+        SELECT b.*
+        FROM book b
+                 JOIN (
+            SELECT tid
+            FROM history h
+                     JOIN book b_sub ON h.bid = bid
+                     JOIN type t ON b_sub.tid = tid
+            WHERE h.uid = #{uid} AND h.begin_time >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+            GROUP BY tid
+            ORDER BY COUNT(*) DESC
+                LIMIT 3
+        ) AS top_types ON b.tid = top_types.tid
+        ORDER BY b.btimes DESC
+            LIMIT 30;
+    </select>
+
+    <select id="getSmartRecommendBook3" resultType="com.library.pojo.Book">
+        SELECT b.*
+        FROM book b
+                 JOIN (
+            SELECT h.bid, COUNT(*) AS borrow_count
+            FROM history h
+            WHERE h.begin_time >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+            GROUP BY h.bid
+            ORDER BY borrow_count DESC
+                LIMIT 24
+        ) AS popular_books ON b.id = popular_books.bid
     </select>
 
     <select id="selectBookByTid" resultType="com.library.pojo.Book">

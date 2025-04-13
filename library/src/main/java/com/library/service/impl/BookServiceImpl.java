@@ -232,7 +232,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
         return Result.ok(data);
     }
 
-    public Result bookPageSelect4(Integer page, Integer pageSize) {//随机推荐
+    public Result bookPageSelect4(Integer page, Integer pageSize) {//热度推荐
         // 计算 OFFSET
         int offset = (page - 1) * pageSize;
 
@@ -271,14 +271,30 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
         // 计算 OFFSET
         int offset = (page - 1) * pageSize;
 
-        // 查询
-        List<Book> allRecords = bookMapper.getSmartRecommendBook(uid);
+        // 查询最喜欢的三种图书类型
+        List<Book> allRecords1 = bookMapper.getSmartRecommendBook1(uid);
+        // 查询喜欢的图书类型最近一个月
+        List<Book> allRecords2 = bookMapper.getSmartRecommendBook2(uid);
+        // 查询受欢迎图书最近一个月
+        List<Book> allRecords3 = bookMapper.getSmartRecommendBook3();
+
+        // 使用 Set 来避免重复
+        Set<Integer> bookIds = new HashSet<>();
+        List<Book> uniqueBooks = new ArrayList<>();
+
+        // 合并书籍列表
+        addBooksToList(allRecords1, bookIds, uniqueBooks);
+        addBooksToList(allRecords2, bookIds, uniqueBooks);
+        addBooksToList(allRecords3, bookIds, uniqueBooks);
+
+        // 按借阅次数降序排序
+        Collections.sort(uniqueBooks, Comparator.comparing(Book::getBtimes).reversed());
 
         // 获取总记录数
-        Long count = (long) allRecords.size();
+        Long count = (long) uniqueBooks.size();
 
         // 进行分页，使用 subList 获取指定范围的记录
-        List<Book> records = allRecords.stream()
+        List<Book> records = uniqueBooks.stream()
                 .skip(offset)
                 .limit(pageSize)
                 .collect(Collectors.toList());
@@ -299,7 +315,24 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
         data.put("bookTotal", count);
         data.put("source", list);
 
+        System.out.println(allRecords2);
+        System.out.println(list);
+
         return Result.ok(data);
+
+    }
+
+    // 辅助方法，用于将书籍添加到列表中
+    private void addBooksToList(List<Book> books, Set<Integer> bookIds, List<Book> uniqueBooks) {
+        for (Book book : books) {
+            // 检查书籍是否已存在
+            if (!bookIds.contains(book.getId())) {
+                // 添加书籍 ID 到集合中
+                bookIds.add(book.getId());
+                // 添加到唯一书籍列表中
+                uniqueBooks.add(book);
+            }
+        }
     }
 
     @Override
@@ -436,10 +469,30 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
     }
 
     public Result getSmartRecommendBook(Integer uid) {
-        List<Book> bookList = bookMapper.getSmartRecommendBook(uid);
+        //List<Book> bookList = bookMapper.getSmartRecommendBook1(uid);
+
+        // 查询最喜欢的三种图书类型
+        List<Book> allRecords1 = bookMapper.getSmartRecommendBook1(uid);
+        // 查询喜欢的图书类型最近一个月
+        List<Book> allRecords2 = bookMapper.getSmartRecommendBook2(uid);
+        // 查询受欢迎图书最近一个月
+        List<Book> allRecords3 = bookMapper.getSmartRecommendBook3();
+
+        // 使用 Set 来避免重复
+        Set<Integer> bookIds = new HashSet<>();
+        List<Book> uniqueBooks = new ArrayList<>();
+
+        // 合并书籍列表
+        addBooksToList(allRecords1, bookIds, uniqueBooks);
+        addBooksToList(allRecords2, bookIds, uniqueBooks);
+        addBooksToList(allRecords3, bookIds, uniqueBooks);
+
+        // 按借阅次数降序排序
+        Collections.sort(uniqueBooks, Comparator.comparing(Book::getBtimes).reversed());
+
         List<BookResponse> bookResponseList = new ArrayList<>();
 
-        for (Book book : bookList) {
+        for (Book book : uniqueBooks) {
             // 查询对应的类型名称 tname
             String tname = typeMapper.selectTnameById(book.getTid());
             // 创建 BookResponse 对象，包含原始的 Book 属性和额外的 tname 属性
@@ -449,7 +502,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
             // 将 BookResponse 对象添加到列表中
             bookResponseList.add(bookResponse);
         }
-        System.out.println(bookList);
+        System.out.println(uniqueBooks);
         System.out.println(bookResponseList);
         return Result.ok(bookResponseList);
     }

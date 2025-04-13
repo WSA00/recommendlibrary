@@ -29,5 +29,9 @@ public interface BookMapper extends BaseMapper<Book> {
 
     List<Book> getHotBook();
 
-    List<Book> getSmartRecommendBook(@Param("uid") Integer uid);
+    List<Book> getSmartRecommendBook1(@Param("uid") Integer uid);
+
+    List<Book> getSmartRecommendBook2(@Param("uid") Integer uid);
+
+    List<Book> getSmartRecommendBook3();
 }
