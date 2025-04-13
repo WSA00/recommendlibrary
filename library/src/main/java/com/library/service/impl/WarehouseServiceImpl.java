@@ -95,7 +95,7 @@ public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse
         warehouseMapper.updateById(warehouse);
 
         Map data = new LinkedHashMap();
-        data.put("tip","成功修改仓库消息");
+        data.put("tip","成功修改仓库信息");
         data.put("warehouse",warehouse);
 
         return Result.ok(data);

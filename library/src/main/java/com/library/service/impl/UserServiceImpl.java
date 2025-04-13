@@ -59,7 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String SECRET_KEY = "6Qsk9dR7pb2Y2GwlvHl_Q1DTZ3IMb8vluoF41w2M";
         Mac mac = new Mac(ACCESS_KEY, SECRET_KEY);
         // 请确保该bucket已经存在
-        String bucketName = "wsa01";
+        String bucketName = "wsa00";
         PutPolicy putPolicy = new PutPolicy(bucketName);
         String uploadtoken = putPolicy.token(mac);
 

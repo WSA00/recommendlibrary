@@ -7,7 +7,7 @@
      -->
       <!-- cdn加速 -->
     <aside class="w-5/12 h-full flex flex-col justify-center items-center" style="background-color: #a162f7;">
-      <el-image :src="'http://sh4kj2q5q.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/loginpng.png'" fit="cover" class="transform -translate-y-20"></el-image>
+      <el-image :src="'http://sufe58uk3.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6/loginpng.png'" fit="cover" class="transform -translate-y-20"></el-image>
     </aside>
 
     <!-- 右半部分 -->

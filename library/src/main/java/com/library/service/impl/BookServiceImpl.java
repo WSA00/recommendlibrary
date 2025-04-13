@@ -267,11 +267,11 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
         return Result.ok(data);
     }
 
-    public Result bookPageSelect5(Integer page, Integer pageSize , Integer uid) {//随机推荐
+    public Result bookPageSelect5(Integer page, Integer pageSize , Integer uid) {//智能推荐
         // 计算 OFFSET
         int offset = (page - 1) * pageSize;
 
-        // 随机查询
+        // 查询
         List<Book> allRecords = bookMapper.getSmartRecommendBook(uid);
 
         // 获取总记录数

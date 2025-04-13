@@ -65,7 +65,7 @@ public class BookController {
         }
     }
     @PreAuthorize("hasAnyAuthority('USER','ROOT')")
-    @GetMapping("/recommend/smart")//个性化推荐，未完成
+    @GetMapping("/recommend/smart")//个性化推荐
     public Result bookPageSelect5(Integer page, Integer pageSize,Integer uid){
 
         if (page == null && pageSize == null) {

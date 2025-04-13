@@ -84,11 +84,11 @@ export default {
             },
             rules: {
                 bname: { required: true, message: '请输入当前图书名称', trigger: 'blur' },
-                tname: { required: true, message: '请输入当前图书类型', trigger: 'blur' },
+                tname: { required: true, message: '请选择当前图书类型', trigger: 'blur' },
                 author: { required: true, message: '请输入当前图书作者', trigger: 'blur' },
                 press: { required: true, message: '请输入当前图书出版社', trigger: 'blur' },
                 introduce: [
-                    { required: true, message: '请输入当前产品简介', trigger: 'blur' },
+                    { required: true, message: '请输入当前图书简介', trigger: 'blur' },
                     { min: 1, max: 500, message: '简介应当在 1 到 500 个字符', trigger: 'blur' },
                 ]
             }

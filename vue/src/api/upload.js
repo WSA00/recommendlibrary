@@ -3,7 +3,7 @@ import * as qiniu from "qiniu-js"
 import { Message } from "element-ui";
 import { v4 } from "uuid"
 export const action = "http://up-z2.qiniup.com"
-export const hostname = "http://sh4kj2q5q.hn-bkt.clouddn.com"
+export const hostname = "http://sufe58uk3.hn-bkt.clouddn.com"
 export const bucket = "wsa00"
 
 // 上传图片 
