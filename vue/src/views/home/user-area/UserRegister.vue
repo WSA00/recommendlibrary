@@ -172,7 +172,7 @@ export default {
                     const minutes = time.getMinutes()
                     const seconds = time.getSeconds()
                     const joined_date = new Date(year, month, day, hours, minutes, seconds)
-                    let avatar = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                    let avatar = "http://sufe58uk3.hn-bkt.clouddn.com/%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6/avatarpng.png"
                     // 判断有没有上传头像
                     if(this.getFile) {
                         const { key } = await uploadQiniuImage(this.getFile)

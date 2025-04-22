@@ -49,6 +49,7 @@ export default {
   },
   async created() {
     this.setDataReady(false);
+    this.setPage(1)
     const q = this.$route.query.q; // 获取路由参数 q
     const { source } = await this.fetchSource2({ string: q }); // 调用 fetchSource2 方法，并传递 q 参数
     this.setSource(source); // 设置数据源
@@ -70,14 +71,21 @@ export default {
     async fetchData() {
       this.setDataReady(false);
       const q = this.$route.query.q;
+      this.setPage(1)
       const { source } = await this.fetchSource2({ string: q });
       this.setSource(source);
       await sleep();
       this.setDataReady(true);
     },
-    handleCurrentChange(newPage) {
-      this.setPage(newPage);
-      this.fetchData();
+    // 处理页数切换
+    async handleCurrentChange(newPage) {
+      this.setDataReady(false)
+      const q = this.$route.query.q;
+      this.setPage(newPage)
+      const { source } = await this.fetchSource2({ string: q });
+      this.setSource(source);
+      await sleep();
+      this.setDataReady(true);
     },
     handleSearchInput() {
       this.fetchData(); // 处理搜索输入变化时的数据获取

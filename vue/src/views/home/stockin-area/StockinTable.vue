@@ -95,7 +95,7 @@ export default {
         ]),
         // 处理删除订单
         handleStockinDelete({ id }) {
-            this.$confirm('此操作将永久删除该供应记录, 是否继续?', '提示', {
+            this.$confirm('此操作将永久删除该入库记录, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'error'

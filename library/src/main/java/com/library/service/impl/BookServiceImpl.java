@@ -236,7 +236,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book>
         // 计算 OFFSET
         int offset = (page - 1) * pageSize;
 
-        // 随机查询
+        // 热度查询
         List<Book> allRecords = bookMapper.getHotBook();
 
         // 获取总记录数

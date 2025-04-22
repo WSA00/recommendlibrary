@@ -1,7 +1,7 @@
 <template>
-<!-- 员工详情 -->
+<!-- 用户详情 -->
 <el-dialog 
-  title="员工详情" 
+  title="用户详情" 
   :visible.sync="dialogTableVisible"
   top="1rem"
   width="1000px"
