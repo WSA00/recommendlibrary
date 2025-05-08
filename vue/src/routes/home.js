@@ -15,7 +15,7 @@ export default [
   {
     path: "/book",
     component: () => import("@/layouts/home/IndexPage.vue"),
-    meta: { title: "图书总览", icon: "el-icon-shopping-cart-2" , role: [ "USER", "ROOT" ]},//book书本，曾经汽车产品product
+    meta: { title: "图书总览", icon: "el-icon-shopping-cart-2" , role: [ "USER", "ROOT" ]},//book书本
     children: [
       {
         path: "",
@@ -53,7 +53,7 @@ export default [
   },
   {
     path: "/history",
-    meta: { title: "借阅记录", icon: "el-icon-document-copy", role: [ "USER", "ROOT" ]},  //history借阅，个人用户借阅，曾经订单order
+    meta: { title: "借阅记录", icon: "el-icon-document-copy", role: [ "USER", "ROOT" ]},  //history借阅，个人用户借阅
     component: () => import("@/layouts/home/IndexPage.vue"),    //可续期。正常借阅、将要过期、已过期。
     children: [
       {
@@ -94,7 +94,7 @@ export default [
   },
   {
     path: "/stockin",
-    meta: { title: "入库记录", icon: "el-icon-view" ,role:"ROOT"},        //stockin入库，曾经供应记录supply
+    meta: { title: "入库记录", icon: "el-icon-view" ,role:"ROOT"},        //stockin入库
     component: () => import("@/layouts/home/IndexPage.vue"),
     children: [
       {
